@@ -8,9 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Email Validation
     const emailInput = document.querySelector("#email");
     const emailWrapper = emailInput ? emailInput.closest(".c--form-input-a") : null;
-    const emailErrorSpan = emailInput
-        ? emailInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a")
-        : null;
+    const emailErrorSpan = emailInput ? emailInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a") : null;
 
     if (emailInput) {
         emailInput.addEventListener("blur", () => {
@@ -19,20 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 config: { type: "corporate" },
             });
 
-            if (result.isValid) {
-                emailWrapper?.classList.remove("c--form-input-a--error");
-                emailWrapper?.classList.add("c--form-input-a--valid");
-                if (emailErrorSpan) {
-                    emailErrorSpan.textContent = "";
-                    emailErrorSpan.style.display = "none";
-                }
-            } else {
-                emailWrapper?.classList.add("c--form-input-a--error");
-                emailWrapper?.classList.remove("c--form-input-a--valid");
-                if (emailErrorSpan) {
-                    emailErrorSpan.textContent = result.errorMessage;
-                    emailErrorSpan.style.display = "block";
-                }
+            if (emailErrorSpan) {
+                emailErrorSpan.textContent = result.errorMessage;
+                emailErrorSpan.style.display = "block";
             }
         });
     }
@@ -40,9 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Username Validation
     const usernameInput = document.querySelector("#username");
     const usernameWrapper = usernameInput ? usernameInput.closest(".c--form-input-a") : null;
-    const usernameErrorSpan = usernameInput
-        ? usernameInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a")
-        : null;
+    const usernameErrorSpan = usernameInput ? usernameInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a") : null;
 
     if (usernameInput) {
         usernameInput.addEventListener("blur", () => {

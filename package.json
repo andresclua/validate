@@ -22,8 +22,6 @@
     },
     "dependencies": {
         "@andresclua/jsutil": "^4.0.4",
-        "gsap": "^3.12.5",
-        "i": "^0.3.7",
-        "npm": "^10.9.1"
+        "gsap": "^3.12.5"
     }
 }
