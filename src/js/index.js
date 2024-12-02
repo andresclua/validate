@@ -3,6 +3,8 @@ import { isEmail } from "./utils/isEmail";
 import { isString } from "./utils/isString";
 
 document.addEventListener("DOMContentLoaded", () => {
+    
+    
     // Email Validation
     const emailInput = document.querySelector("#email");
     const emailWrapper = emailInput ? emailInput.closest(".c--form-input-a") : null;

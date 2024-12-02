@@ -1,3 +1,5 @@
+// funciones dentro de isEmail & isString
+
 // Manejo centralizado de debugging
 export function handleDebug({ element, config, result, debug }) {
     if (debug) {
@@ -16,3 +18,9 @@ export function handleValidationResult(result, callback) {
     }
     return result;
 }
+
+
+//////
+
+
+// 
