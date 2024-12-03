@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Validation - by Andres Clua</title>
+
+        <link rel="stylesheet" href="https://unpkg.com/@terrahq/design-system@latest/dist/style.css" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="f--container">
+            <div class="f--row">
+                <div class="f--col-12">
+                    <h1 class="f--mb-3 f--mt-3">String</h1>
+     
+                    <h3 class="f--mb-3 f--mt-3">String Blur Example</h3>
+
+                    <div class="c--form-group-a">
+                        <label class="c--label-a" for="firstName">First Name</label>
+                        <div class="c--form-input-a">
+                            <input class="c--form-input-a__item" type="text" id="firstName">
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h3 class="f--mb-3 f--mt-3">String Click Example</h3>
+                    <div class="c--form-group-a">
+                        <label class="c--label-a" for="somefield">Last name</label>
+                        <div class="c--form-input-a">
+                            <input class="c--form-input-a__item" type="text" id="somefield">
+                        </div>
+                    </div>
+                    <button id="submitNumber">Submit</button>
+                    
+                    <hr>
+                    
+                    <h3 class="f--mb-3 f--mt-3">2 fields validation on click</h3>
+                    <div class="c--form-group-a">
+                        <label class="c--label-a" for="somefield">Job Title</label>
+                        <div class="c--form-input-a">
+                            <input class="c--form-input-a__item" type="text" id="job_title">
+                        </div>
+                    </div>
+
+                    <div class="c--form-group-a">
+                        <label class="c--label-a" for="job_description">Job description</label>
+                        <div class="c--form-input-a">
+                            <input class="c--form-input-a__item" type="text" id="job_description">
+                        </div>
+                    </div>
+                    <button id="jobsubmition">Submit</button>
+                    <hr>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <script type="module" src="./js/string.js"></script>
+    </body>
+</html>

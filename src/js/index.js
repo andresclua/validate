@@ -14,9 +14,14 @@ document.addEventListener("DOMContentLoaded", () => {
         emailInput.addEventListener("blur", () => {
             const result = isEmail({
                 element: emailInput.value,
-                config: { type: "corporate" },
+                config: {
+                    type: "corporate",
+                    customMessage: {
+                        corporate: "This email must belong to your company domain.",
+                        invalid: "Please enter a valid email address.",
+                    },
+                },
             });
-
             if (emailErrorSpan) {
                 emailErrorSpan.textContent = result.errorMessage;
                 emailErrorSpan.style.display = "block";
@@ -35,8 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 element: usernameInput.value,
                 config: {
                     required: true,
-                    minLength: 6, // Al menos 6 caracteres
-                    customMessage: "Username must be at least 6 characters long.",
+                    minLength: 6,
+                    customMessage: {
+                        required: "Username cannot be empty.",
+                        minLength: "Username must have at least 6 characters.",
+                    },
                 },
             });
 
@@ -60,26 +68,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Submit Button Validation
     const submitButton = document.querySelector(".btn");
-    if (submitButton) {
-        submitButton.addEventListener("click", (event) => {
-            event.preventDefault(); // Prevenir envío por defecto
+    // if (submitButton) {
+    //     submitButton.addEventListener("click", (event) => {
+    //         event.preventDefault(); // Prevenir envío por defecto
 
-            const emailResult = isEmail({ element: emailInput?.value || "", config: { type: "corporate" } });
-            const usernameResult = isString({
-                element: usernameInput?.value || "",
-                config: {
-                    required: true,
-                    minLength: 6,
-                    customMessage: "Username must be at least 6 characters long.",
-                },
-            });
+    //         const emailResult = isEmail({ element: emailInput?.value || "", config: { type: "corporate" } });
+    //         const usernameResult = isString({
+    //             element: usernameInput?.value || "",
+    //             config: {
+    //                 required: true,
+    //                 minLength: 6,
+    //                 customMessage: "Username must be at least 6 characters long.",
+    //             },
+    //         });
 
-            if (emailResult.isValid && usernameResult.isValid) {
-                console.log("Form submitted successfully!");
-            } else {
-                console.log("Please fix the errors before submitting.");
-            }
-        });
-    }
+    //         if (emailResult.isValid && usernameResult.isValid) {
+    //             console.log("Form submitted successfully!");
+    //         } else {
+    //             console.log("Please fix the errors before submitting.");
+    //         }
+    //     });
+    // }
 });
 

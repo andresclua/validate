@@ -9,15 +9,28 @@ export function isEmail({ element, config = {}, callback = null, debug = false }
         invalid: "Invalid email format.",
     };
 
-    const isValid = config.type === "corporate"
-        ? corporateRegex.test(element)
-        : emailRegex.test(element);
-
+    let isValid = true;
     let errorMessage = null;
-    if (!isValid) {
-        errorMessage = config.type === "corporate"
-            ? config.customMessage || defaultMessages.corporate
-            : config.customMessage || defaultMessages.invalid;
+
+    // Validación predeterminada: tipo "corporate"
+    if (config.type === "corporate" && !corporateRegex.test(element)) {
+        isValid = false;
+        errorMessage = config.customMessage?.corporate || defaultMessages.corporate;
+    }
+
+    // Validación predeterminada: formato de email
+    if (isValid && !emailRegex.test(element)) {
+        isValid = false;
+        errorMessage = config.customMessage?.invalid || defaultMessages.invalid;
+    }
+
+    // Validación personalizada
+    if (isValid && typeof config.customValidation === "function") {
+        const customResult = config.customValidation(element);
+        if (!customResult.isValid) {
+            isValid = false;
+            errorMessage = customResult.errorMessage;
+        }
     }
 
     const result = { isValid, errorMessage };

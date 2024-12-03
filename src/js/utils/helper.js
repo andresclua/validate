@@ -20,7 +20,3 @@ export function handleValidationResult(result, callback) {
 }
 
 
-//////
-
-
-// 

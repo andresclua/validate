@@ -11,24 +11,28 @@ export function isString({ element, config = {}, callback = null, debug = false 
     let isValid = true;
     let errorMessage = null;
 
+    // Validación: requerido
     if (config.required && (!element || element.trim() === "")) {
         isValid = false;
-        errorMessage = config.customMessage || defaultMessages.required;
+        errorMessage = (config.customMessage?.required) || defaultMessages.required;
     }
 
+    // Validación: longitud mínima
     if (isValid && config.minLength && element.length < config.minLength) {
         isValid = false;
-        errorMessage = config.customMessage || defaultMessages.minLength;
+        errorMessage = (config.customMessage?.minLength) || defaultMessages.minLength;
     }
 
+    // Validación: longitud máxima
     if (isValid && config.maxLength && element.length > config.maxLength) {
         isValid = false;
-        errorMessage = config.customMessage || defaultMessages.maxLength;
+        errorMessage = (config.customMessage?.maxLength) || defaultMessages.maxLength;
     }
 
+    // Validación: patrón
     if (isValid && config.pattern && !config.pattern.test(element)) {
         isValid = false;
-        errorMessage = config.customMessage || defaultMessages.pattern;
+        errorMessage = (config.customMessage?.pattern) || defaultMessages.pattern;
     }
 
     const result = { isValid, errorMessage };
