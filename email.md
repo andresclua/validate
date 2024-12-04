@@ -17,9 +17,9 @@ The isEmail function provides flexible and customizable email validation capabil
 |----------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `element`            | `string`           | The email address to validate.                                                                                                                              |
 | `config`             | `object` (optional)| An optional object to customize validation behavior.                                                                                                        |
-| **`type`**           | `string` (optional)| Specifies the type of validation: <br> - `"corporate"`: Ensures the email is not from generic domains like Gmail, Yahoo, or Outlook.                        |
-| **`customMessage`**  | `object` (optional)| Custom error messages for validation failures: <br> - **`corporate`**: Message for corporate email validation failure. <br> - **`invalid`**: Message for invalid email format. |
-| **`customValidation`** | `function` (optional)| A user-defined function for additional validation. <br> **Input**: The email address. <br> **Output**: An object with: <br> - `isValid` (`boolean`): Whether the custom validation passed. <br> - `errorMessage` (`string`): Error message for failed validation. |
+| `type`           | `string` (optional)| Specifies the type of validation: <br> - `"corporate"`: Ensures the email is not from generic domains like Gmail, Yahoo, or Outlook.                        |
+| `customMessage`  | `object` (optional)| Custom error messages for validation failures: <br> - **`corporate`**: Message for corporate email validation failure. <br> - **`invalid`**: Message for invalid email format. |
+| `customValidation` | `function` (optional)| A user-defined function for additional validation. <br> **Input**: The email address. <br> **Output**: An object with: <br> - `isValid` (`boolean`): Whether the custom validation passed. <br> - `errorMessage` (`string`): Error message for failed validation. |
 | `callback`           | `function` (optional)| A function that receives the validation result as an argument.                                                                                              |
 | `debug`              | `boolean` (optional)| If `true`, logs validation details to the console for debugging purposes.                                                                                   |
 
