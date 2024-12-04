@@ -66,3 +66,6 @@ document.querySelector("#email").addEventListener("blur", () => {
 - [Validate Number](./number.md)  
   Explore number validation, including range, positivity, and custom rules.
 
+- [Validate String](./string.md)  
+  Explore String Validation, with configurable rules such as length, pattern matching.
+
