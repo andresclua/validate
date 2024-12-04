@@ -60,7 +60,9 @@ document.querySelector("#email").addEventListener("blur", () => {
 
 ## Examples
 
-- Validate Email
-- Validate Strings
-- Validate 
+- [Validate Email](./email.md)  
+  Learn how to validate email addresses with various rules and customizations.
+
+- [Validate Number](./number.md)  
+  Explore number validation, including range, positivity, and custom rules.
 
