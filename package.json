@@ -3,12 +3,12 @@
     "private": false,
     "version": "0.0.01",
     "type": "module",
-    "main": "./dist/Validate.umd.js",
-    "module": "./dist/Validate.es.js",
+    "main": "./dist/validate.umd.js",
+    "module": "./dist/validate.es.js",
     "exports": {
         ".": {
-            "import": "./dist/Validate.es.js",
-            "require": "./dist/Validate.umd.cjs"
+            "import": "./dist/validate.es.js",
+            "require": "./dist/validate.umd.cjs"
         }
     },
     "scripts": {
@@ -19,9 +19,5 @@
     "devDependencies": {
         "sass": "^1.80.6",
         "vite": "^5.4.10"
-    },
-    "dependencies": {
-        "@andresclua/jsutil": "^4.0.4",
-        "gsap": "^3.12.5"
     }
 }
