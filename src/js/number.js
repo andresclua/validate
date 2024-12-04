@@ -109,15 +109,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     min: "The number must be at least 1000.",
                     max: "The number must not exceed 9999.",
                 },
-                // customValidation: (value) => {
-                //     const isValid = value % 2 === 0; // Must be an even number
-                //     return {
-                //         isValid,
-                //         errorMessage: isValid
-                //             ? null
-                //             : "The number must be even.",
-                //     };
-                // },
+                customValidation: (value) => {
+                    const isValid = value % 2 === 0; // Must be an even number
+                    return {
+                        isValid,
+                        errorMessage: isValid
+                            ? null
+                            : "The number must be even.",
+                    };
+                },
             },
         });
 

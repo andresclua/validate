@@ -156,6 +156,29 @@ select:-webkit-autofill:focus {
     background:transparent;
   }
 }
+.c--select-a {
+  position:relative;
+  display: flex;
+    flex-wrap: nowrap;
+    column-gap:20px;
+    row-gap:20px;
+    justify-content: center;
+    background:red;
+    &__item {
+        background: transparent;
+        -webkit-appearance: none;
+        appearance: none;
+        color: magenta;
+        width: 100%;
+        font-weight: 400;
+        padding: 10px;
+        border: 1px solid red;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+  
+      }    
+    }
 
 
 .c--form-error-a {
