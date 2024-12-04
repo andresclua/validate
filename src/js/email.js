@@ -2,41 +2,52 @@ import "./../scss/style.scss";
 import { isEmail } from "./utils/isEmail";
 
 
-// Email Validation
 document.addEventListener("DOMContentLoaded", () => {
-    
     const emailInput = document.querySelector("#email");
-    const emailErrorSpan = emailInput ? emailInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a") : null;
 
-    if (emailInput) {
-        emailInput.addEventListener("blur", () => {
-            const result = isEmail({
-                element: emailInput.value,
-                config: {
-                    type: "corporate",
-                    customMessage: {
-                        corporate: "This email must belong to your company domain.",
-                        invalid: "Please enter a valid email address.",
-                    },
-                    customValidation: (value) => {
-                        // Validación personalizada: el email debe contener "company"
-                        const isValid = value.includes("company");
-                        return {
-                            isValid,
-                            errorMessage: isValid
-                                ? null
-                                : "The email must include 'company' in the address.",
-                        };
-                    },
+    if (!emailInput) return; // Salir si no existe el input
+
+    const emailWrapper = emailInput.closest(".c--form-input-a"); // Contenedor del input
+    const emailFormGroup = emailInput.closest(".c--form-group-a"); // Contenedor general
+    let emailErrorSpan = emailFormGroup?.querySelector(".c--form-error-a"); // Buscar el span existente
+
+    // Crear dinámicamente el span de error si no existe
+    if (!emailErrorSpan && emailFormGroup) {
+        emailErrorSpan = document.createElement("span");
+        emailErrorSpan.classList.add("c--form-error-a");
+        emailErrorSpan.style.display = "none"; // Ocultarlo inicialmente
+        emailFormGroup.appendChild(emailErrorSpan); // Añadir al contenedor del formulario
+    }
+
+    emailInput.addEventListener("blur", () => {
+        const result = isEmail({
+            element: emailInput.value,
+            config: {
+                type: "corporate",
+                customMessage: {
+                    invalid: "Please enter a valid email address.",
                 },
-            });
+            },
+        });
+
+        if (result.isValid) {
+            // Si es válido, eliminar errores y limpiar el mensaje
+            emailWrapper?.classList.remove("c--form-input-a--error");
+            emailWrapper?.classList.add("c--form-input-a--valid");
+            if (emailErrorSpan) {
+                emailErrorSpan.textContent = "";
+                emailErrorSpan.style.display = "none";
+            }
+        } else {
+            // Si no es válido, mostrar el error
+            emailWrapper?.classList.add("c--form-input-a--error");
+            emailWrapper?.classList.remove("c--form-input-a--valid");
             if (emailErrorSpan) {
                 emailErrorSpan.textContent = result.errorMessage;
                 emailErrorSpan.style.display = "block";
             }
-        });
-    }
-
+        }
+    });
 });
 
 
@@ -58,10 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 const result = isEmail({
                     element: emailInput.value,
                     config: {
-                        type: "corporate",
                         customMessage: {
-                            corporate: "This email must belong to your company domain.",
-                            invalid: "Please enter a valid email address.",
+                       
+                            invalid: "Please enter a valid email address!!",
                         },
                     },
                 });

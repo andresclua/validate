@@ -156,29 +156,38 @@ select:-webkit-autofill:focus {
     background:transparent;
   }
 }
-.c--select-a {
+
+
+.c--form-select-a {
   position:relative;
   display: flex;
     flex-wrap: nowrap;
     column-gap:20px;
     row-gap:20px;
     justify-content: center;
-    background:red;
+    background:gainsboro;
+    &--error{
+      border-color: red;
+      background-color: #ec8f8f;
+    }
+    &--valid{
+      border-color: green;
+      background-color: #e6ffe6;
+    }
     &__item {
         background: transparent;
         -webkit-appearance: none;
         appearance: none;
-        color: magenta;
+        color: black;
         width: 100%;
         font-weight: 400;
         padding: 10px;
-        border: 1px solid red;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
   
-      }    
-    }
+    }    
+}
 
 
 .c--form-error-a {

@@ -21,7 +21,7 @@
                 <div class="f--col-12">
                     <h1 class="f--mb-3 f--mt-3">Select / Dropdown</h1>
      
-                    <h3 class="f--mb-3 f--mt-3">Select Blur Example</h3>
+                    <h3 class="f--mb-3 f--mt-3">Select On Change Example</h3>
 
                     <div class="c--form-group-a">
                         <label class="c--label-a" for="country">Country</label>
@@ -40,12 +40,18 @@
 
                     <h3 class="f--mb-3 f--mt-3">Number Click Example</h3>
                     <div class="c--form-group-a">
-                        <label class="c--label-a" for="number">even Number from 1000 to 9999</label>
-                        <div class="c--form-input-a">
-                            <input class="c--form-input-a__item" type="number" id="number2">
+                        <label class="c--label-a" for="Skills">Skills</label>
+                        <div class="c--form-select-a">
+                            <select id="skills" class="c--form-select-a__item">
+                                <option value="">Select a skill</option>
+                                <option value="frontend">Frontend</option>
+                                <option value="backend">Backend</option>
+                                <option value="marketing">Marketing</option>
+                            </select>
                         </div>
+                        <span class="c--form-error-a" style="display: none;"></span>
                     </div>
-                    <button id="submitNumber">Submit</button>
+                    <button id="validateSkills">Submit</button>
 
                     <hr>
 
@@ -58,6 +64,6 @@
 
 
 
-        <script type="module" src="./js/number.js"></script>
+        <script type="module" src="./js/select.js"></script>
     </body>
 </html>

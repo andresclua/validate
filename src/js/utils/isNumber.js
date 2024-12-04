@@ -1,5 +1,73 @@
 import { handleDebug, handleValidationResult } from "@js/utils/helper.js";
-
+/**
+ * Validates if a value meets specific numerical validation rules.
+ *
+ * @param {Object} options - Configuration parameters for the validation.
+ * @param {string|number} options.element - The value to validate.
+ * @param {Object} [options.config={}] - Configuration object for custom validation.
+ * @param {boolean} [options.config.required=false] - Whether the value is required.
+ * @param {boolean} [options.config.positive=false] - Ensures the value is positive.
+ * @param {boolean} [options.config.negative=false] - Ensures the value is negative.
+ * @param {boolean} [options.config.integer=false] - Ensures the value is an integer.
+ * @param {number} [options.config.min] - Minimum value allowed.
+ * @param {number} [options.config.max] - Maximum value allowed.
+ * @param {number} [options.config.length] - Exact number of digits the value must have.
+ * @param {Object} [options.config.customMessage] - Custom error messages for validation:
+ *   - `required`: Custom message for when the value is required.
+ *   - `invalid`: Custom message for invalid number format.
+ *   - `positive`: Custom message for positive number validation failure.
+ *   - `negative`: Custom message for negative number validation failure.
+ *   - `integer`: Custom message for integer validation failure.
+ *   - `min`: Custom message for minimum value validation failure.
+ *   - `max`: Custom message for maximum value validation failure.
+ *   - `length`: Custom message for exact length validation failure.
+ * @param {Function} [options.config.customValidation] - Custom validation function that receives the number as an argument.
+ *   - Should return an object: `{ isValid: boolean, errorMessage: string }`.
+ * @param {Function|null} [options.callback=null] - Callback function to handle the validation result.
+ * @param {boolean} [options.debug=false] - If true, enables debug mode to log additional information.
+ *
+ * @returns {Object} - Validation result object:
+ *   - `isValid`: `true` if the value passes validation, otherwise `false`.
+ *   - `errorMessage`: Error message if validation fails, otherwise `null`.
+ *
+ * @example
+ * // Simple validation with default messages
+ * isNumber({ element: "42" });
+ *
+ * @example
+ * // Validate a positive integer
+ * isNumber({
+ *   element: "-5",
+ *   config: { positive: true, integer: true },
+ * });
+ *
+ * @example
+ * // Validate a required value within a range
+ * isNumber({
+ *   element: "10",
+ *   config: { required: true, min: 5, max: 15 },
+ * });
+ *
+ * @example
+ * // Custom validation and messages
+ * isNumber({
+ *   element: "100",
+ *   config: {
+ *     min: 50,
+ *     max: 200,
+ *     customMessage: {
+ *       min: "The value is too small.",
+ *       max: "The value is too large.",
+ *     },
+ *     customValidation: (num) => ({
+ *       isValid: num % 2 === 0,
+ *       errorMessage: "The value must be even.",
+ *     }),
+ *   },
+ *   callback: (result) => console.log(result),
+ *   debug: true,
+ * });
+ */
 export function isNumber({ element, config = {}, callback = null, debug = false }) {
     const defaultMessages = {
         required: "The value is required.",
