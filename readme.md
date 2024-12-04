@@ -20,8 +20,8 @@ Each validation function is a self-contained module, allowing you to:
 - Scale effortlessly by adding new validators.
 
 ```js
-import { isEmail } from "./utils/isEmail";
-import { isString } from "./utils/isString";
+import { isEmail } from "@andresclua/validate";
+import { isString } from "@andresclua/validate";
 ```
 
 ### Customizable
@@ -58,94 +58,9 @@ document.querySelector("#email").addEventListener("blur", () => {
 });
 ```
 
-### VUE
-```javascript
-<template>
-  <div class="c--form-group-a">
-    <label class="c--label-a" for="email">Email</label>
-    <div
-      :class="[
-        'c--form-input-a',
-        { 'c--form-input-a--error': emailError.value, 'c--form-input-a--valid': emailValid.value }
-      ]"
-    >
-      <input
-        class="c--form-input-a__item"
-        type="email"
-        id="email"
-        v-model="email"
-        @blur="validateEmail"
-        placeholder="Enter your email"
-      />
-    </div>
-    <span
-      class="c--form-error-a"
-      v-show="emailError.value"
-    >
-      {{ emailErrorMessage.value }}
-    </span>
-  </div>
-</template>
+## Examples
 
-<script>
-import { ref } from "vue";
-import { isEmail } from "@/utils/isEmail"; // Asegúrate de importar la función
-
-export default {
-  setup() {
-    // Estado Reactivo
-    const email = ref(""); // Valor del input
-    const emailValid = ref(false); // Estado de validación
-    const emailError = ref(false); // Indica si hay un error
-    const emailErrorMessage = ref(""); // Mensaje de error
-
-    // Método de Validación
-    const validateEmail = () => {
-      const result = isEmail({
-        element: email.value,
-        config: { type: "corporate" },
-      });
-
-      if (result.isValid) {
-        emailValid.value = true;
-        emailError.value = false;
-        emailErrorMessage.value = "";
-      } else {
-        emailValid.value = false;
-        emailError.value = true;
-        emailErrorMessage.value = result.errorMessage;
-      }
-    };
-
-    // Retornamos las propiedades reactivas y el método
-    return {
-      email,
-      emailValid,
-      emailError,
-      emailErrorMessage,
-      validateEmail,
-    };
-  },
-};
-</script>
-
-<style>
-/* Agrega estilos como los que usaste antes */
-.c--form-input-a--error {
-  border-color: red;
-  background-color: #ffe6e6;
-}
-
-.c--form-input-a--valid {
-  border-color: green;
-  background-color: #e6ffe6;
-}
-
-.c--form-error-a {
-  color: red;
-  font-size: 0.875em;
-}
-</style>
-```
-
+- Validate Email
+- Validate Strings
+- Validate 
 
