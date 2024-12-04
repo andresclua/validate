@@ -1,14 +1,14 @@
 {
-    "name": "@terrahq/modal",
+    "name": "@andresclua/validate",
     "private": false,
-    "version": "0.0.03",
+    "version": "0.0.01",
     "type": "module",
-    "main": "./dist/Modal.umd.js",
-    "module": "./dist/Modal.es.js",
+    "main": "./dist/Validate.umd.js",
+    "module": "./dist/Validate.es.js",
     "exports": {
         ".": {
-            "import": "./dist/Modal.es.js",
-            "require": "./dist/Modal.umd.cjs"
+            "import": "./dist/Validate.es.js",
+            "require": "./dist/Validate.umd.cjs"
         }
     },
     "scripts": {

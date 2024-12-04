@@ -3,7 +3,7 @@ import { resolve } from 'path';
 
 const root = resolve(__dirname, 'src');
 const outDir = resolve(__dirname, 'dist');
-const entryPath = resolve(__dirname, 'src/js/Validate.js');
+const entryPath = resolve(__dirname, 'src/js/index.js');
 
 export default defineConfig({
     root,
@@ -14,16 +14,16 @@ export default defineConfig({
         entry: entryPath,
         name: 'Validate', // Library name as : Counter | etc
         formats: ['es', 'umd'], // Output formats as : es | umd, es is for modern browsers, umd is for older browsers
-        fileName: (format,name) => `${name}.${format}.js`, // File naming as : reveal-it | collapsify | etc
+        fileName: (format,name) => `validate.${format}.js`, // File naming as : reveal-it | collapsify | etc
       },
       outDir, 
       emptyOutDir: true, 
-      rollupOptions: {
+      // rollupOptions: {
       
-        output: {
-          name: 'Validate',
-        },
-      },
+      //   output: {
+      //     name: 'Validate',
+      //   },
+      // },
     },
     resolve: {
       alias: {
