@@ -10,6 +10,12 @@ This library is framework-agnostic, meaning it works seamlessly with any JavaScr
 - Use it in plain JavaScript for lightweight projects.
 - Integrate it into frameworks like React, Vue, Svelte, or Angular.
 - Ideal for modern frontends or traditional setups.
+- Focused purely on validation; DOM manipulation or custom message handling is left to developers.
+- Includes built-in debugging tools to log detailed validation steps for easier troubleshooting.
+- Supports real-time validation (e.g., on blur, input, or change events).
+- Written in pure JavaScript with no dependencies, ensuring fast performance.
+- Ready for use in ES Modules, CommonJS, or browser environments.
+
 <br><br>
 
 ### Modular Design
