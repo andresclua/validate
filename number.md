@@ -18,13 +18,13 @@ The isNumber function validates numerical input based on various configurable ru
 |-------------------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `element`              | `string | number`       | The value to validate.                                                                                                                                          |
 | `config`               | `object` (optional)     | An optional object to customize validation behavior.                                                                                                           |
-| **`required`**         | `boolean` (optional)    | Ensures the value is provided. Default: `false`.                                                                                                               |
-| **`positive`**         | `boolean` (optional)    | Ensures the value is positive. Default: `false`.                                                                                                               |
-| **`negative`**         | `boolean` (optional)    | Ensures the value is negative. Default: `false`.                                                                                                               |
-| **`integer`**          | `boolean` (optional)    | Ensures the value is an integer. Default: `false`.                                                                                                             |
-| **`min`**              | `number` (optional)     | Specifies the minimum value allowed.                                                                                                                           |
-| **`max`**              | `number` (optional)     | Specifies the maximum value allowed.                                                                                                                           |
-| **`length`**           | `number` (optional)     | Ensures the value has exactly the specified                                                                                 |
+| `required`        | `boolean` (optional)    | Ensures the value is provided. Default: `false`.                                                                                                               |
+| `positive`         | `boolean` (optional)    | Ensures the value is positive. Default: `false`.                                                                                                               |
+| `negative`         | `boolean` (optional)    | Ensures the value is negative. Default: `false`.                                                                                                               |
+| `integer`         | `boolean` (optional)    | Ensures the value is an integer. Default: `false`.                                                                                                             |
+| `min`              | `number` (optional)     | Specifies the minimum value allowed.                                                                                                                           |
+| `max`              | `number` (optional)     | Specifies the maximum value allowed.                                                                                                                           |
+| `length`           | `number` (optional)     | Ensures the value has exactly the specified                                                                                 |
 
 # Return Value
 
