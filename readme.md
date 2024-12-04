@@ -66,10 +66,10 @@ document.querySelector("#email").addEventListener("blur", () => {
 
 ## Examples
 
-- [Validate Email](./docs/email.md) Learn how to validate email addresses with various rules and customizations.
+- [Validate Email](https://github.com/andresclua/validate/blob/main/docs/email.md) Learn how to validate email addresses with various rules and customizations.
 
-- [Validate Number](./docs/number.md) Explore number validation, including range, positivity, and custom rules.
+- [Validate Number](https://github.com/andresclua/validate/blob/main/docs/number.md) Explore number validation, including range, positivity, and custom rules.
 
-- [Validate String](./docs/string.md) Explore String Validation, with configurable rules such as length, pattern matching.
+- [Validate String](https://github.com/andresclua/validate/blob/main/docs/string.md) Explore String Validation, with configurable rules such as length, pattern matching.
 
 - Select, Checkbox and Radio comming soon
