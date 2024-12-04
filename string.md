@@ -15,16 +15,17 @@ The isString function validates string input based on several configurable rules
 
 # Parameters
 
-| **Parameter**       | **Type**            | **Description**                                                                                                                                              |
-|----------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `element`            | `string`           | The email address to validate.                                                                                                                              |
-| `config`             | `object` (optional)| An optional object to customize validation behavior.                                                                                                        |
-| `type`           | `string` (optional)| Specifies the type of validation: <br> - `"corporate"`: Ensures the email is not from generic domains like Gmail, Yahoo, or Outlook.                        |
-| `customMessage`  | `object` (optional)| Custom error messages for validation failures: <br> - `corporate`: Message for corporate email validation failure. <br> - **`invalid`**: Message for invalid email format. |
-| `customValidation` | `function` (optional)| A user-defined function for additional validation. <br> Input: The email address. <br> **Output**: An object with: <br> - `isValid` (`boolean`): Whether the custom validation passed. <br> - `errorMessage` (`string`): Error message for failed validation. |
-| `callback`           | `function` (optional)| A function that receives the validation result as an argument.                                                                                              |
-| `debug`              | `boolean` (optional)| If `true`, logs validation details to the console for debugging purposes.                                                                                   |
-
+| Parameter         | Type                 | Description                                                                                                                                                 |
+|-------------------|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| element           | string               | The string to validate.                                                                                                                                    |
+| config            | object (optional)    | An optional object to customize validation behavior.                                                                                                       |
+| required          | boolean (optional)   | Ensures the string is provided and not empty. Default: false.                                                                                              |
+| minLength         | number (optional)    | Specifies the minimum length of the string.                                                                                                               |
+| maxLength         | number (optional)    | Specifies the maximum length of the string.                                                                                                               |
+| pattern           | RegExp (optional)    | Ensures the string matches the specified regular expression.                                                                                               |
+| customMessage     | object (optional)    | Custom error messages for validation failures: <br> - required: Message for required validation failure. <br> - minLength: Message for minimum length validation failure. <br> - maxLength: Message for maximum length validation failure. <br> - pattern: Message for pattern validation failure. |
+| callback          | function (optional)  | A function that receives the validation result as an argument.                                                                                            |
+| debug             | boolean (optional)   | If true, logs validation details to the console for debugging purposes.                                                                                    |
 # Return Value
 
 The function returns an object with the following properties:
