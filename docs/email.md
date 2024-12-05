@@ -112,6 +112,70 @@ isString({
 // Result: { isValid: false, errorMessage: "The string must be at least 5 characters long." }
 ```
 
+### Vue Example
+
+```vue
+<template>
+  <div class="c--form-group-a">
+    <label class="c--label-a" for="email">Email</label>
+    <div class="c--form-input-a" :class="{ 'c--form-input-a--error': hasError, 'c--form-input-a--valid': isValid }">
+      <input
+        class="c--form-input-a__item"
+        type="email"
+        id="email"
+        v-model="email"
+        @blur="validateEmail"
+      />
+    </div>
+    <span v-if="hasError" class="c--form-error-a">{{ errorMessage }}</span>
+  </div>
+</template>
+
+<script>
+import { ref } from "vue";
+import { isEmail } from "@/utils/isEmail"; // Import your isEmail function
+
+export default {
+  name: "EmailValidation",
+  setup() {
+    const email = ref(""); // Bind the input value
+    const hasError = ref(false); // Track if there's an error
+    const isValid = ref(false); // Track if the input is valid
+    const errorMessage = ref(""); // Store the error message
+
+    const validateEmail = () => {
+      const result = isEmail({
+        element: email.value,
+        config: {
+          type: "corporate",
+          customMessage: {
+            invalid: "Please enter a valid email address.",
+          },
+        },
+      });
+
+      if (result.isValid) {
+        hasError.value = false;
+        isValid.value = true;
+        errorMessage.value = "";
+      } else {
+        hasError.value = true;
+        isValid.value = false;
+        errorMessage.value = result.errorMessage;
+      }
+    };
+
+    return {
+      email,
+      hasError,
+      isValid,
+      errorMessage,
+      validateEmail,
+    };
+  },
+};
+</script>
+```
 <br>
 <br>
 

@@ -111,6 +111,84 @@ console.log(result);
 // { isValid: true, errorMessage: null }
 ```
 
+### Vue Example
+``` vue
+<template>
+  <div class="c--form-group-a">
+    <label class="c--label-a" for="number">Even Number from 1 to 9999</label>
+    <div class="c--form-input-a" :class="{ 'c--form-input-a--error': hasError, 'c--form-input-a--valid': isValid }">
+      <input
+        id="number"
+        class="c--form-input-a__item"
+        type="number"
+        v-model="number"
+        @blur="validateNumber"
+      />
+    </div>
+    <span v-if="hasError" class="c--form-error-a">{{ errorMessage }}</span>
+  </div>
+</template>
+
+<script>
+import { ref } from "vue";
+import { isNumber } from "@/utils/isNumber"; // Import your isNumber function
+
+export default {
+  name: "NumberValidation",
+  setup() {
+    const number = ref(""); // Bind the input value
+    const hasError = ref(false); // Track if there's an error
+    const isValid = ref(false); // Track if the input is valid
+    const errorMessage = ref(""); // Store the error message
+
+    const validateNumber = () => {
+      const result = isNumber({
+        element: number.value,
+        config: {
+          required: true,
+          positive: true,
+          integer: true,
+          min: 1,
+          max: 9999,
+          customMessage: {
+            required: "This field is mandatory.",
+            positive: "The number must be positive.",
+            integer: "Please provide an integer.",
+            min: "The number must be at least 1000.",
+            max: "The number must not exceed 9999.",
+          },
+          customValidation: (value) => {
+            const isValid = value % 2 === 0; // Custom validation: even number
+            return {
+              isValid,
+              errorMessage: isValid ? null : "The number must be even.",
+            };
+          },
+        },
+      });
+
+      if (result.isValid) {
+        hasError.value = false;
+        isValid.value = true;
+        errorMessage.value = "";
+      } else {
+        hasError.value = true;
+        isValid.value = false;
+        errorMessage.value = result.errorMessage;
+      }
+    };
+
+    return {
+      number,
+      hasError,
+      isValid,
+      errorMessage,
+      validateNumber,
+    };
+  },
+};
+</script>
+```
 <br>
 <br>
 
