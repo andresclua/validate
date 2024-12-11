@@ -28,20 +28,18 @@ The isEmail function provides flexible and customizable email validation capabil
 The function returns an object with the following properties:
 
 - **`isValid`** (`boolean`):  
-  Indicates whether the string passed all validations. Returns `true` if valid, otherwise `false`.
-
+  Indicates whether the value passed all validations. Returns `true` if valid, otherwise `false`.
 
 - **`errorMessage`** (`string | null`):  
-  Contains the error message if validation failed. Returns `null` if the string is valid.
+  Contains the error message if validation failed. Returns `null` if the value is valid.
 
 # Examples
 
 
-### Basic String Validation
+### Basic Email Validation
 ```js
-const result = isString({
-  element: "Hello",
-  config: { required: true },
+const result = isEmail({
+  element: "test@example.com",
 });
 
 console.log(result);
@@ -49,176 +47,105 @@ console.log(result);
 // { isValid: true, errorMessage: null }
 ```
 
-### Minimum and Maximum Length Validation
+### Corporate Email Validation
 ```js
-const result = isString({
-  element: "Hi",
-  config: { minLength: 3, maxLength: 10 },
+const result = isEmail({
+  element: "user@gmail.com",
+  config: { type: "corporate" },
 });
 
 console.log(result);
 // Output:
-// { isValid: false, errorMessage: "The string must be at least 3 characters long." }
+// { isValid: false, errorMessage: "The email must be associated with your company domain. Personal email providers such as Gmail, Yahoo, or Outlook are not permitted." }
 ```
 
-### Pattern Matching
+### Custom Validation and Messages
 
 ```js
-const result = isString({
-  element: "abc123",
-  config: { pattern: /^[a-z]+$/, customMessage: { pattern: "Only lowercase letters are allowed." } },
-});
-
-console.log(result);
-// Output:
-// { isValid: false, errorMessage: "Only lowercase letters are allowed." }
-```
-
-### Custom Error Messages
-```js
-const result = isString({
-  element: "",
+const result = isEmail({
+  element: "test@mycompany.org",
   config: {
-    required: true,
-    minLength: 5,
+    type: "corporate",
     customMessage: {
-      required: "You must provide a string.",
-      minLength: "The string is too short.",
+      corporate: "Only company emails are allowed.",
     },
+    customValidation: (email) => ({
+      isValid: email.endsWith(".org"),
+      errorMessage: "Email must end with '.org'.",
+    }),
   },
 });
 
 console.log(result);
 // Output:
-// { isValid: false, errorMessage: "You must provide a string." }
+// { isValid: true, errorMessage: null }
 ```
 
-### Debugging and Callback Usage
+### Debug Mode
 ```js
-isString({
-  element: "Test",
-  config: { required: true, minLength: 5 },
+isEmail({
+  element: "invalid-email",
   debug: true,
+});
+// Console Output:
+// Validating email: invalid-email
+// Result: { isValid: false, errorMessage: "Please enter a valid email address." }
+```
+
+### Using a Callback
+```js
+isEmail({
+  element: "test@example.com",
   callback: (result) => {
     if (result.isValid) {
-      console.log("Validation passed!");
+      console.log("Email is valid!");
     } else {
       console.error("Validation failed:", result.errorMessage);
     }
   },
 });
-// Console Output:
-// Validating string: Test
-// Result: { isValid: false, errorMessage: "The string must be at least 5 characters long." }
 ```
 
-### Vue Example
-
-```vue
-<template>
-  <div class="c--form-group-a">
-    <label class="c--label-a" for="email">Email</label>
-    <div class="c--form-input-a" :class="{ 'c--form-input-a--error': hasError, 'c--form-input-a--valid': isValid }">
-      <input
-        class="c--form-input-a__item"
-        type="email"
-        id="email"
-        v-model="email"
-        @blur="validateEmail"
-      />
-    </div>
-    <span v-if="hasError" class="c--form-error-a">{{ errorMessage }}</span>
-  </div>
-</template>
-
-<script>
-import { ref } from "vue";
-import { isEmail } from "@/utils/isEmail"; // Import your isEmail function
-
-export default {
-  name: "EmailValidation",
-  setup() {
-    const email = ref(""); // Bind the input value
-    const hasError = ref(false); // Track if there's an error
-    const isValid = ref(false); // Track if the input is valid
-    const errorMessage = ref(""); // Store the error message
-
-    const validateEmail = () => {
-      const result = isEmail({
-        element: email.value,
-        config: {
-          type: "corporate",
-          customMessage: {
-            invalid: "Please enter a valid email address.",
-          },
-        },
-      });
-
-      if (result.isValid) {
-        hasError.value = false;
-        isValid.value = true;
-        errorMessage.value = "";
-      } else {
-        hasError.value = true;
-        isValid.value = false;
-        errorMessage.value = result.errorMessage;
-      }
-    };
-
-    return {
-      email,
-      hasError,
-      isValid,
-      errorMessage,
-      validateEmail,
-    };
-  },
-};
-</script>
-```
 <br>
 <br>
 
 
 ## Validation Flow
 
-#### Required Check:
+#### Email Format:
 
-- Ensures the string is provided and not empty if required is true.
+- Validates the email against a standard format using a regular expression.
+- If invalid, returns "Please enter a valid email address.".
 
-#### Length Validation:
+#### Corporate Email Check (if configured):
 
-- Validates the string against minLength and maxLength if specified.
+- Ensures the email domain is not generic (e.g., Gmail, Yahoo, Outlook).
+- If invalid, returns "The email must be associated with your company domain.".
 
+#### Custom Validation (if configured):
 
-#### Pattern Matching:
-
-- Ensures the string matches the specified regular expression (pattern) if provided.
-
-#### Custom Validation
-
-- Executes user-defined validation rules if included.
+- Executes the user-defined validation function.
+- If it fails, returns the custom error message from the function.
 
 #### Final Result:
-- Returns an object indicating whether the string is valid and any associated error message.
 
-
+- If all checks pass, isValid is true and errorMessage is null.
+- Otherwise, isValid is false and errorMessage contains the failure reason.
 <br><br>
 
 ## Common Use Cases
 
 #### Form Validation:
 
-- Validate string inputs such as names, usernames, or other text fields in forms.
+- Validate email fields in real-time on user input or before form submission.
+#### Corporate Applications:
 
-#### Pattern Matching:
-
-- Ensure the string adheres to specific formats like alphanumeric or custom patterns.
+- Ensure only company emails are accepted for registration.
 
 ### Custom Logic:
 
-- Add domain-specific validations such as excluding certain characters or enforcing stricter input rules.
+- Enforce additional rules, such as specific domain requirements or string patterns.
 
 ## Debugging Tips
-- Use debug: true to log the validation process and outputs for troubleshooting.
-- Leverage the callback parameter to execute custom actions based on validation results.
+- Enable debug: true to see detailed logs of the validation process.
+- Use the callback function to handle validation results in real-time.

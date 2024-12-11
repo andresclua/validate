@@ -35,7 +35,7 @@ import { isString } from "@andresclua/validate";
 The library allows extensive customization to suit your project requirements:
 
 - Define your own error messages with customMessage.
-- Configure validations for specific needs like corporate emails, string length, or patterns.
+- Configure validations for specific needs like corporate emails or pattern-based rules.
 
 ```js
 isEmail({
