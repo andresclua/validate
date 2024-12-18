@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     new Form({
         element: formElement,
-        submitButtonSelector: ".submit", // Selector del botón
+        submitButtonSelector: ".submit1", // Selector del botón
         fields: [
             {
                 element: document.querySelector("#job_title"),

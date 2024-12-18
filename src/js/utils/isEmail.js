@@ -21,11 +21,11 @@ import { handleDebug, handleValidationResult } from "@js/utils/helper.js";
  *   - `errorMessage`: Error message if validation fails, otherwise `null`.
  *
  * @example
- * // Simple validation with default messages
+ * Simple validation with default messages
  * isEmail({ element: "test@example.com" });
  *
  * @example
- * // Corporate email validation
+ * Corporate email validation
  * isEmail({ element: "user@company.com", config: { type: "corporate" } });
  *
  * @example

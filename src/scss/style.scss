@@ -189,6 +189,79 @@ select:-webkit-autofill:focus {
     }    
 }
 
+.c--form-checkbox-a{
+  position: relative;
+  &__item{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    padding: 0;
+    &:checked + .c--form-checkbox-a__title::before {
+      background:red;
+    }
+  }
+  &__title{
+    position: relative;
+    display: block;
+    padding-left: 20px;
+    cursor: pointer;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        border: 1px solid #ccc;
+    }
+
+    
+  }
+}
+
+
+.c--radio-checkbox-a{
+  position: relative;
+  &__item{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    padding: 0;
+    &:checked + .c--form-checkbox-a__title::before {
+      background:red;
+    }
+  }
+  &__title{
+    position: relative;
+    display: block;
+    padding-left: 20px;
+    cursor: pointer;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        border: 1px solid #ccc;
+    }
+
+    
+  }
+}
+
 
 .c--form-error-a {
   color: red;
