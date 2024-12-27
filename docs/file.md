@@ -48,3 +48,108 @@ console.log(result);
 // Output:
 // { isValid: true, errorMessage: null }
 ```
+
+### File Type Validation
+
+```js
+const fileInput = document.querySelector('#file-input');
+
+const result = isFile({
+  element: fileInput.files[0],
+  config: {
+    allowedTypes: ["image/jpeg", "image/png"],
+    customMessage: {
+      type: "Only JPEG and PNG files are allowed.",
+    },
+  },
+});
+
+console.log(result);
+// Output:
+// { isValid: false, errorMessage: "Only JPEG and PNG files are allowed." }
+```
+
+### File Size Validation
+```js
+const fileInput = document.querySelector('#file-input');
+
+const result = isFile({
+  element: fileInput.files[0],
+  config: {
+    maxSize: 1048576, // 1MB
+    customMessage: {
+      size: "The file size must not exceed 1MB.",
+    },
+  },
+});
+
+console.log(result);
+// Output:
+// { isValid: false, errorMessage: "The file size must not exceed 1MB." }
+```
+
+### Debug Mode
+
+```js
+const fileInput = document.querySelector('#file-input');
+
+isFile({
+  element: fileInput.files[0],
+  config: {
+    allowedTypes: ["image/jpeg", "image/png"],
+    maxSize: 1048576,
+  },
+  debug: true,
+});
+// Console Output:
+// Validating file: [file object]
+// Result: { isValid: false, errorMessage: "The file size must not exceed 1MB." }
+```
+
+### Using Callback
+
+```js
+const fileInput = document.querySelector('#file-input');
+
+isFile({
+  element: fileInput.files[0],
+  callback: (result) => {
+    if (result.isValid) {
+      console.log("File is valid!");
+    } else {
+      console.error("Validation failed:", result.errorMessage);
+    }
+  },
+});
+```
+
+## Validation Flow
+
+#### Required Validation:
+
+- Ensures a file is selected.
+- If no file is selected, returns the error message "Please select a file.".
+
+#### File Type Validation:
+
+- Ensures the file type matches one of the allowed types.
+- If the file type is not allowed, returns the error message: "Only JPG, PNG, or PDF files are allowed."
+
+#### File Size Validation:
+- Ensures the file size does not exceed the specified maxSize in bytes.
+- If the file exceeds the size limit, returns the error message: "The file size must not exceed 1MB."
+
+
+#### Final Result:
+- If all checks pass, isValid is true and errorMessage is null.
+- Otherwise, isValid is false and errorMessage contains the failure reason.
+
+
+
+<br><br>
+
+## Common Use Cases
+
+#### File Upload Validation:
+- Validate radio button groups in real-time on user input or before form submission.
+
