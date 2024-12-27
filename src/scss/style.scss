@@ -226,7 +226,7 @@ select:-webkit-autofill:focus {
 }
 
 
-.c--radio-checkbox-a{
+.c--form-radio-a{
   position: relative;
   &__item{
     position: absolute;
@@ -238,7 +238,7 @@ select:-webkit-autofill:focus {
     height: 100%;
     z-index: 0;
     padding: 0;
-    &:checked + .c--form-checkbox-a__title::before {
+    &:checked + .c--form-radio-a__title::before {
       background:red;
     }
   }
@@ -249,6 +249,7 @@ select:-webkit-autofill:focus {
     cursor: pointer;
       &::before {
         content: "";
+        border-radius: 50px;
         position: absolute;
         left: 0;
         top: 50%;
@@ -259,6 +260,36 @@ select:-webkit-autofill:focus {
     }
 
     
+  }
+}
+
+.c--form-file-a{
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  column-gap: 20px;
+  row-gap: 20px;
+  justify-content: center;
+  background: gainsboro;
+  &--error{
+    border-color: red;
+    background-color: #ec8f8f;
+  }
+  &--valid{
+    border-color: green;
+    background-color: #e6ffe6;
+  }
+  &__item {
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    color: black;
+    width: 100%;
+    font-weight: 400;
+    padding: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

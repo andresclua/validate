@@ -72,6 +72,8 @@ document.querySelector("#email").addEventListener("blur", () => {
 
 - [Validate String](https://github.com/andresclua/validate/blob/main/docs/string.md) Explore String Validation, with configurable rules such as length, pattern matching.
 
+- [Validate Select](https://github.com/andresclua/validate/blob/main/docs/Select.md) Explore select Validation, with configurable rules such as required, pattern matching,etc.
+
 - [Validate Checkbox](https://github.com/andresclua/validate/blob/main/docs/checkbox.md) Explore checkbox Validation, with configurable rules such as required, pattern matching,etc.
 
 

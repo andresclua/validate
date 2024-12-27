@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Validation - by Andres Clua</title>
+
+        <link rel="stylesheet" href="https://unpkg.com/@terrahq/design-system@latest/dist/style.css" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="f--container">
+            <div class="f--row">
+                <div class="f--col-12">
+                    <h1 class="f--mb-3 f--mt-3">Radio Button Validation</h1>
+
+                    <h3 class="f--mb-3 f--mt-3">Select One Option - Change Example</h3>
+                    <div class="c--form-group-a" id="radioForm">
+                        <div class="c--form-radio-a">
+                            <input type="radio" id="option-1" name="choice" class="c--form-radio-a__item">
+                            <label class="c--form-radio-a__title" for="option-1">Frontend</label>
+                        </div>
+                        <div class="c--form-radio-a">
+                            <input type="radio" id="option-2" name="choice" class="c--form-radio-a__item">
+                            <label class="c--form-radio-a__title" for="option-2">Backend</label>
+                        </div>
+                        <div class="c--form-radio-a">
+                            <input type="radio" id="option-3" name="choice" class="c--form-radio-a__item">
+                            <label class="c--form-radio-a__title" for="option-3">PM</label>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h3 class="f--mb-3 f--mt-3">Validation on Submit</h3>
+                    <div class="c--form-group-a" id="submitRadioForm">
+                        <div class="c--form-radio-a">
+                            <input type="radio" id="option-4" name="flavor" class="c--form-radio-a__item">
+                            <label class="c--form-radio-a__title" for="option-4">Coffee</label>
+                        </div>
+                        <div class="c--form-radio-a">
+                            <input type="radio" id="option-5" name="flavor" class="c--form-radio-a__item">
+                            <label class="c--form-radio-a__title" for="option-5">Tea</label>
+                        </div>
+                        <div class="c--form-radio-a">
+                            <input type="radio" id="option-6" name="flavor" class="c--form-radio-a__item">
+                            <label class="c--form-radio-a__title" for="option-6">Chocolate</label>
+                        </div>
+                    </div>
+
+                    <button id="radioSubmit">Submit</button>
+
+                    <hr>
+                    <a href="/index.html">Back to examples</a>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="./js/radio.js"></script>
+    </body>
+</html>

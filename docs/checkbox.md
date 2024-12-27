@@ -6,8 +6,6 @@ The isNumber function validates numerical input based on various configurable ru
 # Features
 - **Minimum Required Check**:  Ensures that at least a specified number of checkboxes are checked.
 - **Custom Error Messages**: Allows for custom messages based on validation results.
-- **Debug Mode**: Provides detailed debugging information when enabled..
-- **Callback Support**: Executes a callback function with the validation results, allowing for custom handling.
 - **Custom Validation**: Allows user-defined validation rules for advanced scenarios.
 - **Debug Mode**: Logs validation details for easier debugging.
 - **Callback Support**: Provides a way to handle validation results programmatically.
