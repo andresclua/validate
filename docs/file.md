@@ -151,5 +151,10 @@ isFile({
 ## Common Use Cases
 
 #### File Upload Validation:
-- Validate radio button groups in real-time on user input or before form submission.
+- Validate file inputs in forms to ensure that the file is of the correct type and does not exceed the size limit.
+
+### Custom Logic:
+
+- Enforce additional rules such as requiring only specific file types or enforcing size limits.
+
 
