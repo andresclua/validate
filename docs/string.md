@@ -7,8 +7,9 @@ The `isString` function validates string input based on several configurable rul
 - **Length Validation**: Validates if the string meets minimum and/or maximum length requirements.
 - **Pattern Matching**: Ensures the string matches a specific regular expression.
 - **Custom Error Messages**: Allows developers to specify tailored error messages for specific validation failures.
-- **Debug Mode**: Logs validation details for easier debugging.
 - **Callback Support**: Provides a way to handle validation results programmatically.
+- **Debug Mode**: Logs validation details for easier debugging.
+
 
 ## Parameters
 
@@ -19,9 +20,9 @@ The `isString` function validates string input based on several configurable rul
 | required          | boolean (optional)   | Ensures the string is provided and not empty. Default: false.                                                                                              |
 | minLength         | number (optional)    | Specifies the minimum length of the string.                                                                                                               |
 | maxLength         | number (optional)    | Specifies the maximum length of the string.                                                                                                               |
+| callback          | function (optional)  | A function that receives the validation result as an argument.      
 | pattern           | RegExp (optional)    | Ensures the string matches the specified regular expression.                                                                                               |
-| customMessage     | object (optional)    | Custom error messages for validation failures: <br> - required: Message for required validation failure. <br> - minLength: Message for minimum length validation failure. <br> - maxLength: Message for maximum length validation failure. <br> - pattern: Message for pattern validation failure. |
-| callback          | function (optional)  | A function that receives the validation result as an argument.                                                                                            |
+| customMessage     | object (optional)    | Custom error messages for validation failures: <br> - required: Message for required validation failure. <br> - minLength: Message for minimum length validation failure. <br> - maxLength: Message for maximum length validation failure. <br> - pattern: Message for pattern validation failure. |                                                                                      |
 | debug             | boolean (optional)   | If true, logs validation details to the console for debugging purposes.                                                                                    |
 
 ## Return Value
