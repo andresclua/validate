@@ -192,9 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // Email Validation
-const usernmaeInappropriateWords = [
-    // Profanity and vulgar language
-    "fuck", "shit"]
+
 document.addEventListener("DOMContentLoaded", () => {
     const firstNameInput = document.querySelector("#username");
 
@@ -213,25 +211,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // string bad words
     firstNameInput.addEventListener("blur", () => {
+        // Captura el valor actual del input
+        const inputText = firstNameInput.value;
+
         // Uso de la validación con la función personalizada
-const result = isString({
-    element: "This is a test with caca",
-    config: {
-        customValidation: (element) => {
-            const forbiddenWords = ['fuck', 'caca'];
-            const regex = new RegExp(`\\b(${forbiddenWords.join('|')})\\b`, 'i'); // Verifica las palabras completas sin importar mayúsculas/minúsculas
-            if (regex.test(element)) {
-                return {
-                    isValid: false,
-                    errorMessage: "The string contains prohibited words.",
-                };
-            }
-            return { isValid: true, errorMessage: null };
-        },
-    },
-    callback: (result) => console.log(result),
-    debug: true,
-});
+        const result = isString({
+            element: inputText, // Usamos el valor del input
+            config: {
+                customValidation: (element) => {
+                 
+        
+                    // Ajustamos la expresión regular para asegurarnos de que solo las palabras exactas se detecten
+                    const regex = new RegExp(`\\b(${forbiddenWords.join('|')})\\b`, 'i'); // \b asegura que se detecten solo palabras completas
+        
+                    // Si el input contiene cualquiera de las palabras prohibidas, la validación falla
+                    if (regex.test(element)) {
+                        return {
+                            isValid: false,
+                            errorMessage: "The string contains prohibited words.",
+                        };
+                    }
+        
+                    // Si no contiene palabras prohibidas, la validación es exitosa
+                    return { isValid: true, errorMessage: null };
+                },
+            },
+            callback: (result) => console.log(result), // Muestra el resultado
+            debug: true,
+        });
 
         if (result.isValid) {
             // Si la validación pasa

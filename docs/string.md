@@ -114,6 +114,34 @@ isString({
 // Result: { isValid: false, errorMessage: "The string must be at least 5 characters long." }
 ```
 
+### Debugging and Callback with Regex
+```js
+ isString({
+    element: inputText, // Usamos el valor del input
+    config: {
+        customValidation: (element) => {
+            const forbiddenWords = ['wolf', 'monster']; // forbidden
+
+            // Regex
+            const regex = new RegExp(`\\b(${forbiddenWords.join('|')})\\b`, 'i'); // \b make sure 
+
+            // Si el input contiene cualquiera de las palabras prohibidas, la validación falla
+            if (regex.test(element)) {
+                return {
+                    isValid: false,
+                    errorMessage: "The string contains prohibited words.",
+                };
+            }
+
+            // Si no contiene palabras prohibidas, la validación es exitosa
+            return { isValid: true, errorMessage: null };
+        },
+    },
+    callback: (result) => console.log(result), // Muestra el resultado
+    debug: true,
+});
+```
+
 ### Vue Example
 ```js
 <template>

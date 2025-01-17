@@ -14,7 +14,6 @@ import { handleDebug, handleValidationResult } from "@js/utils/helper.js";
  *   - `required`: Custom message for when the string is empty.
  *   - `minLength`: Custom message for when the string is too short.
  *   - `maxLength`: Custom message for when the string is too long.
- *   - `pattern`: Custom message for when the string does not match the pattern.
  * @param {Function|null} [options.callback=null] - Callback function to handle the validation result.
  * @param {boolean} [options.debug=false] - If true, enables debug mode to log additional information.
  * @param {Function|null} [options.config.customValidation=null] - Custom validation function that receives the string as an argument.
@@ -23,39 +22,7 @@ import { handleDebug, handleValidationResult } from "@js/utils/helper.js";
  * @returns {Object} - Validation result object:
  *   - `isValid`: `true` if the string passes validation, otherwise `false`.
  *   - `errorMessage`: Error message if validation fails, otherwise `null`.
- *
- * @example
- * // Simple validation with default messages
- * isString({ element: "hello" });
- *
- * @example
- * // Validate a required string with minimum and maximum length
- * isString({
- *   element: "hello",
- *   config: { required: true, minLength: 3, maxLength: 10 },
- * });
- *
- * @example
- * // Validate a string against a pattern
- * isString({
- *   element: "123-456-7890",
- *   config: { pattern: /^\d{3}-\d{3}-\d{4}$/, customMessage: { pattern: "The string must be in the format XXX-XXX-XXXX." } },
- * });
- *
- * @example
- * // Custom validation with debug enabled
- * isString({
- *   element: "TestString",
- *   config: {
- *     required: true,
- *     maxLength: 15,
- *     minLength: 5,
- *   },
- *   callback: (result) => console.log(result),
- *   debug: true,
- * });
  */
-
 export function isString({ element, config = {}, callback = null, debug = false }) {
     const defaultMessages = {
         required: "The string cannot be empty.",
