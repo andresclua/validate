@@ -1,10 +1,8 @@
 # isString
 
-The isString function validates string input based on several configurable rules such as length, pattern matching, and required checks. It is customizable, debug-friendly, and supports callbacks for handling validation results programmatically.
+The `isString` function validates string input based on several configurable rules such as length, pattern matching, and required checks. It is customizable, debug-friendly, and supports callbacks for handling validation results programmatically.
 
-
-
-# Features
+## Features
 - **Required Validation**: Ensures the string is not empty.
 - **Length Validation**: Validates if the string meets minimum and/or maximum length requirements.
 - **Pattern Matching**: Ensures the string matches a specific regular expression.
@@ -12,8 +10,7 @@ The isString function validates string input based on several configurable rules
 - **Debug Mode**: Logs validation details for easier debugging.
 - **Callback Support**: Provides a way to handle validation results programmatically.
 
-
-# Parameters
+## Parameters
 
 | Parameter         | Type                 | Description                                                                                                                                                 |
 |-------------------|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -27,19 +24,17 @@ The isString function validates string input based on several configurable rules
 | callback          | function (optional)  | A function that receives the validation result as an argument.                                                                                            |
 | debug             | boolean (optional)   | If true, logs validation details to the console for debugging purposes.                                                                                    |
 
-# Return Value
+## Return Value
 
 The function returns an object with the following properties:
 
 - **`isValid`** (`boolean`):  
   Indicates whether the string passed all validations. Returns `true` if valid, otherwise `false`.
 
-
 - **`errorMessage`** (`string | null`):  
   Contains the error message if validation failed. Returns `null` if the string is valid.
 
-# Examples
-
+## Examples
 
 ### Basic String Validation
 ```js
@@ -54,6 +49,7 @@ console.log(result);
 ```
 
 ### Minimum and Maximum Length Validation
+
 ```js
 const result = isString({
   element: "Hi",
@@ -98,6 +94,7 @@ console.log(result);
 ```
 
 ### Debugging and Callback Usage
+
 ```js
 isString({
   element: "Test",
@@ -117,8 +114,7 @@ isString({
 ```
 
 ### Vue Example
-
-```vue
+```js
 <template>
   <div class="c--form-group-a">
     <label class="c--label-a" for="email">Email</label>
@@ -180,49 +176,33 @@ export default {
 };
 </script>
 ```
-<br>
-<br>
-
 
 ## Validation Flow
-
 #### Required Check:
-
 - Ensures the string is provided and not empty if required is true.
-
-#### Length Validation:
-
+- Length Validation:
 - Validates the string against minLength and maxLength if specified.
 
-
 #### Pattern Matching:
-
 - Ensures the string matches the specified regular expression (pattern) if provided.
-
 #### Custom Validation
-
-- Executes user-defined validation rules if included.
+ - Executes user-defined validation rules if included.
 
 #### Final Result:
 - Returns an object indicating whether the string is valid and any associated error message.
-
 
 <br><br>
 
 ## Common Use Cases
 
 #### Form Validation:
-
 - Validate string inputs such as names, usernames, or other text fields in forms.
-
 #### Pattern Matching:
-
 - Ensure the string adheres to specific formats like alphanumeric or custom patterns.
 
-### Custom Logic:
-
+#### Custom Logic:
 - Add domain-specific validations such as excluding certain characters or enforcing stricter input rules.
 
-## Debugging Tips
+#### Debugging Tips
 - Use debug: true to log the validation process and outputs for troubleshooting.
 - Leverage the callback parameter to execute custom actions based on validation results.

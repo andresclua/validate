@@ -1,4 +1,5 @@
 import { handleDebug, handleValidationResult } from "@js/utils/helper.js";
+
 /**
  * Validates if a string meets specific validation rules.
  *
@@ -16,6 +17,8 @@ import { handleDebug, handleValidationResult } from "@js/utils/helper.js";
  *   - `pattern`: Custom message for when the string does not match the pattern.
  * @param {Function|null} [options.callback=null] - Callback function to handle the validation result.
  * @param {boolean} [options.debug=false] - If true, enables debug mode to log additional information.
+ * @param {Function|null} [options.config.customValidation=null] - Custom validation function that receives the string as an argument.
+ *   - Should return an object: `{ isValid: boolean, errorMessage: string }`.
  *
  * @returns {Object} - Validation result object:
  *   - `isValid`: `true` if the string passes validation, otherwise `false`.
@@ -86,6 +89,15 @@ export function isString({ element, config = {}, callback = null, debug = false 
     if (isValid && config.pattern && !config.pattern.test(element)) {
         isValid = false;
         errorMessage = (config.customMessage?.pattern) || defaultMessages.pattern;
+    }
+
+    // Validación personalizada
+    if (isValid && config.customValidation) {
+        const customResult = config.customValidation(element);
+        if (!customResult.isValid) {
+            isValid = false;
+            errorMessage = customResult.errorMessage;
+        }
     }
 
     const result = { isValid, errorMessage };

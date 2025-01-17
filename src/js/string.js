@@ -189,3 +189,66 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+
+// Email Validation
+const usernmaeInappropriateWords = [
+    // Profanity and vulgar language
+    "fuck", "shit"]
+document.addEventListener("DOMContentLoaded", () => {
+    const firstNameInput = document.querySelector("#username");
+
+    if (!firstNameInput) return; // Verificar que el elemento existe
+
+    const firstNameWrapper = firstNameInput.closest(".c--form-input-a");
+    let firstNameErrorSpan = firstNameWrapper?.querySelector(".c--form-error-a");
+
+    // Crear dinámicamente el span de error si no existe
+    if (!firstNameErrorSpan && firstNameWrapper) {
+        firstNameErrorSpan = document.createElement("span");
+        firstNameErrorSpan.classList.add("c--form-error-a");
+        firstNameErrorSpan.style.display = "none"; // Ocultar inicialmente
+        firstNameWrapper.parentNode.appendChild(firstNameErrorSpan); // Añadir al DOM
+    }
+
+    // string bad words
+    firstNameInput.addEventListener("blur", () => {
+        // Uso de la validación con la función personalizada
+const result = isString({
+    element: "This is a test with caca",
+    config: {
+        customValidation: (element) => {
+            const forbiddenWords = ['fuck', 'caca'];
+            const regex = new RegExp(`\\b(${forbiddenWords.join('|')})\\b`, 'i'); // Verifica las palabras completas sin importar mayúsculas/minúsculas
+            if (regex.test(element)) {
+                return {
+                    isValid: false,
+                    errorMessage: "The string contains prohibited words.",
+                };
+            }
+            return { isValid: true, errorMessage: null };
+        },
+    },
+    callback: (result) => console.log(result),
+    debug: true,
+});
+
+        if (result.isValid) {
+            // Si la validación pasa
+            firstNameWrapper?.classList.remove("c--form-input-a--error");
+            firstNameWrapper?.classList.add("c--form-input-a--valid");
+            if (firstNameErrorSpan) {
+                firstNameErrorSpan.textContent = "";
+                firstNameErrorSpan.style.display = "none";
+            }
+        } else {
+            // Si la validación falla
+            firstNameWrapper?.classList.add("c--form-input-a--error");
+            firstNameWrapper?.classList.remove("c--form-input-a--valid");
+            if (firstNameErrorSpan) {
+                firstNameErrorSpan.textContent = result.errorMessage;
+                firstNameErrorSpan.style.display = "block";
+            }
+        }
+    });
+});
