@@ -17,6 +17,7 @@ The isEmail function provides flexible and customizable email validation capabil
 |----------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `element`            | `string`           | The email address to validate.                                                                                                                              |
 | `config`             | `object` (optional)| An optional object to customize validation behavior.                                                                                                        |
+| `required`             | `boolean` (optional) |Indicates whether the email field is required. If true, the validation will fail if the email is empty. If false, the field is optional.                                                                                                      |
 | `type`           | `string` (optional)| Specifies the type of validation: <br> - `"corporate"`: Ensures the email is not from generic domains like Gmail, Yahoo, or Outlook.                        |
 | `customMessage`  | `object` (optional)| Custom error messages for validation failures: <br> - `corporate`: Message for corporate email validation failure. <br> - **`invalid`**: Message for invalid email format. |
 | `customValidation` | `function` (optional)| A user-defined function for additional validation. <br> Input: The email address. <br> **Output**: An object with: <br> - `isValid` (`boolean`): Whether the custom validation passed. <br> - `errorMessage` (`string`): Error message for failed validation. |
@@ -66,6 +67,7 @@ const result = isEmail({
   element: "test@mycompany.org",
   config: {
     type: "corporate",
+    required:true,
     customMessage: {
       corporate: "Only company emails are allowed.",
     },

@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = isEmail({
             element: emailInput.value,
             config: {
-                type: "corporate",
+        
+                required:false,
                 customMessage: {
                     invalid: "Please enter a valid email address.",
                 },
@@ -69,10 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 const result = isEmail({
                     element: emailInput.value,
                     config: {
-                        customMessage: {
-                       
-                            invalid: "Please enter a valid email address!!",
-                        },
+                        // type: "corporate",
+                        required: false, // Asegúrate de que el campo esté marcado como requerido
+                        // customMessage: {
+                        //     invalid: "Please enter a valid email address.",
+                        //     required: "Email is required!",
+                        // },
                     },
                 });
 

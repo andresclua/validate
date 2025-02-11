@@ -53,13 +53,20 @@ export function isEmail({ element, config = {}, callback = null, debug = false }
     const defaultMessages = {
         corporate: "The email must be associated with your company domain. Personal email providers such as Gmail, Yahoo, or Outlook are not permitted.",
         invalid: "Please enter a valid email address.",
+        required: "This field is required.",
     };
 
     let isValid = true;
     let errorMessage = null;
 
+    // Si el campo es requerido y está vacío, marcar como inválido
+    if (config.required && !element.trim()) {
+        isValid = false;
+        errorMessage = config.customMessage?.required || defaultMessages.required;
+    }
+
     // Validación: formato de email
-    if (!emailRegex.test(element)) {
+    if (isValid && element && !emailRegex.test(element)) {
         isValid = false;
         errorMessage = config.customMessage?.invalid || defaultMessages.invalid;
     }
@@ -83,4 +90,3 @@ export function isEmail({ element, config = {}, callback = null, debug = false }
     handleDebug({ element, config, result, debug });
     return handleValidationResult(result, callback);
 }
-
