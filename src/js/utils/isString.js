@@ -25,10 +25,10 @@ import { handleDebug, handleValidationResult } from "@js/utils/helper.js";
  */
 export function isString({ element, config = {}, callback = null, debug = false }) {
     const defaultMessages = {
-        required: "The string cannot be empty.",
-        minLength: `The string must be at least ${config.minLength} characters long.`,
-        maxLength: `The string cannot be longer than ${config.maxLength} characters.`,
-        pattern: "The string format is invalid.",
+        required: "The field cannot be empty.",
+        minLength: `The field must be at least ${config.minLength} characters long.`,
+        maxLength: `The field cannot be longer than ${config.maxLength} characters.`,
+        pattern: "The field format is invalid.",
     };
 
     let isValid = true;
