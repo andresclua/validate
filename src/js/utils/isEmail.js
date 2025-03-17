@@ -51,9 +51,9 @@ export function isEmail({ element, config = {}, callback = null, debug = false }
     const corporateRegex = /^[^\s@]+@(?!gmail\.com|yahoo\.com|outlook\.com)(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
 
     const defaultMessages = {
-        corporate: "The email must be associated with your company domain. Personal email providers such as Gmail, Yahoo, or Outlook are not permitted.",
-        invalid: "Please enter a valid email address.",
-        required: "This field is required.",
+        corporate: "The email must be associated with your company domain. Personal email providers such as Gmail, Yahoo, or Outlook are not permitted",
+        invalid: "Please enter a valid email address",
+        required: "This field is required",
     };
 
     let isValid = true;

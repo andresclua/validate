@@ -82,8 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 required: true,
                 minLength: 4,
                 customMessage: {
-                    required: "This field cannot be empty.",
-                    minLength: "The input must be at least 4 characters long.",
+                    required: "This field is required",
+                    minLength: "The input must be at least 4 characters long",
                 },
             },
         });

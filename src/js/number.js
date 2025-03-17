@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 min: 1,
                 max: 9999,
                 customMessage: {
-                    required: "This field is mandatory.",
+                    required: "This field is required",
                     positive: "The number must be positive.",
                     integer: "Please provide an integer.",
                     min: "The number must be at least 1000.",
@@ -103,11 +103,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 min: 1000,
                 max: 9999,
                 customMessage: {
-                    required: "This field is mandatory.",
-                    positive: "The number must be positive.",
-                    integer: "Please provide an integer.",
-                    min: "The number must be at least 1000.",
-                    max: "The number must not exceed 9999.",
+                    required: "This field is required",
+                    positive: "The number must be positive",
+                    integer: "Please provide an integer",
+                    min: "The number must be at least 1000",
+                    max: "The number must not exceed 9999",
                 },
                 customValidation: (value) => {
                     const isValid = value % 2 === 0; // Must be an even number
