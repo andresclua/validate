@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (regex.test(element)) {
                         return {
                             isValid: false,
-                            errorMessage: "The string contains prohibited words.",
+                            errorMessage: "The field contains prohibited words.",
                         };
                     }
         

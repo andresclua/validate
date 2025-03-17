@@ -5,8 +5,8 @@ function f(s, e) {
   return e && typeof e == "function" && e(s), s;
 }
 function V({ element: s, config: e = {}, callback: n = null, debug: o = !1 }) {
-  var r, u, d, m, c, g, M, p;
-  const l = {
+  var l, u, d, m, c, g, M, p;
+  const r = {
     required: "The value is required.",
     invalid: "The value must be a valid number.",
     positive: "The value must be positive.",
@@ -17,7 +17,7 @@ function V({ element: s, config: e = {}, callback: n = null, debug: o = !1 }) {
     length: `The value must have exactly ${e.length} digits.`
   };
   let t = !0, a = null;
-  if (e.required && (s == null || s === "") && (t = !1, a = ((r = e.customMessage) == null ? void 0 : r.required) || l.required), t && isNaN(Number(s)) && (t = !1, a = ((u = e.customMessage) == null ? void 0 : u.invalid) || l.invalid), t && e.positive && Number(s) <= 0 && (t = !1, a = ((d = e.customMessage) == null ? void 0 : d.positive) || l.positive), t && e.negative && Number(s) >= 0 && (t = !1, a = ((m = e.customMessage) == null ? void 0 : m.negative) || l.negative), t && e.integer && !Number.isInteger(Number(s)) && (t = !1, a = ((c = e.customMessage) == null ? void 0 : c.integer) || l.integer), t && e.min !== void 0 && Number(s) < e.min && (t = !1, a = ((g = e.customMessage) == null ? void 0 : g.min) || l.min), t && e.max !== void 0 && Number(s) > e.max && (t = !1, a = ((M = e.customMessage) == null ? void 0 : M.max) || l.max), t && e.length !== void 0 && String(s).replace(".", "").length !== e.length && (t = !1, a = ((p = e.customMessage) == null ? void 0 : p.length) || l.length), t && typeof e.customValidation == "function") {
+  if (e.required && (s == null || s === "") && (t = !1, a = ((l = e.customMessage) == null ? void 0 : l.required) || r.required), t && isNaN(Number(s)) && (t = !1, a = ((u = e.customMessage) == null ? void 0 : u.invalid) || r.invalid), t && e.positive && Number(s) <= 0 && (t = !1, a = ((d = e.customMessage) == null ? void 0 : d.positive) || r.positive), t && e.negative && Number(s) >= 0 && (t = !1, a = ((m = e.customMessage) == null ? void 0 : m.negative) || r.negative), t && e.integer && !Number.isInteger(Number(s)) && (t = !1, a = ((c = e.customMessage) == null ? void 0 : c.integer) || r.integer), t && e.min !== void 0 && Number(s) < e.min && (t = !1, a = ((g = e.customMessage) == null ? void 0 : g.min) || r.min), t && e.max !== void 0 && Number(s) > e.max && (t = !1, a = ((M = e.customMessage) == null ? void 0 : M.max) || r.max), t && e.length !== void 0 && String(s).replace(".", "").length !== e.length && (t = !1, a = ((p = e.customMessage) == null ? void 0 : p.length) || r.length), t && typeof e.customValidation == "function") {
     const v = e.customValidation(Number(s));
     v.isValid || (t = !1, a = v.errorMessage);
   }
@@ -26,29 +26,29 @@ function V({ element: s, config: e = {}, callback: n = null, debug: o = !1 }) {
 }
 function q({ element: s, config: e = {}, callback: n = null, debug: o = !1 }) {
   var d, m, c;
-  const l = /^[^\s@]+@[^\s@]+\.[^\s@]+$/, t = /^[^\s@]+@(?!gmail\.com|yahoo\.com|outlook\.com)(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/, a = {
+  const r = /^[^\s@]+@[^\s@]+\.[^\s@]+$/, t = /^[^\s@]+@(?!gmail\.com|yahoo\.com|outlook\.com)(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/, a = {
     corporate: "The email must be associated with your company domain. Personal email providers such as Gmail, Yahoo, or Outlook are not permitted.",
     invalid: "Please enter a valid email address.",
     required: "This field is required."
   };
-  let i = !0, r = null;
-  if (e.required && !s.trim() && (i = !1, r = ((d = e.customMessage) == null ? void 0 : d.required) || a.required), i && s && !l.test(s) && (i = !1, r = ((m = e.customMessage) == null ? void 0 : m.invalid) || a.invalid), i && e.type === "corporate" && !t.test(s) && (i = !1, r = ((c = e.customMessage) == null ? void 0 : c.corporate) || a.corporate), i && e.customValidation) {
+  let i = !0, l = null;
+  if (e.required && !s.trim() && (i = !1, l = ((d = e.customMessage) == null ? void 0 : d.required) || a.required), i && s && !r.test(s) && (i = !1, l = ((m = e.customMessage) == null ? void 0 : m.invalid) || a.invalid), i && e.type === "corporate" && !t.test(s) && (i = !1, l = ((c = e.customMessage) == null ? void 0 : c.corporate) || a.corporate), i && e.customValidation) {
     const g = e.customValidation(s);
-    g.isValid || (i = !1, r = g.errorMessage);
+    g.isValid || (i = !1, l = g.errorMessage);
   }
-  const u = { isValid: i, errorMessage: r };
+  const u = { isValid: i, errorMessage: l };
   return h({ element: s, config: e, result: u, debug: o }), f(u, n);
 }
 function b({ element: s, config: e = {}, callback: n = null, debug: o = !1 }) {
-  var r, u, d, m;
-  const l = {
-    required: "The string cannot be empty.",
-    minLength: `The string must be at least ${e.minLength} characters long.`,
-    maxLength: `The string cannot be longer than ${e.maxLength} characters.`,
-    pattern: "The string format is invalid."
+  var l, u, d, m;
+  const r = {
+    required: "The field cannot be empty.",
+    minLength: `The field must be at least ${e.minLength} characters long.`,
+    maxLength: `The field cannot be longer than ${e.maxLength} characters.`,
+    pattern: "The field format is invalid."
   };
   let t = !0, a = null;
-  if (e.required && (!s || s.trim() === "") && (t = !1, a = ((r = e.customMessage) == null ? void 0 : r.required) || l.required), t && e.minLength && s.length < e.minLength && (t = !1, a = ((u = e.customMessage) == null ? void 0 : u.minLength) || l.minLength), t && e.maxLength && s.length > e.maxLength && (t = !1, a = ((d = e.customMessage) == null ? void 0 : d.maxLength) || l.maxLength), t && e.pattern && !e.pattern.test(s) && (t = !1, a = ((m = e.customMessage) == null ? void 0 : m.pattern) || l.pattern), t && e.customValidation) {
+  if (e.required && (!s || s.trim() === "") && (t = !1, a = ((l = e.customMessage) == null ? void 0 : l.required) || r.required), t && e.minLength && s.length < e.minLength && (t = !1, a = ((u = e.customMessage) == null ? void 0 : u.minLength) || r.minLength), t && e.maxLength && s.length > e.maxLength && (t = !1, a = ((d = e.customMessage) == null ? void 0 : d.maxLength) || r.maxLength), t && e.pattern && !e.pattern.test(s) && (t = !1, a = ((m = e.customMessage) == null ? void 0 : m.pattern) || r.pattern), t && e.customValidation) {
     const c = e.customValidation(s);
     c.isValid || (t = !1, a = c.errorMessage);
   }
@@ -56,23 +56,23 @@ function b({ element: s, config: e = {}, callback: n = null, debug: o = !1 }) {
   return h({ element: s, config: e, result: i, debug: o }), f(i, n);
 }
 function x({ element: s, config: e = {}, callback: n = null, debug: o = !1 }) {
-  var r, u;
-  const l = {
+  var l, u;
+  const r = {
     required: "Please select a valid option.",
     customValidation: "The selected option is not allowed."
   };
   let t = !0, a = null;
-  if (e.required && (!s || s === "") && (t = !1, a = ((r = e.customMessage) == null ? void 0 : r.required) || l.required), t && e.customValidation) {
+  if (e.required && (!s || s === "") && (t = !1, a = ((l = e.customMessage) == null ? void 0 : l.required) || r.required), t && e.customValidation) {
     const d = e.customValidation(s);
-    d.isValid || (t = !1, a = d.errorMessage || ((u = e.customMessage) == null ? void 0 : u.customValidation) || l.customValidation);
+    d.isValid || (t = !1, a = d.errorMessage || ((u = e.customMessage) == null ? void 0 : u.customValidation) || r.customValidation);
   }
   const i = { isValid: t, errorMessage: a };
   return h({ element: s, config: e, result: i, debug: o }), f(i, n);
 }
 function T({ elements: s, config: e = {}, callback: n = null, debug: o = !1 }) {
-  const { minRequired: l = 1, customMessage: t = {} } = e;
-  let i = Array.from(s).filter((d) => d.checked).length >= l, r = i ? null : t.minRequired || `Please select at least ${l} options.`;
-  const u = { isValid: i, errorMessage: r };
+  const { minRequired: r = 1, customMessage: t = {} } = e;
+  let i = Array.from(s).filter((d) => d.checked).length >= r, l = i ? null : t.minRequired || `Please select at least ${r} options.`;
+  const u = { isValid: i, errorMessage: l };
   return o && h({
     element: s,
     // Providing NodeList as 'element' for debugging context
@@ -82,22 +82,22 @@ function T({ elements: s, config: e = {}, callback: n = null, debug: o = !1 }) {
   }), f(u, n);
 }
 function y({ elements: s, config: e = {}, callback: n = null, debug: o = !1 }) {
-  const { customMessage: l = {} } = e;
-  let a = Array.from(s).filter((u) => u.checked).length > 0, i = a ? null : l.required || "Please select an option.";
-  const r = { isValid: a, errorMessage: i };
+  const { customMessage: r = {} } = e;
+  let a = Array.from(s).filter((u) => u.checked).length > 0, i = a ? null : r.required || "Please select an option.";
+  const l = { isValid: a, errorMessage: i };
   return o && h({
     element: s,
     // Providing NodeList as 'element' for debugging context
     config: e,
-    result: r,
+    result: l,
     debug: o
-  }), f(r, n);
+  }), f(l, n);
 }
 function L({ element: s, config: e = {}, callback: n = null, debug: o = !1 }) {
-  const { required: l = !0, allowedTypes: t = [], maxSize: a, customMessage: i = {} } = e;
-  let r = !0, u = null;
-  l && !s && (r = !1, u = i.required || "Please select a file."), r && t.length > 0 && !t.includes(s.type) && (r = !1, u = i.type || "Invalid file type. Please upload a valid file format."), r && a && s.size > a && (r = !1, u = i.size || `File size should not exceed ${a / 1024 / 1024}MB.`);
-  const d = { isValid: r, errorMessage: u };
+  const { required: r = !0, allowedTypes: t = [], maxSize: a, customMessage: i = {} } = e;
+  let l = !0, u = null;
+  r && !s && (l = !1, u = i.required || "Please select a file."), l && t.length > 0 && !t.includes(s.type) && (l = !1, u = i.type || "Invalid file type. Please upload a valid file format."), l && a && s.size > a && (l = !1, u = i.size || `File size should not exceed ${a / 1024 / 1024}MB.`);
+  const d = { isValid: l, errorMessage: u };
   return o && h({
     element: s,
     // File object as 'element' for debugging context
