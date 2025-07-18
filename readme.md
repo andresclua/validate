@@ -82,3 +82,6 @@ document.querySelector("#email").addEventListener("blur", () => {
 
 
 ## Do you need to validate an entire form?
+
+For a more robust solution suited to complex projects, refer to the [Validate form](https://github.com/andresclua/validate/blob/main/docs/advanced.md) documentation. You can also explore the src folder for clearer, more practical examples.
+

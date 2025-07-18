@@ -419,7 +419,7 @@ class AsyncForm extends Form {
   }
 
   async handleValidation() {
-    // Ejecutar el callback `onSubmit`, si está definido
+    // Execute the `onSubmit` callback, if defined
     if (this.onSubmit) {
       this.onSubmit();
     }
@@ -455,9 +455,9 @@ class Form {
 
         this.formElement = element; // Elemento del formulario
         this.fields = fields; // Configuración de los campos
-        this.onSubmit = onSubmit; // Callback al intentar enviar
-        this.onComplete = onComplete; // Callback cuando todos los campos son válidos
-        this.onError = onError; // Callback cuando hay errores
+        this.onSubmit = onSubmit; // Callback when attempting to submit
+        this.onComplete = onComplete; // Callback when all fields are valid
+        this.onError = onError; // Callback when there are errors
         this.submitButton = submitButtonSelector
             ? document.querySelector(submitButtonSelector)
             : null; // Botón de envío personalizado
@@ -562,12 +562,12 @@ class Form {
         if (invalidFields.length === 0) {
             // Todos los campos son válidos
             if (this.onComplete) {
-                this.onComplete(); // Ejecutar callback de éxito
+                this.onComplete(); // Execute success callback
             }
         } else {
             // Hay errores en el formulario
             if (this.onError) {
-                this.onError(invalidFields); // Ejecutar callback de error con detalles
+                this.onError(invalidFields); // Execute error callback with details
             }
         }
     }
