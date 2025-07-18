@@ -388,66 +388,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 The `Form` class has been designed to be flexible and extensible. You can customize its behavior and add new features according to your specific needs. For example, you could extend the `Form` class to add support for asynchronous validation, integration with third-party libraries, or any other functionality you require.
 
-### Extending the Form Class
-
-To extend the `Form` class, you can create a new class that inherits from it and overrides or adds new methods as needed. Here's an example of how you could extend the `Form` class to add support for asynchronous validation:
-
-```js
-import Form from './utils/Form';
-
-class AsyncForm extends Form {
-  constructor(...args) {
-    super(...args);
-  }
-
-  async validateAllFields() {
-    const invalidFields = [];
-    for (const field of this.fields) {
-      const { element, validationFunction, config } = field;
-      const result = await validationFunction({
-        element: element.value,
-        config,
-      });
-
-      this.updateFieldState(element, result);
-      if (!result.isValid) {
-        invalidFields.push({ element, errorMessage: result.errorMessage });
-      }
-    }
-
-    return invalidFields;
-  }
-
-  async handleValidation() {
-    // Execute the `onSubmit` callback, if defined
-    if (this.onSubmit) {
-      this.onSubmit();
-    }
-
-    const invalidFields = await this.validateAllFields();
-
-    if (invalidFields.length === 0) {
-      // Todos los campos son válidos
-      if (this.onComplete) {
-        this.onComplete(); // Ejecutar callback de éxito
-      }
-    } else {
-      // Hay errores en el formulario
-      if (this.onError) {
-        this.onError(invalidFields); // Ejecutar callback de error con detalles
-      }
-    }
-  }
-}
-
-export default AsyncForm;
-```
-
-In this example, we create a new `AsyncForm` class that extends the `Form` class. We override the `validate
-## Código fuente
-
-A continuación, se muestra el código fuente completo de la clase `Form` para que puedas copiarla y pegarla en tus proyectos:
-
 ```js
 class Form {
     constructor({ element, fields, submitButtonSelector = null, onSubmit = null, onComplete = null, onError = null }) {
