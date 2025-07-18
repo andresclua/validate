@@ -80,3 +80,5 @@ document.querySelector("#email").addEventListener("blur", () => {
 
 - [Validate File](https://github.com/andresclua/validate/blob/main/docs/file.md) Explore RadFileio Validation, with configurable rules such as required, file format,etc.
 
+
+## Do you need to validate an entire form?

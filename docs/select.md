@@ -86,6 +86,7 @@ isSelect({
 // Result: { isValid: false, errorMessage: "You must select a valid option." }
 ```
 
+
 ### Using a Callback
 ```js
 isSelect({
@@ -99,6 +100,104 @@ isSelect({
   },
 });
 ```
+
+### Validation Examples
+
+```js
+// Validation on Blur Event
+document.addEventListener("DOMContentLoaded", () => {
+    const selectInput = document.querySelector("#select");
+
+    if (!selectInput) return; // Exit if input doesn't exist
+
+    const selectWrapper = selectInput.closest(".c--form-input-a");
+    const selectErrorSpan = selectWrapper?.querySelector(".c--form-error-a");
+
+    selectInput.addEventListener("blur", () => {
+        const result = isSelect({
+            element: selectInput.value,
+            config: {
+                required: true,
+                customMessage: {
+                    required: "Please select a valid option",
+                },
+            },
+        });
+
+        if (result.isValid) {
+            // Valid selection: remove error styles
+            selectWrapper?.classList.remove("c--form-input-a--error");
+            selectWrapper?.classList.add("c--form-input-a--valid");
+            if (selectErrorSpan) {
+                selectErrorSpan.textContent = "";
+                selectErrorSpan.style.display = "none";
+            }
+        } else {
+            // Invalid selection: show error message
+            selectWrapper?.classList.add("c--form-input-a--error");
+            selectWrapper?.classList.remove("c--form-input-a--valid");
+            if (selectErrorSpan) {
+                selectErrorSpan.textContent = result.errorMessage;
+                selectErrorSpan.style.display = "block";
+            }
+        }
+    });
+});
+
+// Validation on Button Click
+document.addEventListener("DOMContentLoaded", () => {
+    const selectInput = document.querySelector("#select2");
+    const selectWrapper = selectInput ? selectInput.closest(".c--form-input-a") : null;
+    const selectErrorSpan = selectInput
+        ? selectInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a")
+        : null;
+    const submitButton = document.querySelector("#submitSelect");
+
+    if (submitButton) {
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            if (selectInput) {
+                const result = isSelect({
+                    element: selectInput.value,
+                    config: {
+                        required: true,
+                        customMessage: {
+                            required: "Please select a valid option",
+                        },
+                        customValidation: (value) => ({
+                            isValid: value !== "backend", // Rejects backend option
+                            errorMessage: "Backend option is not allowed.",
+                        }),
+                    },
+                });
+
+                if (result.isValid) {
+                    // Valid selection: apply valid styles and clear errors
+                    selectWrapper?.classList.add("c--form-input-a--valid");
+                    selectWrapper?.classList.remove("c--form-input-a--error");
+                    if (selectErrorSpan) {
+                        selectErrorSpan.textContent = "";
+                        selectErrorSpan.style.display = "none";
+                    }
+                    console.log("Selection is valid!");
+                } else {
+                    // Invalid selection: show error message
+                    selectWrapper?.classList.add("c--form-input-a--error");
+                    selectWrapper?.classList.remove("c--form-input-a--valid");
+                    if (selectErrorSpan) {
+                        selectErrorSpan.textContent = result.errorMessage;
+                        selectErrorSpan.style.display = "block";
+                    }
+                    console.log("Selection is invalid:", result.errorMessage);
+                }
+            }
+        });
+    }
+});
+```
+
+These examples demonstrate how to use the isSelect function to validate a select input field on both the blur event (when the user leaves the input field) and the click event of a submit button. The code applies the appropriate styles and displays error messages based on the validation result.
 
 <br>
 <br>

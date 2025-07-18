@@ -111,6 +111,138 @@ console.log(result);
 // { isValid: true, errorMessage: null }
 ```
 
+
+### Validation Examples
+
+```js
+// Validation on Blur Event
+document.addEventListener("DOMContentLoaded", () => {
+    const numberInput = document.querySelector("#number");
+
+    if (!numberInput) return; // Exit if input doesn't exist
+
+    const numberWrapper = numberInput.closest(".c--form-input-a");
+    const numberErrorSpan = numberWrapper?.querySelector(".c--form-error-a");
+
+    numberInput.addEventListener("blur", () => {
+        const result = isNumber({
+            element: numberInput.value,
+            config: {
+                required: true,
+                positive: true,
+                integer: true,
+                min: 1,
+                max: 9999,
+                customMessage: {
+                    required: "This field is required",
+                    positive: "The number must be positive",
+                    integer: "Please provide an integer",
+                    min: "The number must be at least 1",
+                    max: "The number must not exceed 9999",
+                },
+                customValidation: (value) => {
+                    const isValid = value % 2 === 0; // Custom validation: even number
+                    return {
+                        isValid,
+                        errorMessage: isValid
+                            ? null
+                            : "The number must be even.",
+                    };
+                },
+            },
+        });
+
+        if (result.isValid) {
+            // Valid number: remove error styles
+            numberWrapper?.classList.remove("c--form-input-a--error");
+            numberWrapper?.classList.add("c--form-input-a--valid");
+            if (numberErrorSpan) {
+                numberErrorSpan.textContent = "";
+                numberErrorSpan.style.display = "none";
+            }
+        } else {
+            // Invalid number: show error message
+            numberWrapper?.classList.add("c--form-input-a--error");
+            numberWrapper?.classList.remove("c--form-input-a--valid");
+            if (numberErrorSpan) {
+                numberErrorSpan.textContent = result.errorMessage;
+                numberErrorSpan.style.display = "block";
+            }
+        }
+    });
+});
+
+// Validation on Button Click
+document.addEventListener("DOMContentLoaded", () => {
+    const numberInput = document.querySelector("#number2");
+    const numberWrapper = numberInput ? numberInput.closest(".c--form-input-a") : null;
+    const numberErrorSpan = numberInput
+        ? numberInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a")
+        : null;
+    const submitButton = document.querySelector("#submitNumber");
+
+    if (submitButton) {
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            if (numberInput) {
+                const result = isNumber({
+                    element: numberInput.value,
+                    config: {
+                        required: true,
+                        positive: true,
+                        integer: true,
+                        min: 1000,
+                        max: 9999,
+                        customMessage: {
+                            required: "This field is required",
+                            positive: "The number must be positive",
+                            integer: "Please provide an integer",
+                            min: "The number must be at least 1000",
+                            max: "The number must not exceed 9999",
+                        },
+                        customValidation: (value) => {
+                            const isValid = value % 2 === 0; // Custom validation: even number
+                            return {
+                                isValid,
+                                errorMessage: isValid
+                                    ? null
+                                    : "The number must be even.",
+                            };
+                        },
+                    },
+                });
+
+                if (result.isValid) {
+                    // Valid number: apply valid styles and clear errors
+                    numberWrapper?.classList.add("c--form-input-a--valid");
+                    numberWrapper?.classList.remove("c--form-input-a--error");
+                    if (numberErrorSpan) {
+                        numberErrorSpan.textContent = "";
+                        numberErrorSpan.style.display = "none";
+                    }
+                    console.log("Number is valid!");
+                } else {
+                    // Invalid number: show error message
+                    numberWrapper?.classList.add("c--form-input-a--error");
+                    numberWrapper?.classList.remove("c--form-input-a--valid");
+                    if (numberErrorSpan) {
+                        numberErrorSpan.textContent = result.errorMessage;
+                        numberErrorSpan.style.display = "block";
+                    }
+                    console.log("Number is invalid:", result.errorMessage);
+                }
+            }
+        });
+    }
+});
+```
+
+These examples demonstrate how to use the isNumber function to validate a number input field on both the blur event (when the user leaves the input field) and the click event of a submit button. The code applies the appropriate styles and displays error messages based on the validation result.
+
+<br>
+<br>
+
 ### Vue Example
 ``` vue
 <template>
@@ -189,8 +321,6 @@ export default {
 };
 </script>
 ```
-<br>
-<br>
 
 
 ## Validation Flow

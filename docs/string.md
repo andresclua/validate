@@ -142,6 +142,112 @@ isString({
 });
 ```
 
+
+### Validation Examples
+
+```js
+// Validation on Blur Event
+document.addEventListener("DOMContentLoaded", () => {
+    const stringInput = document.querySelector("#string");
+
+    if (!stringInput) return; // Exit if input doesn't exist
+
+    const stringWrapper = stringInput.closest(".c--form-input-a");
+    const stringErrorSpan = stringWrapper?.querySelector(".c--form-error-a");
+
+    stringInput.addEventListener("blur", () => {
+        const result = isString({
+            element: stringInput.value,
+            config: {
+                required: true,
+                minLength: 3,
+                maxLength: 10,
+                customMessage: {
+                    required: "This field is required",
+                    minLength: "The string must be at least 3 characters long",
+                    maxLength: "The string must not exceed 10 characters",
+                },
+            },
+        });
+
+        if (result.isValid) {
+            // Valid string: remove error styles
+            stringWrapper?.classList.remove("c--form-input-a--error");
+            stringWrapper?.classList.add("c--form-input-a--valid");
+            if (stringErrorSpan) {
+                stringErrorSpan.textContent = "";
+                stringErrorSpan.style.display = "none";
+            }
+        } else {
+            // Invalid string: show error message
+            stringWrapper?.classList.add("c--form-input-a--error");
+            stringWrapper?.classList.remove("c--form-input-a--valid");
+            if (stringErrorSpan) {
+                stringErrorSpan.textContent = result.errorMessage;
+                stringErrorSpan.style.display = "block";
+            }
+        }
+    });
+});
+
+// Validation on Button Click
+document.addEventListener("DOMContentLoaded", () => {
+    const stringInput = document.querySelector("#string2");
+    const stringWrapper = stringInput ? stringInput.closest(".c--form-input-a") : null;
+    const stringErrorSpan = stringInput
+        ? stringInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a")
+        : null;
+    const submitButton = document.querySelector("#submitString");
+
+    if (submitButton) {
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            if (stringInput) {
+                const result = isString({
+                    element: stringInput.value,
+                    config: {
+                        required: true,
+                        minLength: 5,
+                        maxLength: 20,
+                        customMessage: {
+                            required: "This field is required",
+                            minLength: "The string must be at least 5 characters long",
+                            maxLength: "The string must not exceed 20 characters",
+                        },
+                    },
+                });
+
+                if (result.isValid) {
+                    // Valid string: apply valid styles and clear errors
+                    stringWrapper?.classList.add("c--form-input-a--valid");
+                    stringWrapper?.classList.remove("c--form-input-a--error");
+                    if (stringErrorSpan) {
+                        stringErrorSpan.textContent = "";
+                        stringErrorSpan.style.display = "none";
+                    }
+                    console.log("String is valid!");
+                } else {
+                    // Invalid string: show error message
+                    stringWrapper?.classList.add("c--form-input-a--error");
+                    stringWrapper?.classList.remove("c--form-input-a--valid");
+                    if (stringErrorSpan) {
+                        stringErrorSpan.textContent = result.errorMessage;
+                        stringErrorSpan.style.display = "block";
+                    }
+                    console.log("String is invalid:", result.errorMessage);
+                }
+            }
+        });
+    }
+});
+```
+
+These examples demonstrate how to use the isString function to validate a string input field on both the blur event (when the user leaves the input field) and the click event of a submit button. The code applies the appropriate styles and displays error messages based on the validation result.
+
+<br>
+<br>
+
 ### Vue Example
 ```js
 <template>

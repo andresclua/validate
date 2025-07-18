@@ -93,6 +93,106 @@ console.log(result);
 
 <br><br>
 
+
+## Validation Examples
+
+```js
+// Validation on Blur Event
+document.addEventListener("DOMContentLoaded", () => {
+    const checkboxInputs = document.querySelectorAll("#checkboxes input[type='checkbox']");
+
+    if (!checkboxInputs.length) return; // Exit if no checkboxes exist
+
+    const checkboxWrapper = checkboxInputs[0].closest(".c--form-input-a");
+    const checkboxErrorSpan = checkboxWrapper?.querySelector(".c--form-error-a");
+
+    checkboxInputs.forEach((checkbox) => {
+        checkbox.addEventListener("blur", () => {
+            const result = isCheckbox({
+                elements: checkboxInputs,
+                config: {
+                    minRequired: 2,
+                    customMessage: {
+                        minRequired: "Please select at least 2 options",
+                    },
+                },
+            });
+
+            if (result.isValid) {
+                // Valid selection: remove error styles
+                checkboxWrapper?.classList.remove("c--form-input-a--error");
+                checkboxWrapper?.classList.add("c--form-input-a--valid");
+                if (checkboxErrorSpan) {
+                    checkboxErrorSpan.textContent = "";
+                    checkboxErrorSpan.style.display = "none";
+                }
+            } else {
+                // Invalid selection: show error message
+                checkboxWrapper?.classList.add("c--form-input-a--error");
+                checkboxWrapper?.classList.remove("c--form-input-a--valid");
+                if (checkboxErrorSpan) {
+                    checkboxErrorSpan.textContent = result.errorMessage;
+                    checkboxErrorSpan.style.display = "block";
+                }
+            }
+        });
+    });
+});
+
+// Validation on Button Click
+document.addEventListener("DOMContentLoaded", () => {
+    const checkboxInputs = document.querySelectorAll("#checkboxes2 input[type='checkbox']");
+    const checkboxWrapper = checkboxInputs[0] ? checkboxInputs[0].closest(".c--form-input-a") : null;
+    const checkboxErrorSpan = checkboxInputs[0]
+        ? checkboxInputs[0].closest(".c--form-group-a")?.querySelector(".c--form-error-a")
+        : null;
+    const submitButton = document.querySelector("#submitCheckboxes");
+
+    if (submitButton) {
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            if (checkboxInputs.length) {
+                const result = isCheckbox({
+                    elements: checkboxInputs,
+                    config: {
+                        minRequired: 3,
+                        customMessage: {
+                            minRequired: "Please select at least 3 options",
+                        },
+                    },
+                });
+
+                if (result.isValid) {
+                    // Valid selection: apply valid styles and clear errors
+                    checkboxWrapper?.classList.add("c--form-input-a--valid");
+                    checkboxWrapper?.classList.remove("c--form-input-a--error");
+                    if (checkboxErrorSpan) {
+                        checkboxErrorSpan.textContent = "";
+                        checkboxErrorSpan.style.display = "none";
+                    }
+                    console.log("Selection is valid!");
+                } else {
+                    // Invalid selection: show error message
+                    checkboxWrapper?.classList.add("c--form-input-a--error");
+                    checkboxWrapper?.classList.remove("c--form-input-a--valid");
+                    if (checkboxErrorSpan) {
+                        checkboxErrorSpan.textContent = result.errorMessage;
+                        checkboxErrorSpan.style.display = "block";
+                    }
+                    console.log("Selection is invalid:", result.errorMessage);
+                }
+            }
+        });
+    }
+});
+```
+
+These examples demonstrate how to use the isCheckbox function to validate a group of checkbox inputs on both the blur event (when the user leaves the input field) and the click event of a submit button. The code applies the appropriate styles and displays error messages based on the validation result.
+
+<br>
+<br>
+
 ## Common Use Cases
 
 #### Form Submission Validation:
@@ -100,5 +200,3 @@ console.log(result);
 
 #### User Preferences:
 - Validates user settings where multiple selections are possible, ensuring that minimum criteria are met.
-
-

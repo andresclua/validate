@@ -106,6 +106,7 @@ isFile({
 // Result: { isValid: false, errorMessage: "The file size must not exceed 1MB." }
 ```
 
+
 ### Using Callback
 
 ```js
@@ -122,6 +123,111 @@ isFile({
   },
 });
 ```
+
+### Validation Examples
+
+```js
+// Validation on Blur Event
+document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.querySelector("#file");
+
+    if (!fileInput) return; // Exit if input doesn't exist
+
+    const fileWrapper = fileInput.closest(".c--form-input-a");
+    const fileErrorSpan = fileWrapper?.querySelector(".c--form-error-a");
+
+    fileInput.addEventListener("blur", () => {
+        const result = isFile({
+            element: fileInput.files[0],
+            config: {
+                required: true,
+                allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
+                maxSize: 1048576, // 1MB
+                customMessage: {
+                    required: "Please select a file",
+                    type: "Only JPEG, PNG, or PDF files are allowed",
+                    size: "The file size must not exceed 1MB",
+                },
+            },
+        });
+
+        if (result.isValid) {
+            // Valid file: remove error styles
+            fileWrapper?.classList.remove("c--form-input-a--error");
+            fileWrapper?.classList.add("c--form-input-a--valid");
+            if (fileErrorSpan) {
+                fileErrorSpan.textContent = "";
+                fileErrorSpan.style.display = "none";
+            }
+        } else {
+            // Invalid file: show error message
+            fileWrapper?.classList.add("c--form-input-a--error");
+            fileWrapper?.classList.remove("c--form-input-a--valid");
+            if (fileErrorSpan) {
+                fileErrorSpan.textContent = result.errorMessage;
+                fileErrorSpan.style.display = "block";
+            }
+        }
+    });
+});
+
+// Validation on Button Click
+document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.querySelector("#file2");
+    const fileWrapper = fileInput ? fileInput.closest(".c--form-input-a") : null;
+    const fileErrorSpan = fileInput
+        ? fileInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a")
+        : null;
+    const submitButton = document.querySelector("#submitFile");
+
+    if (submitButton) {
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            if (fileInput) {
+                const result = isFile({
+                    element: fileInput.files[0],
+                    config: {
+                        required: true,
+                        allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
+                        maxSize: 2097152, // 2MB
+                        customMessage: {
+                            required: "Please select a file",
+                            type: "Only JPEG, PNG, or PDF files are allowed",
+                            size: "The file size must not exceed 2MB",
+                        },
+                    },
+                });
+
+                if (result.isValid) {
+                    // Valid file: apply valid styles and clear errors
+                    fileWrapper?.classList.add("c--form-input-a--valid");
+                    fileWrapper?.classList.remove("c--form-input-a--error");
+                    if (fileErrorSpan) {
+                        fileErrorSpan.textContent = "";
+                        fileErrorSpan.style.display = "none";
+                    }
+                    console.log("File is valid!");
+                } else {
+                    // Invalid file: show error message
+                    fileWrapper?.classList.add("c--form-input-a--error");
+                    fileWrapper?.classList.remove("c--form-input-a--valid");
+                    if (fileErrorSpan) {
+                        fileErrorSpan.textContent = result.errorMessage;
+                        fileErrorSpan.style.display = "block";
+                    }
+                    console.log("File is invalid:", result.errorMessage);
+                }
+            }
+        });
+    }
+});
+```
+
+These examples demonstrate how to use the isFile function to validate a file input field on both the blur event (when the user leaves the input field) and the click event of a submit button. The code applies the appropriate styles and displays error messages based on the validation result.
+
+<br>
+<br>
 
 ## Validation Flow
 
@@ -156,5 +262,3 @@ isFile({
 ### Custom Logic:
 
 - Enforce additional rules such as requiring only specific file types or enforcing size limits.
-
-

@@ -95,6 +95,7 @@ isRadio({
 }
 ```
 
+
 ### Using a Callback
 
 ```js
@@ -112,6 +113,102 @@ isRadio({
 });
 ```
 
+### Validation Examples
+
+```js
+// Validation on Blur Event
+document.addEventListener("DOMContentLoaded", () => {
+    const radioInputs = document.querySelectorAll("#radios input[type='radio']");
+
+    if (!radioInputs.length) return; // Exit if no radio inputs exist
+
+    const radioWrapper = radioInputs[0].closest(".c--form-input-a");
+    const radioErrorSpan = radioWrapper?.querySelector(".c--form-error-a");
+
+    radioInputs.forEach((radio) => {
+        radio.addEventListener("blur", () => {
+            const result = isRadio({
+                elements: radioInputs,
+                config: {
+                    customMessage: {
+                        required: "Please select an option",
+                    },
+                },
+            });
+
+            if (result.isValid) {
+                // Valid selection: remove error styles
+                radioWrapper?.classList.remove("c--form-input-a--error");
+                radioWrapper?.classList.add("c--form-input-a--valid");
+                if (radioErrorSpan) {
+                    radioErrorSpan.textContent = "";
+                    radioErrorSpan.style.display = "none";
+                }
+            } else {
+                // Invalid selection: show error message
+                radioWrapper?.classList.add("c--form-input-a--error");
+                radioWrapper?.classList.remove("c--form-input-a--valid");
+                if (radioErrorSpan) {
+                    radioErrorSpan.textContent = result.errorMessage;
+                    radioErrorSpan.style.display = "block";
+                }
+            }
+        });
+    });
+});
+
+// Validation on Button Click
+document.addEventListener("DOMContentLoaded", () => {
+    const radioInputs = document.querySelectorAll("#radios2 input[type='radio']");
+    const radioWrapper = radioInputs[0] ? radioInputs[0].closest(".c--form-input-a") : null;
+    const radioErrorSpan = radioInputs[0]
+        ? radioInputs[0].closest(".c--form-group-a")?.querySelector(".c--form-error-a")
+        : null;
+    const submitButton = document.querySelector("#submitRadios");
+
+    if (submitButton) {
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            if (radioInputs.length) {
+                const result = isRadio({
+                    elements: radioInputs,
+                    config: {
+                        customMessage: {
+                            required: "Please select an option",
+                        },
+                    },
+                });
+
+                if (result.isValid) {
+                    // Valid selection: apply valid styles and clear errors
+                    radioWrapper?.classList.add("c--form-input-a--valid");
+                    radioWrapper?.classList.remove("c--form-input-a--error");
+                    if (radioErrorSpan) {
+                        radioErrorSpan.textContent = "";
+                        radioErrorSpan.style.display = "none";
+                    }
+                    console.log("Selection is valid!");
+                } else {
+                    // Invalid selection: show error message
+                    radioWrapper?.classList.add("c--form-input-a--error");
+                    radioWrapper?.classList.remove("c--form-input-a--valid");
+                    if (radioErrorSpan) {
+                        radioErrorSpan.textContent = result.errorMessage;
+                        radioErrorSpan.style.display = "block";
+                    }
+                    console.log("Selection is invalid:", result.errorMessage);
+                }
+            }
+        });
+    }
+});
+```
+
+These examples demonstrate how to use the isRadio function to validate a group of radio inputs on both the blur event (when the user leaves the input field) and the click event of a submit button. The code applies the appropriate styles and displays error messages based on the validation result.
+
+<br>
+<br>
 
 ## Validation Flow
 
@@ -133,7 +230,3 @@ isRadio({
 
 #### Form Submission Validation:
 - Validate radio button groups in real-time on user input or before form submission.
-
-
-
-

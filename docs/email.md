@@ -94,6 +94,7 @@ isEmail({
 // Result: { isValid: false, errorMessage: "Please enter a valid email address." }
 ```
 
+
 ### Using a Callback
 ```js
 isEmail({
@@ -107,6 +108,97 @@ isEmail({
   },
 });
 ```
+
+### Validation Examples
+
+```js
+// Validation on Blur Event
+document.addEventListener("DOMContentLoaded", () => {
+    const emailInput = document.querySelector("#email");
+
+    if (!emailInput) return; // Exit if input doesn't exist
+
+    const emailWrapper = emailInput.closest(".c--form-input-a");
+    const emailErrorSpan = emailWrapper?.querySelector(".c--form-error-a");
+
+    emailInput.addEventListener("blur", () => {
+        const result = isEmail({
+            element: emailInput.value,
+            config: {
+                required: false,
+                customMessage: {
+                    invalid: "Please enter a valid email address.",
+                },
+            },
+        });
+
+        if (result.isValid) {
+            // Valid email: remove error styles
+            emailWrapper?.classList.remove("c--form-input-a--error");
+            emailWrapper?.classList.add("c--form-input-a--valid");
+            if (emailErrorSpan) {
+                emailErrorSpan.textContent = "";
+                emailErrorSpan.style.display = "none";
+            }
+        } else {
+            // Invalid email: show error message
+            emailWrapper?.classList.add("c--form-input-a--error");
+            emailWrapper?.classList.remove("c--form-input-a--valid");
+            if (emailErrorSpan) {
+                emailErrorSpan.textContent = result.errorMessage;
+                emailErrorSpan.style.display = "block";
+            }
+        }
+    });
+});
+
+// Validation on Button Click
+document.addEventListener("DOMContentLoaded", () => {
+    const emailInput = document.querySelector("#email2");
+    const emailWrapper = emailInput ? emailInput.closest(".c--form-input-a") : null;
+    const emailErrorSpan = emailInput
+        ? emailInput.closest(".c--form-group-a")?.querySelector(".c--form-error-a")
+        : null;
+    const submitButton = document.querySelector("#submitEmail");
+
+    if (submitButton) {
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            if (emailInput) {
+                const result = isEmail({
+                    element: emailInput.value,
+                    config: {
+                        required: false,
+                    },
+                });
+
+                if (result.isValid) {
+                    // Valid email: apply valid styles and clear errors
+                    emailWrapper?.classList.add("c--form-input-a--valid");
+                    emailWrapper?.classList.remove("c--form-input-a--error");
+                    if (emailErrorSpan) {
+                        emailErrorSpan.textContent = "";
+                        emailErrorSpan.style.display = "none";
+                    }
+                    console.log("Email is valid!");
+                } else {
+                    // Invalid email: show error message
+                    emailWrapper?.classList.add("c--form-input-a--error");
+                    emailWrapper?.classList.remove("c--form-input-a--valid");
+                    if (emailErrorSpan) {
+                        emailErrorSpan.textContent = result.errorMessage;
+                        emailErrorSpan.style.display = "block";
+                    }
+                    console.log("Email is invalid:", result.errorMessage);
+                }
+            }
+        });
+    }
+});
+```
+
+These examples demonstrate how to use the isEmail function to validate an email input field on both the blur event (when the user leaves the input field) and the click event of a submit button. The code applies the appropriate styles and displays error messages based on the validation result.
 
 <br>
 <br>
@@ -147,6 +239,7 @@ isEmail({
 ### Custom Logic:
 
 - Enforce additional rules, such as specific domain requirements or string patterns.
+
 
 ## Debugging Tips
 - Enable debug: true to see detailed logs of the validation process.
