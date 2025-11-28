@@ -43,7 +43,7 @@ Each entry in fields controls a single input/field.
 | `config`             | No       | Validation configuration passed directly to the validator                          |
 | `on`                 | No       | Event that triggers validation (`"blur"`, `"input"`, or `null`)                    |
 
-```json
+```js
 {
 element: document.querySelector("#username"),
 validationFunction: "isString",
@@ -80,6 +80,7 @@ on: "blur"
 ### Form with Fields Configuration looks like
 
 ```js
+
 new Form({
   element: formElement,
   fields: [ {
