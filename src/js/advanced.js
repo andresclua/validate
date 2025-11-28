@@ -1,7 +1,6 @@
 import "./../scss/style.scss";
 import Form from './utils/Form'
-import { isString } from "./utils/isString";
-import { isEmail } from "./utils/isEmail";
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,24 +8,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     new Form({
         element: formElement,
-        submitButtonSelector: ".submit1", // Selector del botón
+        submitButtonSelector: ".submit-test", // Selector del botón
         fields: [
             {
                 element: document.querySelector("#job_title"),
-                validationFunction: isString,
+                validationFunction: 'isString',
                 config: {
                     required: true,
                     minLength: 3,
                     customMessage: {
                         required: "Job Title cannot be empty.",
-                        minLength: "Job Title must be at least 3 characters long.",
+                        minLength: "Job Title must be at least 11111 characters long.",
                     },
                 },
                 on: "blur",
             },
             {
                 element: document.querySelector("#job_description"),
-                validationFunction: isString,
+                validationFunction: 'isString',
                 config: {
                     required: true,
                     minLength: 10,
@@ -58,11 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     new Form({
         element: formElement,
-        submitButtonSelector: ".submit", // Selector del botón que dispara la validación
+        submitButtonSelector: ".step-1", // Selector del botón que dispara la validación
         fields: [
             {
                 element: document.querySelector("#user_name"),
-                validationFunction: isString,
+                validationFunction: 'isString',
                 config: {
                     required: true,
                     minLength: 3,
@@ -75,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             {
                 element: document.querySelector("#user_email"),
-                validationFunction: isEmail,
+                validationFunction: 'isEmail',
                 config: {
                     required: true,
                     customMessage: {
@@ -87,10 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
             },
         ],
         onSubmit: () => {
-            console.log("Submit button clicked. Validating fields...");
+            console.log("Submit button clicked. Validating fields.. coco.");
         },
         onComplete: () => {
             console.log("All fields are valid! Form is ready to be submitted.");
+            tucollapsify.open("content02");
         },
         onError: (invalidFields) => {
             console.error("Form contains errors:", invalidFields);
