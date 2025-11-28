@@ -130,7 +130,7 @@ The existing validation functions provided in this library are:
 - isString: Validates string input based on length, pattern matching, and required checks.
 - isEmail: Validates email addresses with support for format checks, corporate domain validation, and custom rules.
 - isNumber: Validates numerical input based on positivity, negativity, range, and custom validations.
-- isSelect: Validates <select> fields to ensure a valid option is selected.
+- isSelect: Validates `<select>` fields to ensure a valid option is selected.
 - isCheckbox: Validates checkbox groups to ensure a minimum number of checkboxes are checked.
 - isRadio: Validates radio button groups to ensure at least one option is selected.
 - isFile: Validates file inputs based on file type and size.
