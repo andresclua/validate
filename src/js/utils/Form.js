@@ -1,5 +1,12 @@
-import { isString, isEmail,isNumber,isSelect,isCheckbox,isRadio,isFile } from "@andresclua/validate";
-
+import {
+    isString,
+    isEmail,
+    isNumber,
+    isSelect,
+    isCheckbox,
+    isRadio,
+    isFile,
+} from "@andresclua/validate";
 
 class Form {
     constructor({
@@ -13,64 +20,64 @@ class Form {
     }) {
         if (!element) throw new Error("A form element is required.");
 
-        // Base config
-        this.formElement = element;
+        // ---------- CONFIG ----------
         this.fields = fields;
         this.onSubmit = onSubmit;
         this.onComplete = onComplete;
         this.onError = onError;
 
-        // Custom submit button (optional)
-        this.submitButton = submitButtonSelector
-            ? document.querySelector(submitButtonSelector)
-            : null;
+        // ---------- DOM ----------
+        this.DOM = {
+            form: element,
+            submitButton: submitButtonSelector
+                ? document.querySelector(submitButtonSelector)
+                : null,
+        };
 
-        // Registry of available validators
+        // ---------- VALIDATORS ----------
         this.validators = {
             isString,
             isEmail,
-            // add more native validators here if you want
+            isNumber,
+            isSelect,
+            isCheckbox,
+            isRadio,
+            isFile,
             ...validators,
         };
 
-        // Standard pattern: only init + events in constructor
+        // Track listeners to remove them later
+        this._listeners = [];
+
+        // ---------- INIT / EVENTS ----------
         this.init();
         this.events();
     }
 
-    // ---------- INIT ----------
-
+    // ---------------- INIT ----------------
     init() {
         this.initializeFields();
     }
 
-    // ---------- EVENTS ----------
-
+    // ---------------- EVENTS ----------------
     events() {
         this.initializeSubmit();
     }
 
-    /**
-     * Resolves the validation function:
-     * - If it's a function → return as is
-     * - If it's a string → look it up in this.validators
-     */
+    // ---------------- VALIDATOR RESOLUTION ----------------
     getValidator(validationFunction) {
-        if (typeof validationFunction === "function") {
-            return validationFunction;
-        }
+        if (typeof validationFunction === "function") return validationFunction;
 
         if (typeof validationFunction === "string") {
             const fn = this.validators[validationFunction];
-            if (!fn) {
-                throw new Error(`Validator "${validationFunction}" is not registered.`);
-            }
+            if (!fn) throw new Error(`Validator "${validationFunction}" is not registered.`);
             return fn;
         }
 
         throw new Error("validationFunction must be a function or a string key.");
     }
 
+    // ---------------- FIELDS ----------------
     initializeFields() {
         this.fields.forEach((field) => {
             const { element, validationFunction, config, on } = field;
@@ -79,14 +86,23 @@ class Form {
             if (!validationFunction) throw new Error("A validation function is required.");
 
             const validator = this.getValidator(validationFunction);
+            const eventType = on || "blur";
 
-            element.addEventListener(on || "blur", () => {
+            const handler = () => {
                 const result = validator({
                     element: element.value,
                     config,
                 });
-
                 this.updateFieldState(element, result);
+            };
+
+            element.addEventListener(eventType, handler);
+
+            // Store reference for destroy()
+            this._listeners.push({
+                target: element,
+                event: eventType,
+                handler,
             });
         });
     }
@@ -96,7 +112,6 @@ class Form {
         const formGroup = element.closest(".c--form-group-a");
         let errorSpan = formGroup?.querySelector(".c--form-error-a");
 
-        // Create error span dynamically if it doesn't exist
         if (!errorSpan && formGroup) {
             errorSpan = document.createElement("span");
             errorSpan.classList.add("c--form-error-a");
@@ -146,37 +161,63 @@ class Form {
     }
 
     initializeSubmit() {
-        // Custom submit button
-        if (this.submitButton) {
-            this.submitButton.addEventListener("click", (event) => {
+        if (this.DOM.submitButton) {
+            const handler = (event) => {
                 event.preventDefault();
                 this.handleValidation();
+            };
+
+            this.DOM.submitButton.addEventListener("click", handler);
+
+            this._listeners.push({
+                target: this.DOM.submitButton,
+                event: "click",
+                handler,
             });
         }
 
-        // Native form submit
-        this.formElement.addEventListener("submit", (event) => {
+        const formHandler = (event) => {
             event.preventDefault();
             this.handleValidation();
+        };
+
+        this.DOM.form.addEventListener("submit", formHandler);
+
+        this._listeners.push({
+            target: this.DOM.form,
+            event: "submit",
+            handler: formHandler,
         });
     }
 
     handleValidation() {
-        if (this.onSubmit) {
-            this.onSubmit();
-        }
+        if (this.onSubmit) this.onSubmit();
 
         const invalidFields = this.validateAllFields();
 
         if (invalidFields.length === 0) {
-            if (this.onComplete) {
-                this.onComplete();
-            }
+            if (this.onComplete) this.onComplete();
         } else {
-            if (this.onError) {
-                this.onError(invalidFields);
-            }
+            if (this.onError) this.onError(invalidFields);
         }
+    }
+
+    // ---------------- DESTROY ----------------
+    destroy() {
+        // Remove all listeners
+        this._listeners.forEach(({ target, event, handler }) => {
+            target.removeEventListener(event, handler);
+        });
+
+        this._listeners = [];
+
+        // Optional: clear DOM references if desired
+        // this.DOM = null;
+
+        // Optional: clear callbacks
+        // this.onSubmit = null;
+        // this.onComplete = null;
+        // this.onError = null;
     }
 }
 
