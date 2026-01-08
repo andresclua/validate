@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         minLength: "User Name must be at least 3 characters long.",
                     },
                 },
-                on: null, // Desactivar la validación en blur
+                on: null,
             },
             {
                 element: document.querySelector("#user_email"),
@@ -82,7 +82,25 @@ document.addEventListener("DOMContentLoaded", () => {
                         required: "Email cannot be empty.",
                     },
                 },
-                on: null, // Desactivar la validación en blur
+                on: null, 
+            },
+            {
+                element: document.querySelector("#skills"),
+                validationFunction: "isSelect",
+                config: { required: true },
+                on: null,
+            },
+            {
+    
+                elements: document.querySelectorAll("#clickForm .click-group"),
+                validationFunction: "isCheckbox",
+                config: {
+                    minRequired: 2,
+                    customMessage: { 
+                        minRequired: "At least two options must be selected." 
+                    },
+                },
+                on: null,
             },
         ],
         onSubmit: () => {

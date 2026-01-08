@@ -165,10 +165,10 @@ select:-webkit-autofill:focus {
     column-gap:20px;
     row-gap:20px;
     justify-content: center;
-    background:gainsboro;
+    background:white;
+     border: 1px solid #ccc;
     &--error{
       border-color: red;
-      background-color: #ec8f8f;
     }
     &--valid{
       border-color: green;

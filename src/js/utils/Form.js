@@ -1,224 +1,260 @@
 import {
-    isString,
-    isEmail,
-    isNumber,
-    isSelect,
-    isCheckbox,
-    isRadio,
-    isFile,
+  isString,
+  isEmail,
+  isNumber,
+  isSelect,
+  isCheckbox,
+  isRadio,
+  isFile,
 } from "@andresclua/validate";
 
 class Form {
-    constructor({
-        element,
-        fields,
-        submitButtonSelector = null,
-        onSubmit = null,
-        onComplete = null,
-        onError = null,
-        validators = {},
-    }) {
-        if (!element) throw new Error("A form element is required.");
+  constructor({
+    element,
+    fields,
+    submitButtonSelector = null,
+    onSubmit = null,
+    onComplete = null,
+    onError = null,
+    validators = {},
+  }) {
+    if (!element) throw new Error("A form element is required.");
 
-        // ---------- CONFIG ----------
-        this.fields = fields;
-        this.onSubmit = onSubmit;
-        this.onComplete = onComplete;
-        this.onError = onError;
+    // ---------- CONFIG ----------
+    this.fields = fields || [];
+    this.onSubmit = onSubmit;
+    this.onComplete = onComplete;
+    this.onError = onError;
 
-        // ---------- DOM ----------
-        this.DOM = {
-            form: element,
-            submitButton: submitButtonSelector
-                ? document.querySelector(submitButtonSelector)
-                : null,
-        };
+    // ---------- DOM ----------
+    this.DOM = {
+      form: element,
+      // scoped to the form (important when multiple forms exist)
+      submitButton: submitButtonSelector ? element.querySelector(submitButtonSelector) : null,
+    };
 
-        // ---------- VALIDATORS ----------
-        this.validators = {
-            isString,
-            isEmail,
-            isNumber,
-            isSelect,
-            isCheckbox,
-            isRadio,
-            isFile,
-            ...validators,
-        };
+    // ---------- VALIDATORS ----------
+    this.validators = {
+      isString,
+      isEmail,
+      isNumber,
+      isSelect,
+      isCheckbox,
+      isRadio,
+      isFile,
+      ...validators,
+    };
 
-        // Track listeners to remove them later
-        this._listeners = [];
+    // Track listeners to remove them later
+    this._listeners = [];
 
-        // ---------- INIT / EVENTS ----------
-        this.init();
-        this.events();
+    // ---------- INIT / EVENTS ----------
+    this.init();
+    this.events();
+  }
+
+  // ---------------- INIT ----------------
+  init() {
+    this.initializeFields();
+  }
+
+  // ---------------- EVENTS ----------------
+  events() {
+    this.initializeSubmit();
+  }
+
+  // ---------------- VALIDATOR RESOLUTION ----------------
+  getValidator(validationFunction) {
+    if (typeof validationFunction === "function") return validationFunction;
+
+    if (typeof validationFunction === "string") {
+      const fn = this.validators[validationFunction];
+      if (!fn) throw new Error(`Validator "${validationFunction}" is not registered.`);
+      return fn;
     }
 
-    // ---------------- INIT ----------------
-    init() {
-        this.initializeFields();
+    throw new Error("validationFunction must be a function or a string key.");
+  }
+
+  // --------- CORE: run a field (single/group/file) ---------
+  runField(field) {
+    const { element, elements, validationFunction, config } = field;
+    const validator = this.getValidator(validationFunction);
+
+    // GROUP: checkbox/radio (NodeList)
+    if (elements) {
+      const result = validator({ elements, config });
+      this.updateFieldState(field, result);
+      return result;
     }
 
-    // ---------------- EVENTS ----------------
-    events() {
-        this.initializeSubmit();
+    if (!(element instanceof Element)) {
+      throw new Error("Field must include `element` (DOM Element) or `elements` (NodeList).");
     }
 
-    // ---------------- VALIDATOR RESOLUTION ----------------
-    getValidator(validationFunction) {
-        if (typeof validationFunction === "function") return validationFunction;
-
-        if (typeof validationFunction === "string") {
-            const fn = this.validators[validationFunction];
-            if (!fn) throw new Error(`Validator "${validationFunction}" is not registered.`);
-            return fn;
-        }
-
-        throw new Error("validationFunction must be a function or a string key.");
+    // FILE: pass File object (not .value string)
+    if (element.tagName === "INPUT" && element.type === "file") {
+      const file = element.files?.[0] || null;
+      const result = validator({ element: file, config });
+      this.updateFieldState(field, result);
+      return result;
     }
 
-    // ---------------- FIELDS ----------------
-    initializeFields() {
-        this.fields.forEach((field) => {
-            const { element, validationFunction, config, on } = field;
+    // DEFAULT: input/select -> pass string value
+    const result = validator({ element: element.value, config });
+    this.updateFieldState(field, result);
+    return result;
+  }
 
-            if (!element) throw new Error("Each field must have an element.");
-            if (!validationFunction) throw new Error("A validation function is required.");
+  // ---------------- FIELDS ----------------
+  initializeFields() {
+    this.fields.forEach((field) => {
+      const { element, elements, on } = field;
 
-            const validator = this.getValidator(validationFunction);
-            const eventType = on || "blur";
+      // If on === null -> do not attach listeners (validate only on submit)
+      if (on === null) return;
 
-            const handler = () => {
-                const result = validator({
-                    element: element.value,
-                    config,
-                });
-                this.updateFieldState(element, result);
-            };
+      const eventType = on || "blur";
 
-            element.addEventListener(eventType, handler);
+      // For groups, attach listener to first element (cheap) OR you can attach to each checkbox/radio if desired.
+      const target = element || (elements && elements[0]);
+      if (!target) throw new Error("Each field must have `element` or `elements`.");
 
-            // Store reference for destroy()
-            this._listeners.push({
-                target: element,
-                event: eventType,
-                handler,
-            });
+      const handler = () => this.runField(field);
+
+      target.addEventListener(eventType, handler);
+      this._listeners.push({ target, event: eventType, handler });
+    });
+  }
+
+  // ---------------- UI UPDATE ----------------
+  updateFieldState(field, result) {
+    const { element, elements } = field;
+
+    const baseEl = element || (elements && elements[0]);
+    if (!(baseEl instanceof Element)) return;
+
+    // Error span lives in the closest form group
+    const formGroup = baseEl.closest(".c--form-group-a");
+    let errorSpan = formGroup?.querySelector(".c--form-error-a");
+
+    // Create error span if missing
+    if (!errorSpan && formGroup) {
+      errorSpan = document.createElement("span");
+      errorSpan.classList.add("c--form-error-a");
+      errorSpan.style.display = "none";
+      formGroup.appendChild(errorSpan);
+    }
+
+    // GROUPS (checkbox/radio): your pattern is "only span"
+    if (elements) {
+      if (errorSpan) {
+        errorSpan.textContent = result.isValid ? "" : result.errorMessage;
+        errorSpan.style.display = result.isValid ? "none" : "block";
+      }
+      return;
+    }
+
+    // SINGLE FIELDS: wrapper + modifiers, parallel per control type
+    let wrapper = null;
+    let baseClass = null;
+
+    if (baseEl.tagName === "SELECT") {
+      wrapper = baseEl.closest(".c--form-select-a");
+      baseClass = "c--form-select-a";
+    } else if (baseEl.tagName === "INPUT" && baseEl.type === "file") {
+      wrapper = baseEl.closest(".c--form-file-a");
+      baseClass = "c--form-file-a";
+    } else {
+      wrapper = baseEl.closest(".c--form-input-a");
+      baseClass = "c--form-input-a";
+    }
+
+    if (!wrapper || !baseClass) return;
+
+    const errorClass = `${baseClass}--error`;
+    const validClass = `${baseClass}--valid`;
+
+    if (result.isValid) {
+      wrapper.classList.remove(errorClass);
+      wrapper.classList.add(validClass);
+
+      if (errorSpan) {
+        errorSpan.textContent = "";
+        errorSpan.style.display = "none";
+      }
+    } else {
+      wrapper.classList.add(errorClass);
+      wrapper.classList.remove(validClass);
+
+      if (errorSpan) {
+        errorSpan.textContent = result.errorMessage;
+        errorSpan.style.display = "block";
+      }
+    }
+  }
+
+  // ---------------- VALIDATE ALL ----------------
+  validateAllFields() {
+    const invalidFields = [];
+
+    this.fields.forEach((field) => {
+      const result = this.runField(field);
+
+      if (!result?.isValid) {
+        invalidFields.push({
+          field,
+          errorMessage: result?.errorMessage || "Invalid field",
         });
+      }
+    });
+
+    return invalidFields;
+  }
+
+  // ---------------- SUBMIT ----------------
+  initializeSubmit() {
+    // Optional: click submit button
+    if (this.DOM.submitButton) {
+      const handler = (event) => {
+        event.preventDefault();
+        this.handleValidation();
+      };
+
+      this.DOM.submitButton.addEventListener("click", handler);
+      this._listeners.push({ target: this.DOM.submitButton, event: "click", handler });
     }
 
-    updateFieldState(element, result) {
-        const wrapper = element.closest(".c--form-input-a");
-        const formGroup = element.closest(".c--form-group-a");
-        let errorSpan = formGroup?.querySelector(".c--form-error-a");
+    // Always listen to form submit (covers enter key)
+    const formHandler = (event) => {
+      event.preventDefault();
+      this.handleValidation();
+    };
 
-        if (!errorSpan && formGroup) {
-            errorSpan = document.createElement("span");
-            errorSpan.classList.add("c--form-error-a");
-            errorSpan.style.display = "none";
-            formGroup.appendChild(errorSpan);
-        }
+    this.DOM.form.addEventListener("submit", formHandler);
+    this._listeners.push({ target: this.DOM.form, event: "submit", handler: formHandler });
+  }
 
-        if (result.isValid) {
-            wrapper?.classList.remove("c--form-input-a--error");
-            wrapper?.classList.add("c--form-input-a--valid");
+  handleValidation() {
+    if (this.onSubmit) this.onSubmit();
 
-            if (errorSpan) {
-                errorSpan.textContent = "";
-                errorSpan.style.display = "none";
-            }
-        } else {
-            wrapper?.classList.add("c--form-input-a--error");
-            wrapper?.classList.remove("c--form-input-a--valid");
+    const invalidFields = this.validateAllFields();
 
-            if (errorSpan) {
-                errorSpan.textContent = result.errorMessage;
-                errorSpan.style.display = "block";
-            }
-        }
+    if (invalidFields.length === 0) {
+      if (this.onComplete) this.onComplete();
+    } else {
+      if (this.onError) this.onError(invalidFields);
     }
+  }
 
-    validateAllFields() {
-        const invalidFields = [];
+  // ---------------- DESTROY ----------------
+  destroy() {
+    this._listeners.forEach(({ target, event, handler }) => {
+      target.removeEventListener(event, handler);
+    });
 
-        this.fields.forEach((field) => {
-            const { element, validationFunction, config } = field;
-            const validator = this.getValidator(validationFunction);
-
-            const result = validator({
-                element: element.value,
-                config,
-            });
-
-            this.updateFieldState(element, result);
-
-            if (!result.isValid) {
-                invalidFields.push({ element, errorMessage: result.errorMessage });
-            }
-        });
-
-        return invalidFields;
-    }
-
-    initializeSubmit() {
-        if (this.DOM.submitButton) {
-            const handler = (event) => {
-                event.preventDefault();
-                this.handleValidation();
-            };
-
-            this.DOM.submitButton.addEventListener("click", handler);
-
-            this._listeners.push({
-                target: this.DOM.submitButton,
-                event: "click",
-                handler,
-            });
-        }
-
-        const formHandler = (event) => {
-            event.preventDefault();
-            this.handleValidation();
-        };
-
-        this.DOM.form.addEventListener("submit", formHandler);
-
-        this._listeners.push({
-            target: this.DOM.form,
-            event: "submit",
-            handler: formHandler,
-        });
-    }
-
-    handleValidation() {
-        if (this.onSubmit) this.onSubmit();
-
-        const invalidFields = this.validateAllFields();
-
-        if (invalidFields.length === 0) {
-            if (this.onComplete) this.onComplete();
-        } else {
-            if (this.onError) this.onError(invalidFields);
-        }
-    }
-
-    // ---------------- DESTROY ----------------
-    destroy() {
-        // Remove all listeners
-        this._listeners.forEach(({ target, event, handler }) => {
-            target.removeEventListener(event, handler);
-        });
-
-        this._listeners = [];
-
-        // Optional: clear DOM references if desired
-        // this.DOM = null;
-
-        // Optional: clear callbacks
-        // this.onSubmit = null;
-        // this.onComplete = null;
-        // this.onError = null;
-    }
+    this._listeners = [];
+  }
 }
 
 export default Form;

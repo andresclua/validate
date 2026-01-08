@@ -43,7 +43,7 @@
                     <hr class="u--mb-3">
 
                     <form id="submitForm">
-                        <h3 class="f--mb-3 f--mt-3">2 fields validation on Submit</h3>
+                        <h3 class="f--mb-3 f--mt-3">4 fields validation on Submit</h3>
                         <div class="c--form-group-a">
                             <label class="c--label-a" for="user_name">User Name</label>
                             <div class="c--form-input-a">
@@ -57,6 +57,34 @@
                                 <input class="c--form-input-a__item" type="email" id="user_email" />
                             </div>
                         </div>
+
+                        <div class="c--form-group-a">
+                            <label class="c--label-a" for="Skills">Skills</label>
+                            <div class="c--form-select-a">
+                                <select id="skills" class="c--form-select-a__item">
+                                    <option value="">Select a skill</option>
+                                    <option value="frontend">Frontend</option>
+                                    <option value="backend">Backend</option>
+                                    <option value="marketing">Marketing</option>
+                                </select>
+                            </div>  
+                        </div>
+
+                        <div class="c--form-group-a" id="clickForm">
+                            <div class="c--form-checkbox-a">
+                                <input type="checkbox" id="item-4" class="c--form-checkbox-a__item click-group">
+                                <label class="c--form-checkbox-a__title" for="item-4">Coffee</label>
+                            </div>
+                            <div class="c--form-checkbox-a">
+                                <input type="checkbox" id="item-5" class="c--form-checkbox-a__item click-group">
+                                <label class="c--form-checkbox-a__title" for="item-5">Tea</label>
+                            </div>
+                            <div class="c--form-checkbox-a">
+                                <input type="checkbox" id="item-6" class="c--form-checkbox-a__item click-group">
+                                <label class="c--form-checkbox-a__title" for="item-6">Chocolate</label>
+                            </div>
+                        </div>
+
                         <button type="submit" class="submit">Submit</button>
                     </form>
   
