@@ -1,36 +1,20 @@
-import {
-  isString,
-  isEmail,
-  isNumber,
-  isSelect,
-  isCheckbox,
-  isRadio,
-  isFile,
-} from "@andresclua/validate";
+import { isString, isEmail, isNumber, isSelect, isCheckbox, isRadio, isFile } from "@andresclua/validate";
 
 class Form {
-  constructor({
-    element,
-    fields,
-    submitButtonSelector = null,
-    onSubmit = null,
-    onComplete = null,
-    onError = null,
-    validators = {},
-  }) {
+  constructor({ element, fields, submitButtonSelector = null, beforeSubmit = null, onSubmit = null, onError = null, validators = {} }) {
     if (!element) throw new Error("A form element is required.");
 
     // ---------- CONFIG ----------
     this.fields = fields || [];
+    this.beforeSubmit = beforeSubmit;
     this.onSubmit = onSubmit;
-    this.onComplete = onComplete;
     this.onError = onError;
 
     // ---------- DOM ----------
     this.DOM = {
       form: element,
       // scoped to the form (important when multiple forms exist)
-      submitButton: submitButtonSelector ? element.querySelector(submitButtonSelector) : null,
+      submitButton: this.resolveSubmitButton(element, submitButtonSelector),
     };
 
     // ---------- VALIDATORS ----------
@@ -236,15 +220,35 @@ class Form {
   }
 
   handleValidation() {
-    if (this.onSubmit) this.onSubmit();
+    // beforeSubmit can return false to cancel submission
+    if (this.beforeSubmit) {
+      const shouldContinue = this.beforeSubmit();
+      if (shouldContinue === false) return;
+    }
 
     const invalidFields = this.validateAllFields();
 
     if (invalidFields.length === 0) {
-      if (this.onComplete) this.onComplete();
+      if (this.onSubmit) this.onSubmit();
     } else {
       if (this.onError) this.onError(invalidFields);
     }
+  }
+
+  resolveSubmitButton(formEl, submitButtonSelector) {
+    if (!submitButtonSelector) return null;
+
+    // Ya es un Element
+    if (submitButtonSelector instanceof Element) {
+      return submitButtonSelector;
+    }
+
+    // Es un selector string (scoped al form)
+    if (typeof submitButtonSelector === "string") {
+      return formEl.querySelector(submitButtonSelector);
+    }
+
+    throw new Error("submitButtonSelector must be a selector string or a DOM Element.");
   }
 
   // ---------------- DESTROY ----------------

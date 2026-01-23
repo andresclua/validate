@@ -15,8 +15,8 @@ new Form({
   element: formElement,
   fields: [...],
   submitButtonSelector: ".submit-button",
-  onSubmit: () => console.log("Validating..."),
-  onComplete: () => console.log("Form is valid!"),
+  beforeSubmit: () => console.log("Before validation..."),
+  onSubmit: () => console.log("Form is valid!"),
   onError: (invalidFields) => console.error("Errors:", invalidFields),
 });
 ```
@@ -28,8 +28,8 @@ new Form({
 | `element`              | Yes      | The `<form>` element to validate                                                       |
 | `fields`               | Yes      | Array of field configurations  (see below)                                                        |
 | `submitButtonSelector` | No       | CSS selector for a custom submit button. If omitted, the form's `submit` event is used |
-| `onSubmit`             | No       | Called whenever validation is triggered (before checking fields)                       |
-| `onComplete`           | No       | Called if **all** fields are valid                                                     |
+| `beforeSubmit`         | No       | Called before validation starts. Return `false` to cancel the submission               |
+| `onSubmit`             | No       | Called if **all** fields are valid                                                     |
 | `onError`              | No       | Called with an array of invalid fields if any field is invalid                         |
 
 ### Field Configurations
@@ -116,8 +116,8 @@ new Form({
         },
   ],
   submitButtonSelector: ".submit-button",
-  onSubmit: () => console.log("Validating..."),
-  onComplete: () => console.log("Form is valid!"),
+  beforeSubmit: () => console.log("Before validation..."),
+  onSubmit: () => console.log("Form is valid!"),
   onError: (invalidFields) => console.error("Errors:", invalidFields),
 });
 ```
@@ -158,8 +158,8 @@ class Form {
     element,
     fields,
     submitButtonSelector = null,
+    beforeSubmit = null,
     onSubmit = null,
-    onComplete = null,
     onError = null,
     validators = {},
   }) {
@@ -167,8 +167,8 @@ class Form {
 
     // ---------- CONFIG ----------
     this.fields = fields || [];
+    this.beforeSubmit = beforeSubmit;
     this.onSubmit = onSubmit;
-    this.onComplete = onComplete;
     this.onError = onError;
 
     // ---------- DOM ----------
@@ -381,12 +381,16 @@ class Form {
   }
 
   handleValidation() {
-    if (this.onSubmit) this.onSubmit();
+    // beforeSubmit can return false to cancel submission
+    if (this.beforeSubmit) {
+      const shouldContinue = this.beforeSubmit();
+      if (shouldContinue === false) return;
+    }
 
     const invalidFields = this.validateAllFields();
 
     if (invalidFields.length === 0) {
-      if (this.onComplete) this.onComplete();
+      if (this.onSubmit) this.onSubmit();
     } else {
       if (this.onError) this.onError(invalidFields);
     }
@@ -407,6 +411,6 @@ export default Form;
 ```
 
 
-This is the complete validation method, which executes the appropriate callbacks (onSubmit, onComplete, or onError) based on the validation results. If there are no invalid fields, the onComplete callback is executed. If there are invalid fields, the onError callback is executed, passing the array of invalid fields as an argument.
+This is the complete validation method, which executes the appropriate callbacks (beforeSubmit, onSubmit, or onError) based on the validation results. First, `beforeSubmit` is called - if it returns `false`, the submission is cancelled. Then validation runs. If there are no invalid fields, the `onSubmit` callback is executed. If there are invalid fields, the `onError` callback is executed, passing the array of invalid fields as an argument.
 
 The export default Form; line at the end exports the Form class as the default export, allowing other modules to import it using the default import syntax.

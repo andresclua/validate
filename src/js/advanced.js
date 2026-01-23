@@ -37,10 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 on: "blur",
             },
         ],
-        onSubmit: () => {
-            console.log("Submit button clicked. Validating fields...");
+        beforeSubmit: () => {
+            console.log("Before submit: Validating fields...");
         },
-        onComplete: () => {
+        onSubmit: () => {
             console.log("All fields are valid! Form is ready to be submitted.");
         },
         onError: (invalidFields) => {
@@ -103,12 +103,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 on: null,
             },
         ],
-        onSubmit: () => {
-            console.log("Submit button clicked. Validating fields.. coco.");
+        beforeSubmit: () => {
+            console.log("Before submit: Validating fields...");
         },
-        onComplete: () => {
+        onSubmit: () => {
             console.log("All fields are valid! Form is ready to be submitted.");
-            tucollapsify.open("content02");
         },
         onError: (invalidFields) => {
             console.error("Form contains errors:", invalidFields);
