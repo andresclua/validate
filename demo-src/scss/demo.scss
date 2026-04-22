@@ -4,13 +4,21 @@
 
 // ─── 1. CSS Custom Properties ───────────────────────────────
 :root {
-  --red:     #e60000;
-  --charcoal:#25282b;
-  --dark:    #1e1e1e;
-  --nav:     #2d2d2d;
-  --border:  #3a3a3a;
-  --text:    #d4d4d4;
-  --muted:   #7e7e7e;
+  --red:       #e60000;
+  --red-dark:  #cc0000;
+  --charcoal:  #25282b;
+  --dark:      #1e1e1e;
+  --nav:       #2d2d2d;
+  --border:    #3a3a3a;
+  --text:      #d4d4d4;
+  --muted:     #7e7e7e;
+  --sidebar:   #1a1a1a;
+  --surface:   #252525;
+  --success:   #4ec94e;
+  --white:     #ffffff;
+  --subtle:    #888888;
+  --faint:     #555555;
+  --topnav-h:  48px;
 }
 
 // ─── 2. Reset / Base ────────────────────────────────────────
@@ -20,6 +28,16 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+input, button, select, textarea {
+  font-family: inherit;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
 }
 
 body {
@@ -34,7 +52,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 48px;
+  height: var(--topnav-h);
   background: var(--dark);
   border-bottom: 1px solid var(--border);
   z-index: 100;
@@ -44,7 +62,7 @@ body {
   padding: 0 24px;
 
   &__logo {
-    color: white;
+    color: var(--white);
     font-size: 13px;
     font-weight: 700;
     text-decoration: none;
@@ -55,7 +73,7 @@ body {
 
   &__badge {
     background: var(--red);
-    color: white;
+    color: var(--white);
     font-size: 9px;
     font-weight: 700;
     padding: 2px 7px;
@@ -71,7 +89,7 @@ body {
   }
 
   &__link {
-    color: #888;
+    color: var(--subtle);
     font-size: 11px;
     text-decoration: none;
 
@@ -82,7 +100,7 @@ body {
 
   &__cta {
     background: var(--red);
-    color: white;
+    color: var(--white);
     font-size: 10px;
     font-weight: 600;
     padding: 5px 14px;
@@ -90,7 +108,7 @@ body {
     text-decoration: none;
 
     &:hover {
-      background: #cc0000;
+      background: var(--red-dark);
     }
   }
 }
@@ -98,20 +116,20 @@ body {
 // ─── 4. Layout ──────────────────────────────────────────────
 .layout {
   display: flex;
-  margin-top: 48px;
-  min-height: calc(100vh - 48px);
+  margin-top: var(--topnav-h);
+  min-height: calc(100vh - var(--topnav-h));
 }
 
 // ─── 5. Sidebar ─────────────────────────────────────────────
 .sidebar {
   width: 220px;
   flex-shrink: 0;
-  background: #1a1a1a;
+  background: var(--sidebar);
   border-right: 1px solid var(--border);
   overflow-y: auto;
   position: sticky;
-  top: 48px;
-  height: calc(100vh - 48px);
+  top: var(--topnav-h);
+  height: calc(100vh - var(--topnav-h));
   padding: 20px 0;
 
   &__group-label {
@@ -131,7 +149,7 @@ body {
 
   &__item {
     display: block;
-    color: #888;
+    color: var(--subtle);
     font-size: 11px;
     padding: 5px 16px;
     text-decoration: none;
@@ -142,7 +160,7 @@ body {
     }
 
     &--active {
-      color: white;
+      color: var(--white);
       font-weight: 600;
       border-left: 2px solid var(--red);
       padding-left: 14px;
@@ -160,7 +178,7 @@ body {
     cursor: pointer;
 
     &:hover {
-      color: #888;
+      color: var(--subtle);
     }
 
     &--active {
@@ -185,6 +203,7 @@ body {
 // ─── 6. Content Area ────────────────────────────────────────
 .content {
   flex: 1;
+  min-width: 0;
   overflow-y: auto;
   padding: 28px 32px;
   max-width: 760px;
@@ -192,7 +211,7 @@ body {
 
 // ─── 7. Breadcrumb ──────────────────────────────────────────
 .breadcrumb {
-  color: #555;
+  color: var(--faint);
   font-size: 10px;
   font-family: monospace;
   margin-bottom: 14px;
@@ -208,7 +227,7 @@ body {
 
 // ─── 8. Page Title ──────────────────────────────────────────
 .page-title {
-  color: white;
+  color: var(--white);
   font-size: 22px;
   font-weight: 800;
   margin-bottom: 6px;
@@ -229,54 +248,54 @@ body {
   border-radius: 6px;
   overflow: hidden;
   margin-bottom: 16px;
-}
 
-.code-tabs {
-  background: var(--nav);
-  display: flex;
-  border-bottom: 1px solid var(--border);
-}
-
-.code-tab {
-  color: #555;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 8px 14px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-
-  &:hover {
-    color: #888;
+  &__tabs {
+    background: var(--nav);
+    display: flex;
+    border-bottom: 1px solid var(--border);
   }
 
-  &--active {
-    color: white;
-    border-bottom-color: var(--red);
+  &__tab {
+    color: var(--faint);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+
+    &:hover {
+      color: var(--subtle);
+    }
+
+    &--active {
+      color: var(--white);
+      border-bottom-color: var(--red);
+    }
   }
-}
 
-.code-content {
-  display: none;
+  &__content {
+    display: none;
 
-  &--active {
-    display: block;
+    &--active {
+      display: block;
+    }
   }
-}
 
-.code-pre {
-  padding: 18px 20px;
-  color: var(--text);
-  font-size: 12px;
-  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
-  line-height: 1.65;
-  margin: 0;
-  overflow-x: auto;
-  white-space: pre;
+  &__pre {
+    padding: 18px 20px;
+    color: var(--text);
+    font-size: 12px;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+    line-height: 1.65;
+    margin: 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
 }
 
 // ─── 11. Playground ─────────────────────────────────────────
@@ -291,7 +310,7 @@ body {
     background: var(--nav);
     padding: 8px 14px;
     border-bottom: 1px solid var(--border);
-    color: #888;
+    color: var(--subtle);
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -316,7 +335,7 @@ body {
 }
 
 .pg-input {
-  background: #252525;
+  background: var(--surface);
   border: 1px solid #444;
   border-radius: 4px;
   padding: 8px 12px;
@@ -325,9 +344,9 @@ body {
   width: 100%;
   display: block;
   outline: none;
-  font-family: 'Inter', sans-serif;
 
-  &:focus {
+  &:focus,
+  &:focus-visible {
     border-color: var(--red);
   }
 
@@ -337,7 +356,7 @@ body {
   }
 
   &.is-valid {
-    border-color: #4ec94e;
+    border-color: var(--success);
   }
 }
 
@@ -353,7 +372,7 @@ body {
 }
 
 .pg-valid {
-  color: #4ec94e;
+  color: var(--success);
   font-size: 11px;
   margin-top: 4px;
   display: none;
@@ -371,31 +390,25 @@ body {
 
 .pg-btn {
   background: var(--red);
-  color: white;
+  color: var(--white);
   font-size: 11px;
   font-weight: 600;
   padding: 7px 18px;
   border-radius: 60px;
   border: none;
   cursor: pointer;
-  font-family: 'Inter', sans-serif;
 
   &:hover {
-    background: #cc0000;
+    background: var(--red-dark);
   }
 
   &--ghost {
     background: transparent;
     border: 1px solid var(--border);
-    color: #888;
-    font-size: 11px;
-    padding: 7px 18px;
-    border-radius: 60px;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
+    color: var(--subtle);
 
     &:hover {
-      border-color: #555;
+      border-color: var(--faint);
       color: #aaa;
     }
   }
@@ -410,12 +423,12 @@ body {
   border-top: 1px solid #333;
 
   &__prev {
-    color: #555;
+    color: var(--faint);
     font-size: 11px;
     text-decoration: none;
 
     &:hover {
-      color: #888;
+      color: var(--subtle);
     }
   }
 
@@ -426,7 +439,7 @@ body {
     text-decoration: none;
 
     &:hover {
-      color: #ff1a1a;
+      color: var(--red-dark);
     }
   }
 }
