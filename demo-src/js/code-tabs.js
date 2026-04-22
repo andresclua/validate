@@ -18,6 +18,13 @@ export function initCodeTabs() {
     const tabs = block.querySelectorAll('.code-block__tab')
     const panels = block.querySelectorAll('.code-block__content')
 
+    // Auto-activate the first tab if none is already active
+    const activeTab = block.querySelector('.code-block__tab--active')
+    if (!activeTab && tabs.length > 0) {
+      tabs[0].classList.add('code-block__tab--active')
+      if (panels[0]) panels[0].classList.add('code-block__content--active')
+    }
+
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const targetTab = tab.dataset.tab

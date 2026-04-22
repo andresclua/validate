@@ -16,6 +16,7 @@
  * @param {string}  message  - The error message to display
  */
 export function showError(inputEl, errorEl, message) {
+  if (!inputEl || !errorEl) return
   inputEl.classList.add('is-error')
   inputEl.classList.remove('is-valid')
 
@@ -31,6 +32,7 @@ export function showError(inputEl, errorEl, message) {
  * @param {Element} [errorEl] - The .pg-error element to hide (optional)
  */
 export function showValid(inputEl, validEl, errorEl) {
+  if (!inputEl) return
   inputEl.classList.add('is-valid')
   inputEl.classList.remove('is-error')
 
@@ -50,6 +52,7 @@ export function showValid(inputEl, validEl, errorEl) {
  * @param {Element} [validEl] - The .pg-valid element for this field (optional)
  */
 export function clearState(inputEl, errorEl, validEl) {
+  if (!inputEl) return
   inputEl.classList.remove('is-error', 'is-valid')
 
   if (errorEl) {

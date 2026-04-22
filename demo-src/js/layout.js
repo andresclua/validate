@@ -12,6 +12,8 @@ function normalizePath(path) {
   if (path.endsWith('/')) {
     path = path + 'index.html'
   }
+  // Extensionless path → add .html
+  if (!path.includes('.')) path = path + '.html'
   return path
 }
 
@@ -69,18 +71,20 @@ function buildSidebar(currentPath) {
           child => normalizePath(child.href) === currentPath
         )
 
-        const parentEl = document.createElement('a')
+        const parentEl = document.createElement('div')
         parentEl.className = 'sidebar__item'
         parentEl.textContent = item.label
-        // No href for parent items that are just labels for their group
         if (childIsActive) {
           parentEl.classList.add('sidebar__item--active')
         }
         aside.appendChild(parentEl)
 
-        // Subitems container
+        // Subitems container — hidden by default, shown when a child is active
         const subContainer = document.createElement('div')
         subContainer.className = 'sidebar__subitems'
+        if (childIsActive) {
+          subContainer.classList.add('sidebar__subitems--open')
+        }
 
         item.children.forEach(child => {
           const subEl = document.createElement('a')

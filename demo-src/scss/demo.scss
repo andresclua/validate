@@ -167,6 +167,14 @@ body {
     }
   }
 
+  &__subitems {
+    display: none;
+
+    &--open {
+      display: block;
+    }
+  }
+
   &__subitem {
     display: flex;
     align-items: center;
