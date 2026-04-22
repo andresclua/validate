@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introduction | @andresclua/validate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script type="module" src="./js/index.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">getting started <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">introduction</span></p>
+
+    <h1 class="page-title">@andresclua/validate</h1>
+    <p class="page-desc">A lightweight, zero-dependency form validation library for vanilla JavaScript. Validate email, number, string, select, checkbox, radio, and file inputs with a consistent API.</p>
+
+    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">Why use validate?</h2>
+    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+      Most form validation libraries are bloated with features you don't need. <code style="background: var(--dark); padding: 2px 6px; border-radius: 3px; color: var(--text); font-family: monospace;">@andresclua/validate</code> gives you a simple, chainable API for validating form inputs without any dependencies.
+    </p>
+
+    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">What you get</h2>
+    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 12px;">The library provides specialized validators for each form input type:</p>
+
+    <ul style="color: var(--muted); font-size: 13px; line-height: 1.8; margin-left: 20px; margin-bottom: 16px;">
+      <li><strong style="color: var(--text);">isEmail()</strong> — Email format validation with domain checks and async support</li>
+      <li><strong style="color: var(--text);">isNumber()</strong> — Numeric validation with range, positive/negative, and integer-only options</li>
+      <li><strong style="color: var(--text);">isString()</strong> — String validation with length constraints and pattern matching (regex)</li>
+      <li><strong style="color: var(--text);">isSelect()</strong> — Validate select/dropdown elements for required selection</li>
+      <li><strong style="color: var(--text);">isCheckbox()</strong> — Checkbox validation with minimum selection requirements</li>
+      <li><strong style="color: var(--text);">isRadio()</strong> — Radio button validation ensuring a selection is made</li>
+      <li><strong style="color: var(--text);">isFile()</strong> — File validation with type and size restrictions</li>
+    </ul>
+
+    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">Getting started</h2>
+    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+      Start with the <a href="/installation.html" style="color: var(--red); text-decoration: none;">installation guide</a> to add validate to your project. Then explore each validator type to learn how to use it with your forms.
+    </p>
+
+    <nav class="page-nav">
+      <span></span>
+      <a href="/installation.html" class="page-nav__next">Installation →</a>
+    </nav>
+  </body>
+</html>

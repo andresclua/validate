@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Installation | @andresclua/validate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script type="module" src="./js/installation.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">getting started <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">installation</span></p>
+
+    <h1 class="page-title">Installation</h1>
+    <p class="page-desc">Install @andresclua/validate from npm and get started with form validation in seconds.</p>
+
+    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">npm</h2>
+    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 12px;">Install the package using npm:</p>
+
+    <div class="code-block">
+      <pre class="code-block__pre">npm install @andresclua/validate</pre>
+    </div>
+
+    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">Basic usage</h2>
+    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 12px;">Import a validator and use it on your form inputs:</p>
+
+    <div class="code-block">
+      <pre class="code-block__pre">import { isEmail } from '@andresclua/validate'
+
+const emailInput = document.getElementById('email')
+const validation = isEmail(emailInput.value)
+
+if (validation.valid) {
+  console.log('Email is valid!')
+} else {
+  console.log('Error:', validation.message)
+}</pre>
+    </div>
+
+    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">CDN alternative</h2>
+    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 12px;">If you prefer not to use npm, you can use the UMD build directly in the browser:</p>
+
+    <div class="code-block">
+      <pre class="code-block__pre">&lt;script src="https://unpkg.com/@andresclua/validate/dist/validate.umd.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  const { isEmail } = window.validate
+  // Use isEmail...
+&lt;/script&gt;</pre>
+    </div>
+
+    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">What's next?</h2>
+    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+      Now that you have validate installed, explore the different validators. Start with <a href="/email/basic.html" style="color: var(--red); text-decoration: none;">email validation</a> or browse all available validators in the sidebar.
+    </p>
+
+    <nav class="page-nav">
+      <a href="/index.html" class="page-nav__prev">← Introduction</a>
+      <a href="/email/basic.html" class="page-nav__next">Email / Basic →</a>
+    </nav>
+  </body>
+</html>
