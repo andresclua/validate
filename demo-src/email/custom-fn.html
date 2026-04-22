@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>isEmail() — Custom Validation Function | @andresclua/validate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script type="module" src="../js/email/custom-fn.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">validators <span class="breadcrumb__sep">›</span> email <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">custom fn</span></p>
+
+    <h1 class="page-title">isEmail() — Custom Validation Function</h1>
+    <p class="page-desc">Add your own validation logic on top of the built-in email check.</p>
+
+    <div class="code-block">
+      <div class="code-block__tabs">
+        <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
+        <button class="code-block__tab" data-tab="html">HTML</button>
+        <button class="code-block__tab" data-tab="config">Config</button>
+      </div>
+      <div class="code-block__content code-block__content--active" data-tab="js">
+        <pre class="code-block__pre">import { isEmail } from '@andresclua/validate'
+
+const result = isEmail({
+    element: input.value,
+    config: {
+        required: true,
+        customValidation: (email) => {
+            const allowed = ['company.com', 'company.org']
+            const domain = email.split('@')[1]
+            return {
+                isValid: allowed.includes(domain),
+                errorMessage: 'Only company.com and company.org addresses are accepted'
+            }
+        }
+    }
+})</pre>
+      </div>
+      <div class="code-block__content" data-tab="html">
+        <pre class="code-block__pre">&lt;input type="email" id="email-input" placeholder="tu@company.com"&gt;</pre>
+      </div>
+      <div class="code-block__content" data-tab="config">
+        <pre class="code-block__pre">customValidation  Function  Custom validation logic
+  Returns: { isValid: boolean, errorMessage: string }</pre>
+      </div>
+    </div>
+
+    <div class="playground">
+      <div class="playground__header">Playground</div>
+      <div class="playground__body">
+        <div class="pg-group">
+          <label class="pg-label" for="email-input">Email</label>
+          <input class="pg-input" type="email" id="email-input" placeholder="tu@company.com">
+          <p class="pg-error" id="email-error"></p>
+          <p class="pg-valid" id="email-valid">✓ Valid email</p>
+        </div>
+        <div class="pg-actions">
+          <button class="pg-btn" id="validate-btn">Validate</button>
+          <button class="pg-btn pg-btn--ghost" id="reset-btn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="page-nav">
+      <a href="/email/custom-message.html" class="page-nav__prev">← Email / Custom message</a>
+      <a href="/email/async.html" class="page-nav__next">Email / Async →</a>
+    </nav>
+  </body>
+</html>
