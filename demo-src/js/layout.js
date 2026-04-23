@@ -86,6 +86,12 @@ function buildSidebar(currentPath) {
           subContainer.classList.add('sidebar__subitems--open')
         }
 
+        // Toggle expand/collapse on click
+        parentEl.style.cursor = 'pointer'
+        parentEl.addEventListener('click', () => {
+          subContainer.classList.toggle('sidebar__subitems--open')
+        })
+
         item.children.forEach(child => {
           const subEl = document.createElement('a')
           subEl.className = 'sidebar__subitem'
