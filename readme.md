@@ -1,5 +1,8 @@
-# Form Validation Library
-A lightweight JavaScript utility for validating form fields like email and username. This example demonstrates how to integrate and use the library to ensure inputs meet specified criteria.
+# @andresclua/validate
+
+A lightweight, framework-agnostic JavaScript validation library.
+
+**[→ Live docs & interactive examples at validate-andresclua.netlify.app](https://validate-andresclua.netlify.app)**
 
 ## Why Choose This Library?
 This validation library is designed with flexibility, modularity, and ease of use in mind. Here are the key reasons why it stands out:
@@ -66,22 +69,19 @@ document.querySelector("#email").addEventListener("blur", () => {
 
 ## Examples
 
-- [Validate Email](https://github.com/andresclua/validate/blob/main/docs/email.md) Learn how to validate email addresses with various rules and customizations.
+The interactive documentation site covers every validator with live playgrounds:
 
-- [Validate Number](https://github.com/andresclua/validate/blob/main/docs/number.md) Explore number validation, including range, positivity, and custom rules.
-
-- [Validate String](https://github.com/andresclua/validate/blob/main/docs/string.md) Explore String Validation, with configurable rules such as length, pattern matching.
-
-- [Validate Select](https://github.com/andresclua/validate/blob/main/docs/Select.md) Explore select Validation, with configurable rules such as required, pattern matching,etc.
-
-- [Validate Checkbox](https://github.com/andresclua/validate/blob/main/docs/checkbox.md) Explore checkbox Validation, with configurable rules such as required, pattern matching,etc.
-
-- [Validate Radio](https://github.com/andresclua/validate/blob/main/docs/radio.md) Explore Radio Validation, with configurable rules such as required, pattern matching,etc.
-
-- [Validate File](https://github.com/andresclua/validate/blob/main/docs/file.md) Explore RadFileio Validation, with configurable rules such as required, file format,etc.
-
+| Validator | Docs |
+|---|---|
+| Email | [validate-andresclua.netlify.app/email/basic.html](https://validate-andresclua.netlify.app/email/basic.html) |
+| Number | [validate-andresclua.netlify.app/number/basic.html](https://validate-andresclua.netlify.app/number/basic.html) |
+| String | [validate-andresclua.netlify.app/string/basic.html](https://validate-andresclua.netlify.app/string/basic.html) |
+| Select | [validate-andresclua.netlify.app/select/basic.html](https://validate-andresclua.netlify.app/select/basic.html) |
+| Checkbox | [validate-andresclua.netlify.app/checkbox/basic.html](https://validate-andresclua.netlify.app/checkbox/basic.html) |
+| Radio | [validate-andresclua.netlify.app/radio/basic.html](https://validate-andresclua.netlify.app/radio/basic.html) |
+| File | [validate-andresclua.netlify.app/file/basic.html](https://validate-andresclua.netlify.app/file/basic.html) |
 
 ## Do you need to validate an entire form?
 
-For a more robust solution suited to complex projects, refer to the [Validate form](https://github.com/andresclua/validate/blob/main/docs/advanced.md) documentation. You can also explore the src folder for clearer, more practical examples.
+Check out the [optional Form helper](https://validate-andresclua.netlify.app/advanced/form-helper.html) — a copy-paste class that wires multiple fields, blur events, and submit logic in one place.
 
