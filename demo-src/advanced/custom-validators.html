@@ -32,11 +32,16 @@ function isSpanishPhone(value) {
 }
 
 // Use it like any other validator
-const input = document.getElementById('phone').value
-const result = isSpanishPhone(input)
+const result = isSpanishPhone(phoneInput.value)
 
-if (!result.isValid) {
-    console.log(result.errorMessage)
+if (result.isValid) {
+    phoneWrapper.classList.remove('c--form-input-a--error')
+    phoneWrapper.classList.add('c--form-input-a--valid')
+    phoneError.textContent = ''
+} else {
+    phoneWrapper.classList.add('c--form-input-a--error')
+    phoneWrapper.classList.remove('c--form-input-a--valid')
+    phoneError.textContent = result.errorMessage
 }</pre>
       </div>
     </div>
@@ -44,11 +49,12 @@ if (!result.isValid) {
     <div class="playground">
       <div class="playground__header">Playground</div>
       <div class="playground__body">
-        <div class="pg-group">
-          <label class="pg-label" for="adv-phone">Phone</label>
-          <input class="pg-input" type="text" id="adv-phone" placeholder="+34 600 000 000">
-          <p class="pg-error" id="adv-phone-error"></p>
-          <p class="pg-valid" id="adv-phone-valid">✓ Valid phone number</p>
+        <div class="c--form-group-a">
+          <label class="c--label-a" for="adv-phone">Phone</label>
+          <div class="c--form-input-a" id="adv-phone-wrapper">
+            <input class="c--form-input-a__item" type="text" id="adv-phone" placeholder="+34 600 000 000">
+          </div>
+          <span class="c--form-error-a" id="adv-phone-error"></span>
         </div>
         <div class="pg-actions">
           <button class="pg-btn" id="validate-btn">Validate</button>

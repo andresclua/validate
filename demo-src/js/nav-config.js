@@ -57,6 +57,9 @@ export const nav = [
         { label: 'beforeSubmit', href: '/advanced/before-submit.html' },
         { label: 'onError', href: '/advanced/on-error.html' },
       ]},
+      { label: 'Form Helper', children: [
+        { label: 'Optional helper', href: '/advanced/form-helper.html' },
+      ]},
     ]
   }
 ]

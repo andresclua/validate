@@ -1,32 +1,32 @@
 import { isCheckbox } from '@andresclua/validate'
 import '../layout.js'
 import '../../scss/demo.scss'
-import { showError, showValid } from '../playground.js'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const checkboxes = document.querySelectorAll('input[name="skills"]')
-  const errorEl = document.getElementById('checkbox-error')
-  const validEl = document.getElementById('checkbox-valid')
-  const validateBtn = document.getElementById('validate-btn')
-  const resetBtn = document.getElementById('reset-btn')
+    const config = { minRequired: 2 }
 
-  validateBtn.addEventListener('click', () => {
-    const result = isCheckbox({
-      elements: checkboxes,
-      config: { minRequired: 2 }
+    const changeCheckboxes = document.querySelectorAll('#change-group .c--form-checkbox-a__item')
+    const changeError = document.getElementById('change-error')
+
+    changeCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+            const result = isCheckbox({ elements: changeCheckboxes, config })
+            changeError.textContent = result.isValid ? '' : result.errorMessage
+        })
     })
-    if (result.isValid) {
-      showValid(null, validEl, errorEl)
-      validEl.classList.add('is-visible')
-    } else {
-      showError(null, errorEl, result.errorMessage)
-    }
-  })
 
-  resetBtn.addEventListener('click', () => {
-    checkboxes.forEach(cb => cb.checked = false)
-    errorEl.textContent = ''
-    errorEl.classList.remove('is-visible')
-    validEl.classList.remove('is-visible')
-  })
+    const submitCheckboxes = document.querySelectorAll('#submit-group .c--form-checkbox-a__item')
+    const submitError = document.getElementById('submit-error')
+
+    document.getElementById('validate-btn').addEventListener('click', () => {
+        const result = isCheckbox({ elements: submitCheckboxes, config })
+        submitError.textContent = result.isValid ? '' : result.errorMessage
+    })
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        changeCheckboxes.forEach(cb => cb.checked = false)
+        changeError.textContent = ''
+        submitCheckboxes.forEach(cb => cb.checked = false)
+        submitError.textContent = ''
+    })
 })

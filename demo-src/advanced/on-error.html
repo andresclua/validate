@@ -25,47 +25,60 @@
         <pre class="code-block__pre">import { isEmail, isString } from '@andresclua/validate'
 
 // Centralized error handler
-function onError(fieldId, errorMessage) {
-    const errorEl = document.getElementById(fieldId + '-error')
-    if (errorEl) {
-        errorEl.textContent = errorMessage
-        errorEl.classList.add('is-visible')
-    }
+function onError(wrapper, errorEl, message) {
+    wrapper.classList.add('c--form-input-a--error')
+    wrapper.classList.remove('c--form-input-a--valid')
+    errorEl.textContent = message
 }
 
-// Use callback for each validator
+let allValid = true
+
+isString({
+    element: nameInput.value,
+    config: { required: true, minLength: 2 },
+    callback: (result) => {
+        if (!result.isValid) {
+            onError(nameWrapper, nameError, result.errorMessage)
+            allValid = false
+        }
+    }
+})
+
 isEmail({
     element: emailInput.value,
     config: { required: true },
     callback: (result) => {
-        if (!result.isValid) onError('email', result.errorMessage)
+        if (!result.isValid) {
+            onError(emailWrapper, emailError, result.errorMessage)
+            allValid = false
+        }
     }
 })
 
-isString({
-    element: nameInput.value,
-    config: { required: true },
-    callback: (result) => {
-        if (!result.isValid) onError('name', result.errorMessage)
-    }
-})</pre>
+if (allValid) {
+    nameWrapper.classList.add('c--form-input-a--valid')
+    emailWrapper.classList.add('c--form-input-a--valid')
+}</pre>
       </div>
     </div>
 
     <div class="playground">
       <div class="playground__header">Playground</div>
       <div class="playground__body">
-        <div class="pg-group">
-          <label class="pg-label" for="adv-name-cb">Name</label>
-          <input class="pg-input" type="text" id="adv-name-cb" placeholder="John Doe">
-          <p class="pg-error" id="adv-name-cb-error"></p>
+        <div class="c--form-group-a">
+          <label class="c--label-a" for="adv-name-cb">Name</label>
+          <div class="c--form-input-a" id="adv-name-cb-wrapper">
+            <input class="c--form-input-a__item" type="text" id="adv-name-cb" placeholder="John Doe">
+          </div>
+          <span class="c--form-error-a" id="adv-name-cb-error"></span>
         </div>
-        <div class="pg-group">
-          <label class="pg-label" for="adv-email-cb">Email</label>
-          <input class="pg-input" type="email" id="adv-email-cb" placeholder="john@company.com">
-          <p class="pg-error" id="adv-email-cb-error"></p>
+        <div class="c--form-group-a">
+          <label class="c--label-a" for="adv-email-cb">Email</label>
+          <div class="c--form-input-a" id="adv-email-cb-wrapper">
+            <input class="c--form-input-a__item" type="email" id="adv-email-cb" placeholder="john@company.com">
+          </div>
+          <span class="c--form-error-a" id="adv-email-cb-error"></span>
         </div>
-        <p class="pg-valid" id="adv-valid-cb">✓ All fields valid</p>
         <div class="pg-actions">
           <button class="pg-btn" id="validate-btn">Validate</button>
           <button class="pg-btn pg-btn--ghost" id="reset-btn">Reset</button>
@@ -74,8 +87,8 @@ isString({
     </div>
 
     <nav class="page-nav">
-      <a href="/advanced/before-submit.html" class="page-nav__prev">← beforeSubmit</a>
-      <span></span>
+      <a href="/advanced/before-submit.html" class="page-nav__prev">← Advanced / beforeSubmit</a>
+      <a href="/advanced/form-helper.html" class="page-nav__next">Advanced / Form helper →</a>
     </nav>
   </body>
 </html>

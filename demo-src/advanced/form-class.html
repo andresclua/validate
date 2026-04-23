@@ -24,26 +24,34 @@
       <div class="code-block__content code-block__content--active" data-tab="js">
         <pre class="code-block__pre">import { isEmail, isString } from '@andresclua/validate'
 
-const form = document.getElementById('my-form')
+const nameInput = document.getElementById('name')
+const nameWrapper = document.getElementById('name-wrapper')
+const nameError = document.getElementById('name-error')
+const emailInput = document.getElementById('email')
+const emailWrapper = document.getElementById('email-wrapper')
+const emailError = document.getElementById('email-error')
 
-form.addEventListener('submit', (e) => {
-    e.preventDefault()
+validateBtn.addEventListener('click', () => {
+    nameWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+    emailWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+    nameError.textContent = ''
+    emailError.textContent = ''
 
-    const nameResult = isString({
-        element: form.querySelector('#name').value,
-        config: { required: true, minLength: 2 }
-    })
+    const nameResult = isString({ element: nameInput.value, config: { required: true, minLength: 2 } })
+    const emailResult = isEmail({ element: emailInput.value, config: { required: true } })
 
-    const emailResult = isEmail({
-        element: form.querySelector('#email').value,
-        config: { required: true }
-    })
-
-    if (nameResult.isValid && emailResult.isValid) {
-        console.log('Form valid — submit to server')
+    if (nameResult.isValid) {
+        nameWrapper.classList.add('c--form-input-a--valid')
     } else {
-        if (!nameResult.isValid) console.log('Name error:', nameResult.errorMessage)
-        if (!emailResult.isValid) console.log('Email error:', emailResult.errorMessage)
+        nameWrapper.classList.add('c--form-input-a--error')
+        nameError.textContent = nameResult.errorMessage
+    }
+
+    if (emailResult.isValid) {
+        emailWrapper.classList.add('c--form-input-a--valid')
+    } else {
+        emailWrapper.classList.add('c--form-input-a--error')
+        emailError.textContent = emailResult.errorMessage
     }
 })</pre>
       </div>
@@ -52,17 +60,20 @@ form.addEventListener('submit', (e) => {
     <div class="playground">
       <div class="playground__header">Playground</div>
       <div class="playground__body">
-        <div class="pg-group">
-          <label class="pg-label" for="adv-name">Name</label>
-          <input class="pg-input" type="text" id="adv-name" placeholder="John Doe">
-          <p class="pg-error" id="adv-name-error"></p>
+        <div class="c--form-group-a">
+          <label class="c--label-a" for="adv-name">Name</label>
+          <div class="c--form-input-a" id="adv-name-wrapper">
+            <input class="c--form-input-a__item" type="text" id="adv-name" placeholder="John Doe">
+          </div>
+          <span class="c--form-error-a" id="adv-name-error"></span>
         </div>
-        <div class="pg-group">
-          <label class="pg-label" for="adv-email">Email</label>
-          <input class="pg-input" type="email" id="adv-email" placeholder="john@company.com">
-          <p class="pg-error" id="adv-email-error"></p>
+        <div class="c--form-group-a">
+          <label class="c--label-a" for="adv-email">Email</label>
+          <div class="c--form-input-a" id="adv-email-wrapper">
+            <input class="c--form-input-a__item" type="email" id="adv-email" placeholder="john@company.com">
+          </div>
+          <span class="c--form-error-a" id="adv-email-error"></span>
         </div>
-        <p class="pg-valid" id="adv-valid">✓ All fields valid</p>
         <div class="pg-actions">
           <button class="pg-btn" id="validate-btn">Submit</button>
           <button class="pg-btn pg-btn--ghost" id="reset-btn">Reset</button>

@@ -1,26 +1,48 @@
 import { isFile } from '@andresclua/validate'
 import '../layout.js'
 import '../../scss/demo.scss'
-import { showError, showValid, initReset } from '../playground.js'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const input = document.getElementById('file-input')
-  const errorEl = document.getElementById('file-error')
-  const validEl = document.getElementById('file-valid')
-  const validateBtn = document.getElementById('validate-btn')
-  const resetBtn = document.getElementById('reset-btn')
+    const config = { required: true }
 
-  validateBtn.addEventListener('click', () => {
-    const result = isFile({
-      element: input.files[0],
-      config: { required: true }
+    const changeInput = document.getElementById('change-file')
+    const changeError = document.getElementById('change-error')
+
+    changeInput.addEventListener('change', () => {
+        const result = isFile({ element: changeInput.files[0], config })
+        if (result.isValid) {
+            changeInput.classList.remove('c--form-file-a--error')
+            changeInput.classList.add('c--form-file-a--valid')
+            changeError.textContent = ''
+        } else {
+            changeInput.classList.add('c--form-file-a--error')
+            changeInput.classList.remove('c--form-file-a--valid')
+            changeError.textContent = result.errorMessage
+        }
     })
-    if (result.isValid) {
-      showValid(input, validEl, errorEl)
-    } else {
-      showError(input, errorEl, result.errorMessage)
-    }
-  })
 
-  initReset(resetBtn, [input], [errorEl], [validEl])
+    const submitInput = document.getElementById('submit-file')
+    const submitError = document.getElementById('submit-error')
+
+    document.getElementById('validate-btn').addEventListener('click', () => {
+        const result = isFile({ element: submitInput.files[0], config })
+        if (result.isValid) {
+            submitInput.classList.remove('c--form-file-a--error')
+            submitInput.classList.add('c--form-file-a--valid')
+            submitError.textContent = ''
+        } else {
+            submitInput.classList.add('c--form-file-a--error')
+            submitInput.classList.remove('c--form-file-a--valid')
+            submitError.textContent = result.errorMessage
+        }
+    })
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        changeInput.value = ''
+        changeInput.classList.remove('c--form-file-a--error', 'c--form-file-a--valid')
+        changeError.textContent = ''
+        submitInput.value = ''
+        submitInput.classList.remove('c--form-file-a--error', 'c--form-file-a--valid')
+        submitError.textContent = ''
+    })
 })

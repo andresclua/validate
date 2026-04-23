@@ -1,32 +1,56 @@
 import { isString } from '@andresclua/validate'
 import '../layout.js'
 import '../../scss/demo.scss'
-import { showError, showValid, initReset } from '../playground.js'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const input = document.getElementById('string-input')
-  const errorEl = document.getElementById('string-error')
-  const validEl = document.getElementById('string-valid')
-  const validateBtn = document.getElementById('validate-btn')
-  const resetBtn = document.getElementById('reset-btn')
-
-  validateBtn.addEventListener('click', () => {
-    const result = isString({
-      element: input.value,
-      config: {
+    const config = {
         required: true,
         pattern: /^[a-zA-Z]+$/,
         customMessage: {
-          pattern: 'Only letters are allowed (no spaces or numbers)'
+            pattern: 'Only letters are allowed (no spaces or numbers)'
         }
-      }
-    })
-    if (result.isValid) {
-      showValid(input, validEl, errorEl)
-    } else {
-      showError(input, errorEl, result.errorMessage)
     }
-  })
 
-  initReset(resetBtn, [input], [errorEl], [validEl])
+    const blurInput = document.getElementById('blur-string')
+    const blurWrapper = document.getElementById('blur-wrapper')
+    const blurError = document.getElementById('blur-error')
+
+    blurInput.addEventListener('blur', () => {
+        const result = isString({ element: blurInput.value, config })
+        if (result.isValid) {
+            blurWrapper.classList.remove('c--form-input-a--error')
+            blurWrapper.classList.add('c--form-input-a--valid')
+            blurError.textContent = ''
+        } else {
+            blurWrapper.classList.add('c--form-input-a--error')
+            blurWrapper.classList.remove('c--form-input-a--valid')
+            blurError.textContent = result.errorMessage
+        }
+    })
+
+    const submitInput = document.getElementById('submit-string')
+    const submitWrapper = document.getElementById('submit-wrapper')
+    const submitError = document.getElementById('submit-error')
+
+    document.getElementById('validate-btn').addEventListener('click', () => {
+        const result = isString({ element: submitInput.value, config })
+        if (result.isValid) {
+            submitWrapper.classList.remove('c--form-input-a--error')
+            submitWrapper.classList.add('c--form-input-a--valid')
+            submitError.textContent = ''
+        } else {
+            submitWrapper.classList.add('c--form-input-a--error')
+            submitWrapper.classList.remove('c--form-input-a--valid')
+            submitError.textContent = result.errorMessage
+        }
+    })
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        blurInput.value = ''
+        blurWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+        blurError.textContent = ''
+        submitInput.value = ''
+        submitWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+        submitError.textContent = ''
+    })
 })

@@ -1,47 +1,46 @@
 import { isEmail } from '@andresclua/validate'
 import '../layout.js'
 import '../../scss/demo.scss'
-import { showError, showValid, initReset, clearState } from '../playground.js'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const emailInput = document.getElementById('adv-email-async')
-  const errorEl = document.getElementById('adv-email-async-error')
-  const validEl = document.getElementById('adv-email-async-valid')
-  const validateBtn = document.getElementById('validate-btn')
-  const resetBtn = document.getElementById('reset-btn')
+    const emailInput = document.getElementById('adv-email-async')
+    const emailWrapper = document.getElementById('adv-email-async-wrapper')
+    const errorEl = document.getElementById('adv-email-async-error')
+    const validateBtn = document.getElementById('validate-btn')
 
-  validateBtn.addEventListener('click', async () => {
-    // Clear previous validation states
-    clearState(emailInput, errorEl, validEl)
+    validateBtn.addEventListener('click', async () => {
+        emailWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+        errorEl.textContent = ''
 
-    // 1. Client-side validation first
-    const emailResult = isEmail({
-      element: emailInput.value,
-      config: { required: true }
+        const emailResult = isEmail({ element: emailInput.value, config: { required: true } })
+
+        if (!emailResult.isValid) {
+            emailWrapper.classList.add('c--form-input-a--error')
+            errorEl.textContent = emailResult.errorMessage
+            return
+        }
+
+        try {
+            validateBtn.disabled = true
+            validateBtn.textContent = 'Checking...'
+
+            await new Promise(resolve => setTimeout(resolve, 1000))
+
+            emailWrapper.classList.add('c--form-input-a--valid')
+        } catch (error) {
+            emailWrapper.classList.add('c--form-input-a--error')
+            errorEl.textContent = 'Server error — please try again'
+        } finally {
+            validateBtn.disabled = false
+            validateBtn.textContent = 'Submit'
+        }
     })
 
-    if (!emailResult.isValid) {
-      showError(emailInput, errorEl, emailResult.errorMessage)
-      return
-    }
-
-    // 2. beforeSubmit: async server check (example)
-    try {
-      validateBtn.disabled = true
-      const originalText = validateBtn.textContent
-      validateBtn.textContent = 'Checking...'
-
-      // Simulate async check
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
-      showValid(emailInput, validEl, errorEl)
-    } catch (error) {
-      showError(emailInput, errorEl, 'Server error — please try again')
-    } finally {
-      validateBtn.disabled = false
-      validateBtn.textContent = 'Submit'
-    }
-  })
-
-  initReset(resetBtn, [emailInput], [errorEl], [validEl])
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        emailInput.value = ''
+        emailWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+        errorEl.textContent = ''
+        validateBtn.disabled = false
+        validateBtn.textContent = 'Submit'
+    })
 })

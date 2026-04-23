@@ -1,26 +1,50 @@
 import { isNumber } from '@andresclua/validate'
 import '../layout.js'
 import '../../scss/demo.scss'
-import { showError, showValid, initReset } from '../playground.js'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const input = document.getElementById('number-input')
-  const errorEl = document.getElementById('number-error')
-  const validEl = document.getElementById('number-valid')
-  const validateBtn = document.getElementById('validate-btn')
-  const resetBtn = document.getElementById('reset-btn')
+    const config = { required: true }
 
-  validateBtn.addEventListener('click', () => {
-    const result = isNumber({
-      element: input.value,
-      config: { required: true }
+    const blurInput = document.getElementById('blur-number')
+    const blurWrapper = document.getElementById('blur-wrapper')
+    const blurError = document.getElementById('blur-error')
+
+    blurInput.addEventListener('blur', () => {
+        const result = isNumber({ element: blurInput.value, config })
+        if (result.isValid) {
+            blurWrapper.classList.remove('c--form-input-a--error')
+            blurWrapper.classList.add('c--form-input-a--valid')
+            blurError.textContent = ''
+        } else {
+            blurWrapper.classList.add('c--form-input-a--error')
+            blurWrapper.classList.remove('c--form-input-a--valid')
+            blurError.textContent = result.errorMessage
+        }
     })
-    if (result.isValid) {
-      showValid(input, validEl, errorEl)
-    } else {
-      showError(input, errorEl, result.errorMessage)
-    }
-  })
 
-  initReset(resetBtn, [input], [errorEl], [validEl])
+    const submitInput = document.getElementById('submit-number')
+    const submitWrapper = document.getElementById('submit-wrapper')
+    const submitError = document.getElementById('submit-error')
+
+    document.getElementById('validate-btn').addEventListener('click', () => {
+        const result = isNumber({ element: submitInput.value, config })
+        if (result.isValid) {
+            submitWrapper.classList.remove('c--form-input-a--error')
+            submitWrapper.classList.add('c--form-input-a--valid')
+            submitError.textContent = ''
+        } else {
+            submitWrapper.classList.add('c--form-input-a--error')
+            submitWrapper.classList.remove('c--form-input-a--valid')
+            submitError.textContent = result.errorMessage
+        }
+    })
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        blurInput.value = ''
+        blurWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+        blurError.textContent = ''
+        submitInput.value = ''
+        submitWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+        submitError.textContent = ''
+    })
 })

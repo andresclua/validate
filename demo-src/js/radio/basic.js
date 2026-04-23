@@ -1,33 +1,32 @@
 import { isRadio } from '@andresclua/validate'
 import '../layout.js'
 import '../../scss/demo.scss'
-import { showError, showValid } from '../playground.js'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const radios = document.querySelectorAll('input[name="size"]')
-  const errorEl = document.getElementById('radio-error')
-  const validEl = document.getElementById('radio-valid')
-  const validateBtn = document.getElementById('validate-btn')
-  const resetBtn = document.getElementById('reset-btn')
+    const config = {}
 
-  validateBtn.addEventListener('click', () => {
-    const result = isRadio({
-      elements: radios,
-      config: {}
+    const changeRadios = document.querySelectorAll('#change-group .c--form-radio-a__item')
+    const changeError = document.getElementById('change-error')
+
+    changeRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            const result = isRadio({ elements: changeRadios, config })
+            changeError.textContent = result.isValid ? '' : result.errorMessage
+        })
     })
-    if (result.isValid) {
-      validEl.classList.add('is-visible')
-      errorEl.classList.remove('is-visible')
-    } else {
-      showError(null, errorEl, result.errorMessage)
-      validEl.classList.remove('is-visible')
-    }
-  })
 
-  resetBtn.addEventListener('click', () => {
-    radios.forEach(r => r.checked = false)
-    errorEl.textContent = ''
-    errorEl.classList.remove('is-visible')
-    validEl.classList.remove('is-visible')
-  })
+    const submitRadios = document.querySelectorAll('#submit-group .c--form-radio-a__item')
+    const submitError = document.getElementById('submit-error')
+
+    document.getElementById('validate-btn').addEventListener('click', () => {
+        const result = isRadio({ elements: submitRadios, config })
+        submitError.textContent = result.isValid ? '' : result.errorMessage
+    })
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        changeRadios.forEach(r => r.checked = false)
+        changeError.textContent = ''
+        submitRadios.forEach(r => r.checked = false)
+        submitError.textContent = ''
+    })
 })

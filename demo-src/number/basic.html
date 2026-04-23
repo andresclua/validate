@@ -21,18 +21,90 @@
       <div class="code-block__tabs">
         <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
         <button class="code-block__tab" data-tab="html">HTML</button>
+        <button class="code-block__tab" data-tab="css">CSS</button>
         <button class="code-block__tab" data-tab="config">Config</button>
       </div>
       <div class="code-block__content code-block__content--active" data-tab="js">
         <pre class="code-block__pre">import { isNumber } from '@andresclua/validate'
 
-const result = isNumber({
-    element: input.value,
-    config: { required: true }
+const config = { required: true }
+
+// On Blur
+blurInput.addEventListener('blur', () => {
+    const result = isNumber({ element: blurInput.value, config })
+    if (result.isValid) {
+        blurWrapper.classList.remove('c--form-input-a--error')
+        blurWrapper.classList.add('c--form-input-a--valid')
+        blurError.textContent = ''
+    } else {
+        blurWrapper.classList.add('c--form-input-a--error')
+        blurWrapper.classList.remove('c--form-input-a--valid')
+        blurError.textContent = result.errorMessage
+    }
+})
+
+// On Submit
+validateBtn.addEventListener('click', () => {
+    const result = isNumber({ element: submitInput.value, config })
+    if (result.isValid) {
+        submitWrapper.classList.remove('c--form-input-a--error')
+        submitWrapper.classList.add('c--form-input-a--valid')
+        submitError.textContent = ''
+    } else {
+        submitWrapper.classList.add('c--form-input-a--error')
+        submitWrapper.classList.remove('c--form-input-a--valid')
+        submitError.textContent = result.errorMessage
+    }
 })</pre>
       </div>
       <div class="code-block__content" data-tab="html">
-        <pre class="code-block__pre">&lt;input type="number" id="number-input"&gt;</pre>
+        <pre class="code-block__pre">&lt;div class="c--form-group-a"&gt;
+  &lt;label class="c--label-a" for="number"&gt;Number&lt;/label&gt;
+  &lt;div class="c--form-input-a"&gt;
+    &lt;input class="c--form-input-a__item" type="number" id="number"&gt;
+  &lt;/div&gt;
+  &lt;span class="c--form-error-a"&gt;&lt;/span&gt;
+&lt;/div&gt;</pre>
+      </div>
+      <div class="code-block__content" data-tab="css">
+        <pre class="code-block__pre">/* Orientative — feel free to adapt to your own conventions */
+
+.c--form-group-a {
+    margin-bottom: 1.5em;
+}
+
+.c--label-a {
+    display: block;
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+.c--form-input-a {
+    display: block;
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 0.25em;
+}
+.c--form-input-a--error  { border-color: red; background: #ffe6e6; }
+.c--form-input-a--valid  { border-color: green; background: #e6ffe6; }
+
+.c--form-input-a__item {
+    display: block;
+    width: 100%;
+    font-size: 1em;
+    outline: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+}
+
+.c--form-error-a {
+    color: red;
+    font-size: 0.875em;
+    display: none;
+}
+.c--form-error-a:not(:empty) { display: block; }</pre>
       </div>
       <div class="code-block__content" data-tab="config">
         <pre class="code-block__pre">required  boolean  Whether the field is required. Default: false</pre>
@@ -42,16 +114,31 @@ const result = isNumber({
     <div class="playground">
       <div class="playground__header">Playground</div>
       <div class="playground__body">
-        <div class="pg-group">
-          <label class="pg-label" for="number-input">Number</label>
-          <input class="pg-input" type="number" id="number-input">
-          <p class="pg-error" id="number-error"></p>
-          <p class="pg-valid" id="number-valid">✓ Valid number</p>
+
+        <p class="playground__section-title">On Blur</p>
+        <div class="c--form-group-a">
+          <label class="c--label-a" for="blur-number">Number</label>
+          <div class="c--form-input-a" id="blur-wrapper">
+            <input class="c--form-input-a__item" type="number" id="blur-number" placeholder="e.g. 42">
+          </div>
+          <span class="c--form-error-a" id="blur-error"></span>
+        </div>
+
+        <div class="playground__divider"></div>
+
+        <p class="playground__section-title">On Submit</p>
+        <div class="c--form-group-a">
+          <label class="c--label-a" for="submit-number">Number</label>
+          <div class="c--form-input-a" id="submit-wrapper">
+            <input class="c--form-input-a__item" type="number" id="submit-number" placeholder="e.g. 42">
+          </div>
+          <span class="c--form-error-a" id="submit-error"></span>
         </div>
         <div class="pg-actions">
           <button class="pg-btn" id="validate-btn">Validate</button>
           <button class="pg-btn pg-btn--ghost" id="reset-btn">Reset</button>
         </div>
+
       </div>
     </div>
 

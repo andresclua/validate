@@ -19,21 +19,90 @@
       <div class="code-block__tabs">
         <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
         <button class="code-block__tab" data-tab="html">HTML</button>
+        <button class="code-block__tab" data-tab="css">CSS</button>
         <button class="code-block__tab" data-tab="config">Config</button>
       </div>
       <div class="code-block__content code-block__content--active" data-tab="js">
         <pre class="code-block__pre">import { isEmail } from '@andresclua/validate'
 
-const result = isEmail({
-    element: input.value,
-    config: { required: true }
+const config = { required: true }
+
+// On Blur
+blurInput.addEventListener('blur', () => {
+    const result = isEmail({ element: blurInput.value, config })
+    if (result.isValid) {
+        blurWrapper.classList.remove('c--form-input-a--error')
+        blurWrapper.classList.add('c--form-input-a--valid')
+        blurError.textContent = ''
+    } else {
+        blurWrapper.classList.add('c--form-input-a--error')
+        blurWrapper.classList.remove('c--form-input-a--valid')
+        blurError.textContent = result.errorMessage
+    }
+})
+
+// On Submit
+validateBtn.addEventListener('click', () => {
+    const result = isEmail({ element: submitInput.value, config })
+    if (result.isValid) {
+        submitWrapper.classList.remove('c--form-input-a--error')
+        submitWrapper.classList.add('c--form-input-a--valid')
+        submitError.textContent = ''
+    } else {
+        submitWrapper.classList.add('c--form-input-a--error')
+        submitWrapper.classList.remove('c--form-input-a--valid')
+        submitError.textContent = result.errorMessage
+    }
 })</pre>
       </div>
       <div class="code-block__content" data-tab="html">
-        <pre class="code-block__pre">&lt;div class="c--form-input-a"&gt;
-  &lt;input class="c--form-input-a__item" type="email" id="email"&gt;
-&lt;/div&gt;
-&lt;span class="c--form-error-a"&gt;&lt;/span&gt;</pre>
+        <pre class="code-block__pre">&lt;div class="c--form-group-a"&gt;
+  &lt;label class="c--label-a" for="email"&gt;Email&lt;/label&gt;
+  &lt;div class="c--form-input-a"&gt;
+    &lt;input class="c--form-input-a__item" type="email" id="email"&gt;
+  &lt;/div&gt;
+  &lt;span class="c--form-error-a"&gt;&lt;/span&gt;
+&lt;/div&gt;</pre>
+      </div>
+      <div class="code-block__content" data-tab="css">
+        <pre class="code-block__pre">/* Orientative — feel free to adapt to your own conventions */
+
+.c--form-group-a {
+    margin-bottom: 1.5em;
+}
+
+.c--label-a {
+    display: block;
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+.c--form-input-a {
+    display: block;
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 0.25em;
+}
+.c--form-input-a--error  { border-color: red; background: #ffe6e6; }
+.c--form-input-a--valid  { border-color: green; background: #e6ffe6; }
+
+.c--form-input-a__item {
+    display: block;
+    width: 100%;
+    font-size: 1em;
+    outline: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+}
+
+.c--form-error-a {
+    color: red;
+    font-size: 0.875em;
+    display: none;
+}
+.c--form-error-a:not(:empty) { display: block; }</pre>
       </div>
       <div class="code-block__content" data-tab="config">
         <pre class="code-block__pre">required  boolean  Whether the field is required. Default: false</pre>
