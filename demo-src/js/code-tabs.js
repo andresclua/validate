@@ -46,4 +46,4 @@ export function initCodeTabs() {
   })
 }
 
-document.addEventListener('DOMContentLoaded', initCodeTabs)
+// initCodeTabs is called by layout.js after DOM injection

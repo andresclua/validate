@@ -1,4 +1,5 @@
 import { nav } from './nav-config.js'
+import { initCodeTabs } from './code-tabs.js'
 
 /**
  * Normalize a pathname for comparison.
@@ -150,6 +151,9 @@ function initLayout() {
   document.body.innerHTML = ''
   document.body.appendChild(topnav)
   document.body.appendChild(layout)
+
+  // Re-initialize code tabs on the new DOM
+  initCodeTabs()
 }
 
 document.addEventListener('DOMContentLoaded', initLayout)
