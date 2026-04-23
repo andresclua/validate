@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>isRadio() — Custom Validation Function | @andresclua/validate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script type="module" src="../js/radio/custom-fn.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">validators <span class="breadcrumb__sep">›</span> radio <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">custom fn</span></p>
+
+    <h1 class="page-title">isRadio() — Custom Validation Function</h1>
+    <p class="page-desc">Add additional constraints on which radio option is valid.</p>
+
+    <div class="code-block">
+      <div class="code-block__tabs">
+        <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
+        <button class="code-block__tab" data-tab="html">HTML</button>
+        <button class="code-block__tab" data-tab="config">Config</button>
+      </div>
+      <div class="code-block__content code-block__content--active" data-tab="js">
+        <pre class="code-block__pre">import { isRadio } from '@andresclua/validate'
+
+const radios = document.querySelectorAll('input[name="size"]')
+const result = isRadio({
+    elements: radios,
+    config: {
+        customValidation: () => {
+            const selected = Array.from(radios).find(r => r.checked)
+            return {
+                isValid: selected?.value !== 's',
+                errorMessage: 'Small size is currently out of stock'
+            }
+        }
+    }
+})</pre>
+      </div>
+      <div class="code-block__content" data-tab="html">
+        <pre class="code-block__pre">&lt;input type="radio" name="size" value="s"&gt;
+&lt;input type="radio" name="size" value="m"&gt;
+&lt;input type="radio" name="size" value="l"&gt;</pre>
+      </div>
+      <div class="code-block__content" data-tab="config">
+        <pre class="code-block__pre">customValidation  function  Custom validation logic that returns { isValid, errorMessage }</pre>
+      </div>
+    </div>
+
+    <div class="playground">
+      <div class="playground__header">Playground</div>
+      <div class="playground__body">
+        <div class="pg-group">
+          <label class="pg-label">Select a size</label>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:8px;">
+            <label style="display:flex; align-items:center; gap:8px; color:var(--text); font-size:13px; cursor:pointer;">
+              <input type="radio" name="size" value="s" id="r-s"> Small
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; color:var(--text); font-size:13px; cursor:pointer;">
+              <input type="radio" name="size" value="m" id="r-m"> Medium
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; color:var(--text); font-size:13px; cursor:pointer;">
+              <input type="radio" name="size" value="l" id="r-l"> Large
+            </label>
+          </div>
+          <p class="pg-error" id="radio-error"></p>
+          <p class="pg-valid" id="radio-valid">✓ Selection valid</p>
+        </div>
+        <div class="pg-actions">
+          <button class="pg-btn" id="validate-btn">Validate</button>
+          <button class="pg-btn pg-btn--ghost" id="reset-btn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="page-nav">
+      <a href="/radio/basic.html" class="page-nav__prev">← Radio / Basic</a>
+      <a href="/file/basic.html" class="page-nav__next">File / Basic →</a>
+    </nav>
+  </body>
+</html>

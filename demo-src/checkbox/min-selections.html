@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>isCheckbox() — Min Selections | @andresclua/validate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script type="module" src="../js/checkbox/min-selections.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">validators <span class="breadcrumb__sep">›</span> checkbox <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">min selections</span></p>
+
+    <h1 class="page-title">isCheckbox() — Min Selections</h1>
+    <p class="page-desc">Require a minimum number of checkboxes to be checked.</p>
+
+    <div class="code-block">
+      <div class="code-block__tabs">
+        <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
+        <button class="code-block__tab" data-tab="html">HTML</button>
+        <button class="code-block__tab" data-tab="config">Config</button>
+      </div>
+      <div class="code-block__content code-block__content--active" data-tab="js">
+        <pre class="code-block__pre">import { isCheckbox } from '@andresclua/validate'
+
+const checkboxes = document.querySelectorAll('input[name="skills"]')
+const result = isCheckbox({
+    elements: checkboxes,
+    config: { minRequired: 2 }
+})</pre>
+      </div>
+      <div class="code-block__content" data-tab="html">
+        <pre class="code-block__pre">&lt;input type="checkbox" name="skills" value="js"&gt;
+&lt;input type="checkbox" name="skills" value="css"&gt;
+&lt;input type="checkbox" name="skills" value="html"&gt;
+&lt;input type="checkbox" name="skills" value="node"&gt;</pre>
+      </div>
+      <div class="code-block__content" data-tab="config">
+        <pre class="code-block__pre">minRequired  number  Minimum number of checkboxes required to be checked. Default: 1</pre>
+      </div>
+    </div>
+
+    <div class="playground">
+      <div class="playground__header">Playground</div>
+      <div class="playground__body">
+        <div class="pg-group">
+          <label class="pg-label">Select skills</label>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:8px;">
+            <label style="display:flex; align-items:center; gap:8px; color:var(--text); font-size:13px; cursor:pointer;">
+              <input type="checkbox" name="skills" value="js" id="cb-js"> JavaScript
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; color:var(--text); font-size:13px; cursor:pointer;">
+              <input type="checkbox" name="skills" value="css" id="cb-css"> CSS
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; color:var(--text); font-size:13px; cursor:pointer;">
+              <input type="checkbox" name="skills" value="html" id="cb-html"> HTML
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; color:var(--text); font-size:13px; cursor:pointer;">
+              <input type="checkbox" name="skills" value="node" id="cb-node"> Node.js
+            </label>
+          </div>
+          <p class="pg-error" id="checkbox-error"></p>
+          <p class="pg-valid" id="checkbox-valid">✓ Selection valid</p>
+        </div>
+        <div class="pg-actions">
+          <button class="pg-btn" id="validate-btn">Validate</button>
+          <button class="pg-btn pg-btn--ghost" id="reset-btn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="page-nav">
+      <a href="/checkbox/basic.html" class="page-nav__prev">← Checkbox / Basic</a>
+      <a href="/radio/basic.html" class="page-nav__next">Radio / Basic →</a>
+    </nav>
+  </body>
+</html>
