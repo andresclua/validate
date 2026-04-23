@@ -2,7 +2,7 @@
 
 A lightweight, framework-agnostic JavaScript validation library.
 
-**[→ Live docs & interactive examples at validate-andresclua.netlify.app](https://validate-andresclua.netlify.app)**
+**[→ Live docs & interactive examples at validate.andresclua.com](https://validate.andresclua.com)**
 
 ## Why Choose This Library?
 This validation library is designed with flexibility, modularity, and ease of use in mind. Here are the key reasons why it stands out:
@@ -73,15 +73,15 @@ The interactive documentation site covers every validator with live playgrounds:
 
 | Validator | Live docs | GitHub |
 |---|---|---|
-| Email | [Live](https://validate-andresclua.netlify.app/email/basic.html) | [docs/email.md](https://github.com/andresclua/validate/blob/main/docs/email.md) |
-| Number | [Live](https://validate-andresclua.netlify.app/number/basic.html) | [docs/number.md](https://github.com/andresclua/validate/blob/main/docs/number.md) |
-| String | [Live](https://validate-andresclua.netlify.app/string/basic.html) | [docs/string.md](https://github.com/andresclua/validate/blob/main/docs/string.md) |
-| Select | [Live](https://validate-andresclua.netlify.app/select/basic.html) | [docs/Select.md](https://github.com/andresclua/validate/blob/main/docs/Select.md) |
-| Checkbox | [Live](https://validate-andresclua.netlify.app/checkbox/basic.html) | [docs/checkbox.md](https://github.com/andresclua/validate/blob/main/docs/checkbox.md) |
-| Radio | [Live](https://validate-andresclua.netlify.app/radio/basic.html) | [docs/radio.md](https://github.com/andresclua/validate/blob/main/docs/radio.md) |
-| File | [Live](https://validate-andresclua.netlify.app/file/basic.html) | [docs/file.md](https://github.com/andresclua/validate/blob/main/docs/file.md) |
+| Email | [Live](https://validate.andresclua.com/email/basic.html) | [docs/email.md](https://github.com/andresclua/validate/blob/main/docs/email.md) |
+| Number | [Live](https://validate.andresclua.com/number/basic.html) | [docs/number.md](https://github.com/andresclua/validate/blob/main/docs/number.md) |
+| String | [Live](https://validate.andresclua.com/string/basic.html) | [docs/string.md](https://github.com/andresclua/validate/blob/main/docs/string.md) |
+| Select | [Live](https://validate.andresclua.com/select/basic.html) | [docs/Select.md](https://github.com/andresclua/validate/blob/main/docs/Select.md) |
+| Checkbox | [Live](https://validate.andresclua.com/checkbox/basic.html) | [docs/checkbox.md](https://github.com/andresclua/validate/blob/main/docs/checkbox.md) |
+| Radio | [Live](https://validate.andresclua.com/radio/basic.html) | [docs/radio.md](https://github.com/andresclua/validate/blob/main/docs/radio.md) |
+| File | [Live](https://validate.andresclua.com/file/basic.html) | [docs/file.md](https://github.com/andresclua/validate/blob/main/docs/file.md) |
 
 ## Do you need to validate an entire form?
 
-Check out the [optional Form helper](https://validate-andresclua.netlify.app/advanced/form-helper.html) — a copy-paste class that wires multiple fields, blur events, and submit logic in one place. Also available in [docs/advanced.md](https://github.com/andresclua/validate/blob/main/docs/advanced.md).
+Check out the [optional Form helper](https://validate.andresclua.com/advanced/form-helper.html) — a copy-paste class that wires multiple fields, blur events, and submit logic in one place. Also available in [docs/advanced.md](https://github.com/andresclua/validate/blob/main/docs/advanced.md).
 
