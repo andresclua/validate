@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced — Custom Validators | @andresclua/validate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script type="module" src="../js/advanced/custom-validators.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">advanced <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">custom validators</span></p>
+
+    <h1 class="page-title">Advanced — Custom Validators</h1>
+    <p class="page-desc">Compose your own validation functions using the same return format.</p>
+
+    <div class="code-block">
+      <div class="code-block__tabs">
+        <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
+      </div>
+      <div class="code-block__content code-block__content--active" data-tab="js">
+        <pre class="code-block__pre">// A custom validator follows the same signature as built-in ones
+function isSpanishPhone(value) {
+    const regex = /^(\+34|0034|34)?[6789]\d{8}$/
+    return {
+        isValid: regex.test(value.replace(/\s/g, '')),
+        errorMessage: 'Please enter a valid Spanish phone number'
+    }
+}
+
+// Use it like any other validator
+const input = document.getElementById('phone').value
+const result = isSpanishPhone(input)
+
+if (!result.isValid) {
+    console.log(result.errorMessage)
+}</pre>
+      </div>
+    </div>
+
+    <div class="playground">
+      <div class="playground__header">Playground</div>
+      <div class="playground__body">
+        <div class="pg-group">
+          <label class="pg-label" for="adv-phone">Phone</label>
+          <input class="pg-input" type="text" id="adv-phone" placeholder="+34 600 000 000">
+          <p class="pg-error" id="adv-phone-error"></p>
+          <p class="pg-valid" id="adv-phone-valid">✓ Valid phone number</p>
+        </div>
+        <div class="pg-actions">
+          <button class="pg-btn" id="validate-btn">Validate</button>
+          <button class="pg-btn pg-btn--ghost" id="reset-btn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="page-nav">
+      <a href="/advanced/form-class.html" class="page-nav__prev">← Advanced / Form class</a>
+      <a href="/advanced/before-submit.html" class="page-nav__next">Advanced / beforeSubmit →</a>
+    </nav>
+  </body>
+</html>

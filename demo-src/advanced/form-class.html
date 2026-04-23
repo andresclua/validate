@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced — Form Validation | @andresclua/validate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script type="module" src="../js/advanced/form-class.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">advanced <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">form class</span></p>
+
+    <h1 class="page-title">Advanced — Form Validation</h1>
+    <p class="page-desc">Validate multiple fields together and handle a form submission event.</p>
+
+    <div class="code-block">
+      <div class="code-block__tabs">
+        <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
+      </div>
+      <div class="code-block__content code-block__content--active" data-tab="js">
+        <pre class="code-block__pre">import { isEmail, isString } from '@andresclua/validate'
+
+const form = document.getElementById('my-form')
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const nameResult = isString({
+        element: form.querySelector('#name').value,
+        config: { required: true, minLength: 2 }
+    })
+
+    const emailResult = isEmail({
+        element: form.querySelector('#email').value,
+        config: { required: true }
+    })
+
+    if (nameResult.isValid && emailResult.isValid) {
+        console.log('Form valid — submit to server')
+    } else {
+        if (!nameResult.isValid) console.log('Name error:', nameResult.errorMessage)
+        if (!emailResult.isValid) console.log('Email error:', emailResult.errorMessage)
+    }
+})</pre>
+      </div>
+    </div>
+
+    <div class="playground">
+      <div class="playground__header">Playground</div>
+      <div class="playground__body">
+        <div class="pg-group">
+          <label class="pg-label" for="adv-name">Name</label>
+          <input class="pg-input" type="text" id="adv-name" placeholder="John Doe">
+          <p class="pg-error" id="adv-name-error"></p>
+        </div>
+        <div class="pg-group">
+          <label class="pg-label" for="adv-email">Email</label>
+          <input class="pg-input" type="email" id="adv-email" placeholder="john@company.com">
+          <p class="pg-error" id="adv-email-error"></p>
+        </div>
+        <p class="pg-valid" id="adv-valid">✓ All fields valid</p>
+        <div class="pg-actions">
+          <button class="pg-btn" id="validate-btn">Submit</button>
+          <button class="pg-btn pg-btn--ghost" id="reset-btn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="page-nav">
+      <a href="/file/max-size.html" class="page-nav__prev">← File / Max size</a>
+      <a href="/advanced/custom-validators.html" class="page-nav__next">Advanced / Custom validators →</a>
+    </nav>
+  </body>
+</html>
