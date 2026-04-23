@@ -1,8 +1,11 @@
 {
     "name": "@andresclua/validate",
     "private": false,
-    "version": "0.0.15",
+    "version": "0.0.16",
     "type": "module",
+    "files": [
+        "dist"
+    ],
     "main": "./dist/validate.umd.js",
     "module": "./dist/validate.es.js",
     "exports": {
