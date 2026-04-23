@@ -452,7 +452,80 @@ body {
   }
 }
 
-// ─── 14. Syntax Highlighting ────────────────────────────────
+// ─── 14. Playground section labels + divider ────────────────
+.playground__section-title {
+    color: var(--subtle);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 14px;
+    margin-top: 24px;
+    &:first-child { margin-top: 0; }
+}
+
+.playground__divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+}
+
+// ─── 15. Form component styles (library classes) ─────────────
+// Adapted for dark playground context
+
+.c--form-group-a {
+    margin-bottom: 1.25em;
+}
+
+.c--label-a {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.c--form-input-a {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+    transition: border-color .15s;
+
+    &--error {
+        border-color: var(--red);
+        background: #2a1a1a;
+    }
+
+    &--valid {
+        border-color: var(--success);
+    }
+
+    &__item {
+        display: block;
+        width: 100%;
+        font-size: 13px;
+        outline: none;
+        appearance: none;
+        background: transparent;
+        color: var(--text);
+
+        &::placeholder { color: var(--faint); }
+    }
+}
+
+.c--form-error-a {
+    color: var(--red);
+    font-size: 11px;
+    display: none;
+    margin-top: 4px;
+
+    &:not(:empty) { display: block; }
+}
+
+// ─── 16. Syntax Highlighting ────────────────────────────────
 .token-keyword  { color: #c586c0; }
 .token-string   { color: #ce9178; }
 .token-number   { color: #b5cea8; }

@@ -1,28 +1,60 @@
 import { isEmail } from '@andresclua/validate'
 import '../layout.js'
 import '../../scss/demo.scss'
-import { showError, showValid, initReset } from '../playground.js'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const input = document.getElementById('email-input')
-  const errorEl = document.getElementById('email-error')
-  const validEl = document.getElementById('email-valid')
-  const validateBtn = document.getElementById('validate-btn')
-  const resetBtn = document.getElementById('reset-btn')
+    // ── On Blur — callback approach ───────────────────────────
+    const blurInput = document.getElementById('blur-email')
+    const blurWrapper = document.getElementById('blur-wrapper')
+    const blurError = document.getElementById('blur-error')
 
-  validateBtn.addEventListener('click', () => {
-    isEmail({
-      element: input.value,
-      config: { required: true },
-      callback: (result) => {
-        if (result.isValid) {
-          showValid(input, validEl, errorEl)
-        } else {
-          showError(input, errorEl, result.errorMessage)
-        }
-      }
+    blurInput.addEventListener('blur', () => {
+        isEmail({
+            element: blurInput.value,
+            config: { required: true },
+            callback: (result) => {
+                if (result.isValid) {
+                    blurWrapper.classList.remove('c--form-input-a--error')
+                    blurWrapper.classList.add('c--form-input-a--valid')
+                    blurError.textContent = ''
+                } else {
+                    blurWrapper.classList.add('c--form-input-a--error')
+                    blurWrapper.classList.remove('c--form-input-a--valid')
+                    blurError.textContent = result.errorMessage
+                }
+            }
+        })
     })
-  })
 
-  initReset(resetBtn, [input], [errorEl], [validEl])
+    // ── On Submit — callback approach ─────────────────────────
+    const submitInput = document.getElementById('submit-email')
+    const submitWrapper = document.getElementById('submit-wrapper')
+    const submitError = document.getElementById('submit-error')
+
+    document.getElementById('validate-btn').addEventListener('click', () => {
+        isEmail({
+            element: submitInput.value,
+            config: { required: true },
+            callback: (result) => {
+                if (result.isValid) {
+                    submitWrapper.classList.remove('c--form-input-a--error')
+                    submitWrapper.classList.add('c--form-input-a--valid')
+                    submitError.textContent = ''
+                } else {
+                    submitWrapper.classList.add('c--form-input-a--error')
+                    submitWrapper.classList.remove('c--form-input-a--valid')
+                    submitError.textContent = result.errorMessage
+                }
+            }
+        })
+    })
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        blurInput.value = ''
+        blurWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+        blurError.textContent = ''
+        submitInput.value = ''
+        submitWrapper.classList.remove('c--form-input-a--error', 'c--form-input-a--valid')
+        submitError.textContent = ''
+    })
 })
