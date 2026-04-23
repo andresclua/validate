@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>isFile() — Max Size | @andresclua/validate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script type="module" src="../js/file/max-size.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">validators <span class="breadcrumb__sep">›</span> file <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">max size</span></p>
+
+    <h1 class="page-title">isFile() — Max Size</h1>
+    <p class="page-desc">Reject files that exceed a maximum file size.</p>
+
+    <div class="code-block">
+      <div class="code-block__tabs">
+        <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
+        <button class="code-block__tab" data-tab="html">HTML</button>
+        <button class="code-block__tab" data-tab="config">Config</button>
+      </div>
+      <div class="code-block__content code-block__content--active" data-tab="js">
+        <pre class="code-block__pre">import { isFile } from '@andresclua/validate'
+
+const result = isFile({
+    element: input.files[0],
+    config: {
+        required: true,
+        maxSize: 1 * 1024 * 1024,
+        customMessage: {
+            size: 'File must be smaller than 1MB'
+        }
+    }
+})</pre>
+      </div>
+      <div class="code-block__content" data-tab="html">
+        <pre class="code-block__pre">&lt;input type="file" id="file-input"&gt;</pre>
+      </div>
+      <div class="code-block__content" data-tab="config">
+        <pre class="code-block__pre">maxSize  number  Maximum file size in bytes (e.g., 1024 * 1024 for 1MB)
+customMessage.size  string  Error message for oversized files</pre>
+      </div>
+    </div>
+
+    <div class="playground">
+      <div class="playground__header">Playground</div>
+      <div class="playground__body">
+        <div class="pg-group">
+          <label class="pg-label" for="file-input">Select a file</label>
+          <small style="color:var(--muted);font-size:11px;">Max size: 1MB</small>
+          <input class="pg-input" type="file" id="file-input">
+          <p class="pg-error" id="file-error"></p>
+          <p class="pg-valid" id="file-valid">✓ File selected</p>
+        </div>
+        <div class="pg-actions">
+          <button class="pg-btn" id="validate-btn">Validate</button>
+          <button class="pg-btn pg-btn--ghost" id="reset-btn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="page-nav">
+      <a href="/file/type-restriction.html" class="page-nav__prev">← File / Type restriction</a>
+      <a href="/advanced/form-class.html" class="page-nav__next">Advanced / Form class →</a>
+    </nav>
+  </body>
+</html>
