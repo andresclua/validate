@@ -7,6 +7,13 @@
  * Active state: --active modifier on both tab and matching content panel
  */
 
+import { gsap } from 'gsap'
+import { Flip } from 'gsap/Flip'
+
+gsap.registerPlugin(Flip)
+
+const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 /**
  * Initialize all .code-block elements on the page.
  * Attach click handlers to each tab button; on click, swap active classes.
@@ -25,9 +32,20 @@ export function initCodeTabs() {
       if (panels[0]) panels[0].classList.add('code-block__content--active')
     }
 
+    // One underline element that Flip slides from tab to tab.
+    const indicator = document.createElement('span')
+    indicator.className = 'code-block__indicator'
+    ;(block.querySelector('.code-block__tab--active') || tabs[0])?.appendChild(indicator)
+
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const targetTab = tab.dataset.tab
+
+        if (indicator.parentElement !== tab) {
+          const state = Flip.getState(indicator)
+          tab.appendChild(indicator)
+          Flip.from(state, { duration: reduceMotion() ? 0 : 0.3, ease: 'power2.inOut' })
+        }
 
         // Deactivate all tabs and panels within this block
         tabs.forEach(t => t.classList.remove('code-block__tab--active'))

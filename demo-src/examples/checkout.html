@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout form | @andresclua/validate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script type="module" src="../js/examples/checkout.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">examples <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">checkout</span></p>
+
+    <h1 class="page-title">Checkout form</h1>
+    <p class="page-desc">Shipping and payment in one form, with regex rules (ZIP, expiry, CVC), a card number checked with the Luhn algorithm and a custom validator for expiry dates.</p>
+
+    <div class="page-callout">
+      Demo only: nothing is sent anywhere. Try the test card <code>4242 4242 4242 4242</code>.
+    </div>
+
+    <div class="playground">
+      <div class="playground__header">Playground</div>
+      <div class="playground__body">
+        <form id="checkout-form" novalidate>
+          <h2 class="pg-section">Shipping</h2>
+          <div class="c--form-group-a">
+            <label class="c--label-a" for="co-name">Full name</label>
+            <div class="c--form-input-a">
+              <input class="c--form-input-a__item" type="text" id="co-name" placeholder="Jane Doe" autocomplete="name">
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+          <div class="c--form-group-a">
+            <label class="c--label-a" for="co-address">Address</label>
+            <div class="c--form-input-a">
+              <input class="c--form-input-a__item" type="text" id="co-address" placeholder="221B Baker Street" autocomplete="street-address">
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+          <div class="pg-row">
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="co-city">City</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="text" id="co-city" placeholder="Madrid" autocomplete="address-level2">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="co-zip">ZIP code</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="text" id="co-zip" placeholder="28001" inputmode="numeric" autocomplete="postal-code">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+          </div>
+          <div class="c--form-group-a">
+            <label class="c--label-a" for="co-country">Country</label>
+            <div class="c--form-input-a">
+              <select class="c--form-input-a__item" id="co-country">
+                <option value="">Select a country…</option>
+                <option value="ar">Argentina</option>
+                <option value="es">Spain</option>
+                <option value="mx">Mexico</option>
+                <option value="us">United States</option>
+              </select>
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+          <div class="c--form-group-a">
+            <p class="pg-group-title">Delivery</p>
+            <div class="c--form-radio-a">
+              <input class="c--form-radio-a__item" type="radio" id="co-ship-std" name="shipping" value="standard">
+              <label class="c--form-radio-a__title" for="co-ship-std">Standard · 3–5 days · Free</label>
+            </div>
+            <div class="c--form-radio-a">
+              <input class="c--form-radio-a__item" type="radio" id="co-ship-exp" name="shipping" value="express">
+              <label class="c--form-radio-a__title" for="co-ship-exp">Express · 24h · $9</label>
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+
+          <h2 class="pg-section">Payment</h2>
+          <div class="c--form-group-a">
+            <label class="c--label-a" for="co-card">Card number</label>
+            <div class="c--form-input-a">
+              <input class="c--form-input-a__item" type="text" id="co-card" placeholder="4242 4242 4242 4242" inputmode="numeric" autocomplete="cc-number">
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+          <div class="pg-row">
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="co-exp">Expiry (MM/YY)</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="text" id="co-exp" placeholder="08/29" inputmode="numeric" autocomplete="cc-exp">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="co-cvc">CVC</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="text" id="co-cvc" placeholder="123" inputmode="numeric" autocomplete="cc-csc">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+          </div>
+          <div class="c--form-group-a">
+            <div class="c--form-checkbox-a">
+              <input class="c--form-checkbox-a__item" type="checkbox" id="co-terms">
+              <label class="c--form-checkbox-a__title" for="co-terms">I accept the terms of sale</label>
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+
+          <p class="pg-success" id="co-status">✓ Payment details valid. Order ready to place.</p>
+          <div class="pg-actions">
+            <button class="pg-btn" id="co-submit" type="submit">Pay now</button>
+            <button class="pg-btn pg-btn--ghost" id="co-reset" type="button">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block__tabs">
+        <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
+        <button class="code-block__tab" data-tab="html">HTML</button>
+      </div>
+      <div class="code-block__content code-block__content--active" data-tab="js">
+        <pre class="code-block__pre" id="src-js"></pre>
+      </div>
+      <div class="code-block__content" data-tab="html">
+        <pre class="code-block__pre" id="src-html"></pre>
+      </div>
+    </div>
+
+    <nav class="page-nav">
+      <a href="/examples/contact.html" class="page-nav__prev">← Contact form</a>
+    </nav>
+  </body>
+</html>

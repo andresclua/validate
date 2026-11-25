@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact form | @andresclua/validate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script type="module" src="../js/examples/contact.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">examples <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">contact</span></p>
+
+    <h1 class="page-title">Contact form</h1>
+    <p class="page-desc">Name, corporate email, subject, a message with length limits, an optional image attachment (type and size checked) and a consent checkbox.</p>
+
+    <div class="playground">
+      <div class="playground__header">Playground</div>
+      <div class="playground__body">
+        <form id="contact-form" novalidate>
+          <div class="pg-row">
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="ct-name">Full name</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="text" id="ct-name" placeholder="Jane Doe" autocomplete="name">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="ct-email">Work email</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="email" id="ct-email" placeholder="jane@company.com" autocomplete="email">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+          </div>
+          <div class="c--form-group-a">
+            <label class="c--label-a" for="ct-subject">Subject</label>
+            <div class="c--form-input-a">
+              <select class="c--form-input-a__item" id="ct-subject">
+                <option value="">What can we help with?</option>
+                <option value="support">Support</option>
+                <option value="sales">Sales</option>
+                <option value="partnership">Partnership</option>
+              </select>
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+          <div class="c--form-group-a">
+            <label class="c--label-a" for="ct-message">Message</label>
+            <div class="c--form-input-a">
+              <textarea class="c--form-input-a__item" id="ct-message" placeholder="Tell us a bit more…"></textarea>
+            </div>
+            <span class="c--form-error-a"></span>
+            <p class="pg-hint">Between 20 and 500 characters.</p>
+          </div>
+          <div class="c--form-group-a">
+            <label class="c--label-a" for="ct-file">Attachment <span class="pg-hint">(optional · PNG or JPG · max 2MB)</span></label>
+            <input type="file" id="ct-file" class="c--form-file-a">
+            <span class="c--form-error-a"></span>
+          </div>
+          <div class="c--form-group-a">
+            <div class="c--form-checkbox-a">
+              <input class="c--form-checkbox-a__item" type="checkbox" id="ct-consent">
+              <label class="c--form-checkbox-a__title" for="ct-consent">I agree to be contacted about my request</label>
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+
+          <p class="pg-success" id="ct-status">✓ Message sent. We'll reply within one business day.</p>
+          <div class="pg-actions">
+            <button class="pg-btn" id="ct-submit" type="submit">Send message</button>
+            <button class="pg-btn pg-btn--ghost" id="ct-reset" type="button">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block__tabs">
+        <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
+        <button class="code-block__tab" data-tab="html">HTML</button>
+      </div>
+      <div class="code-block__content code-block__content--active" data-tab="js">
+        <pre class="code-block__pre" id="src-js"></pre>
+      </div>
+      <div class="code-block__content" data-tab="html">
+        <pre class="code-block__pre" id="src-html"></pre>
+      </div>
+    </div>
+
+    <nav class="page-nav">
+      <a href="/examples/signup.html" class="page-nav__prev">← Sign up form</a>
+      <a href="/examples/checkout.html" class="page-nav__next">Checkout form →</a>
+    </nav>
+  </body>
+</html>

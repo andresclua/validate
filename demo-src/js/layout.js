@@ -1,5 +1,6 @@
 import { nav } from './nav-config.js'
 import { initCodeTabs } from './code-tabs.js'
+import pkg from '../../package.json'
 
 /**
  * Normalize a pathname for comparison.
@@ -21,21 +22,46 @@ function normalizePath(path) {
 /**
  * Build the topnav element.
  */
-function buildTopnav() {
+function buildTopnav(currentPath, isHome) {
   const nav = document.createElement('nav')
   nav.className = 'topnav'
+  const inExamples = currentPath.startsWith('/examples/')
+  const active = (on) => (on ? ' topnav__link--active' : '')
   nav.innerHTML = `
-    <div class="topnav__logo">
-      @andresclua/<span style="color:var(--red)">validate</span>
-      <span class="topnav__badge">v0.0.14</span>
-    </div>
+    <a class="topnav__logo" href="/index.html">
+      <span>@andresclua/<span style="color:var(--red)">validate</span></span>
+      <span class="topnav__badge">v${pkg.version}</span>
+    </a>
     <div class="topnav__links">
-      <a href="https://www.npmjs.com/package/@andresclua/validate" class="topnav__link" target="_blank">npm</a>
-      <a href="https://github.com/andresclua/validate" class="topnav__link" target="_blank">GitHub</a>
-      <a href="/installation.html" class="topnav__cta">Install</a>
+      <a href="/installation.html" class="topnav__link${active(!isHome && !inExamples)}">Docs</a>
+      <a href="/examples/signup.html" class="topnav__link${active(inExamples)}">Examples</a>
+      <a href="https://www.npmjs.com/package/@andresclua/validate" class="topnav__link topnav__link--ext" target="_blank" rel="noopener">npm</a>
+      <a href="https://github.com/andresclua/validate" class="topnav__link topnav__link--ext" target="_blank" rel="noopener">GitHub</a>
+      <a href="/installation.html" class="topnav__cta">Get started</a>
+      ${isHome ? '' : '<button class="topnav__menu" type="button" aria-label="Toggle navigation">☰</button>'}
     </div>
   `
+  nav.querySelector('.topnav__menu')?.addEventListener('click', () => document.body.classList.toggle('sidebar-open'))
   return nav
+}
+
+// Footer shown on the landing page only.
+function buildFooter() {
+  const footer = document.createElement('footer')
+  footer.className = 'site-footer'
+  footer.innerHTML = `
+    <div class="container site-footer__inner">
+      <p><strong>@andresclua/validate</strong> · v${pkg.version}</p>
+      <nav class="site-footer__links">
+        <a href="/installation.html">Docs</a>
+        <a href="/examples/signup.html">Examples</a>
+        <a href="https://github.com/andresclua/validate" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.npmjs.com/package/@andresclua/validate" target="_blank" rel="noopener">npm</a>
+        <a href="https://sliderkit.andresclua.com" target="_blank" rel="noopener">SliderKit</a>
+      </nav>
+    </div>
+  `
+  return footer
 }
 
 /**
@@ -72,11 +98,13 @@ function buildSidebar(currentPath) {
           child => normalizePath(child.href) === currentPath
         )
 
-        const parentEl = document.createElement('div')
-        parentEl.className = 'sidebar__item'
-        parentEl.textContent = item.label
+        const parentEl = document.createElement('button')
+        parentEl.type = 'button'
+        parentEl.className = 'sidebar__item sidebar__item--parent'
+        parentEl.innerHTML = `<span>${item.label}</span><span class="sidebar__chevron" aria-hidden="true"></span>`
+        parentEl.setAttribute('aria-expanded', String(childIsActive))
         if (childIsActive) {
-          parentEl.classList.add('sidebar__item--active')
+          parentEl.classList.add('sidebar__item--active', 'sidebar__item--open')
         }
         aside.appendChild(parentEl)
 
@@ -88,9 +116,10 @@ function buildSidebar(currentPath) {
         }
 
         // Toggle expand/collapse on click
-        parentEl.style.cursor = 'pointer'
         parentEl.addEventListener('click', () => {
-          subContainer.classList.toggle('sidebar__subitems--open')
+          const open = subContainer.classList.toggle('sidebar__subitems--open')
+          parentEl.classList.toggle('sidebar__item--open', open)
+          parentEl.setAttribute('aria-expanded', String(open))
         })
 
         item.children.forEach(child => {
@@ -126,31 +155,28 @@ function buildSidebar(currentPath) {
  */
 function initLayout() {
   const currentPath = normalizePath(window.location.pathname)
+  // The landing page has no sidebar; the sidebar belongs to the docs pages.
+  const isHome = currentPath === '/index.html'
 
   // Collect existing body children
   const existingChildren = Array.from(document.body.childNodes)
 
   // Wrap existing content in <main class="content">
   const main = document.createElement('main')
-  main.className = 'content'
+  main.className = isHome ? 'content content--home' : 'content'
   existingChildren.forEach(child => main.appendChild(child))
-
-  // Build sidebar
-  const sidebar = buildSidebar(currentPath)
 
   // Build layout wrapper
   const layout = document.createElement('div')
-  layout.className = 'layout'
-  layout.appendChild(sidebar)
+  layout.className = isHome ? 'layout layout--home' : 'layout'
+  if (!isHome) layout.appendChild(buildSidebar(currentPath))
   layout.appendChild(main)
 
-  // Build topnav
-  const topnav = buildTopnav()
-
-  // Clear body and inject topnav + layout
+  // Clear body and inject topnav + layout (+ footer on the landing)
   document.body.innerHTML = ''
-  document.body.appendChild(topnav)
+  document.body.appendChild(buildTopnav(currentPath, isHome))
   document.body.appendChild(layout)
+  if (isHome) document.body.appendChild(buildFooter())
 
   // Re-initialize code tabs on the new DOM
   initCodeTabs()

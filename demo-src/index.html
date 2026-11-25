@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Introduction | @andresclua/validate</title>
+    <title>@andresclua/validate — Lightweight form validation for the web</title>
+    <meta name="description" content="A tiny, framework-agnostic validation library for email, number, string, select, checkbox, radio and file inputs. Zero dependencies." />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,37 +13,155 @@
     <script type="module" src="./js/index.js"></script>
   </head>
   <body>
-    <p class="breadcrumb">getting started <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">introduction</span></p>
+    <!-- ─── Hero ─────────────────────────────────────────────── -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <p class="hero__eyebrow"><span class="hero__dot"></span><span id="hero-version"></span> · zero dependencies · framework-agnostic</p>
+        <h1 class="hero__title">Validate forms.<br /><span>Nothing else.</span></h1>
+        <p class="hero__lead">A tiny validation library for email, number, string, select, checkbox, radio and file inputs. One consistent API. You own the markup and the messages.</p>
 
-    <h1 class="page-title">@andresclua/validate</h1>
-    <p class="page-desc">A lightweight, zero-dependency form validation library for vanilla JavaScript. Validate email, number, string, select, checkbox, radio, and file inputs with a consistent API.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="/installation.html">Get started →</a>
+          <a class="btn btn--ghost" href="/examples/signup.html">View examples</a>
+          <a class="btn btn--ghost" href="https://github.com/andresclua/validate" target="_blank" rel="noopener">GitHub</a>
+        </div>
 
-    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">Why use validate?</h2>
-    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
-      Most form validation libraries are bloated with features you don't need. <code style="background: var(--dark); padding: 2px 6px; border-radius: 3px; color: var(--text); font-family: monospace;">@andresclua/validate</code> gives you a simple, chainable API for validating form inputs without any dependencies.
-    </p>
+        <button class="hero__install" id="copy-install" type="button" aria-label="Copy install command">
+          <code>npm i @andresclua/validate</code>
+          <span id="copy-label">Copy</span>
+        </button>
 
-    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">What you get</h2>
-    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 12px;">The library provides specialized validators for each form input type:</p>
+        <ul class="hero__stats">
+          <li><strong>&lt; 2 kB</strong><span>gzipped</span></li>
+          <li><strong>7</strong><span>validators</span></li>
+          <li><strong>0</strong><span>dependencies</span></li>
+          <li><strong>ES + UMD</strong><span>builds</span></li>
+        </ul>
+      </div>
+    </section>
 
-    <ul style="color: var(--muted); font-size: 13px; line-height: 1.8; margin-left: 20px; margin-bottom: 16px;">
-      <li><strong style="color: var(--text);">isEmail()</strong> — Email format validation with domain checks and async support</li>
-      <li><strong style="color: var(--text);">isNumber()</strong> — Numeric validation with range, positive/negative, and integer-only options</li>
-      <li><strong style="color: var(--text);">isString()</strong> — String validation with length constraints and pattern matching (regex)</li>
-      <li><strong style="color: var(--text);">isSelect()</strong> — Validate select/dropdown elements for required selection</li>
-      <li><strong style="color: var(--text);">isCheckbox()</strong> — Checkbox validation with minimum selection requirements</li>
-      <li><strong style="color: var(--text);">isRadio()</strong> — Radio button validation ensuring a selection is made</li>
-      <li><strong style="color: var(--text);">isFile()</strong> — File validation with type and size restrictions</li>
-    </ul>
+    <!-- ─── Live demo slider (SliderKit) ─────────────────────── -->
+    <section class="home-section container" id="demo">
+      <div class="home-section__head">
+        <div>
+          <h2 class="home-section__title">Try it live</h2>
+          <p class="home-section__lead">Every card runs the real validator. Type something wrong and see what you get back.</p>
+        </div>
+        <div class="demo-controls">
+          <button class="demo-controls__btn" id="demo-prev" type="button" aria-label="Previous validator">←</button>
+          <button class="demo-controls__btn" id="demo-next" type="button" aria-label="Next validator">→</button>
+        </div>
+      </div>
+      <div id="demo-slider"></div>
+    </section>
 
-    <h2 style="color: var(--white); font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">Getting started</h2>
-    <p style="color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
-      Start with the <a href="/installation.html" style="color: var(--red); text-decoration: none;">installation guide</a> to add validate to your project. Then explore each validator type to learn how to use it with your forms.
-    </p>
+    <!-- ─── Features ─────────────────────────────────────────── -->
+    <section class="home-section container">
+      <h2 class="home-section__title">Everything you need, nothing you don't</h2>
+      <p class="home-section__lead">Import only the validators you use. The rest never reaches your bundle.</p>
+      <div class="feature-grid">
+        <article class="feature"><span class="feature__n">01</span><h3>Tiny and dependency-free</h3><p>Under 2 kB gzipped and written in plain JavaScript. Nothing to install alongside it.</p></article>
+        <article class="feature"><span class="feature__n">02</span><h3>Framework-agnostic</h3><p>Works in vanilla JS, React, Vue, Svelte or Angular. It validates values and never touches the DOM.</p></article>
+        <article class="feature"><span class="feature__n">03</span><h3>Seven validators</h3><p>Email, number, string, select, checkbox, radio and file, all sharing the same call shape and result object.</p></article>
+        <article class="feature"><span class="feature__n">04</span><h3>Your own messages</h3><p>Every rule has a sensible default message and a <code>customMessage</code> override, ready for any language.</p></article>
+        <article class="feature"><span class="feature__n">05</span><h3>Custom rules</h3><p>Add <code>customValidation</code> to email, number, string and select, or pass any function to the Form helper.</p></article>
+        <article class="feature"><span class="feature__n">06</span><h3>Validate when you want</h3><p>On blur, on input, on change or on submit. You choose the moment, the library only answers.</p></article>
+        <article class="feature"><span class="feature__n">07</span><h3>Built-in debugging</h3><p>Pass <code>debug: true</code> to log the element, config and result of every validation step.</p></article>
+        <article class="feature"><span class="feature__n">08</span><h3>ES modules and UMD</h3><p>ESM for bundlers and a UMD build for script tags, both shipped in <code>dist/</code>.</p></article>
+      </div>
+    </section>
 
-    <nav class="page-nav">
-      <span></span>
-      <a href="/installation.html" class="page-nav__next">Installation →</a>
-    </nav>
+    <!-- ─── Up and running ───────────────────────────────────── -->
+    <section class="home-section container home-code">
+      <div>
+        <h2 class="home-section__title">Up and running<br />in seconds</h2>
+        <p class="home-section__lead">Call a validator with a value and a config. Get back <code>isValid</code> and an <code>errorMessage</code>. That's the whole API.</p>
+        <div class="home-code__links">
+          <a class="btn btn--primary" href="/installation.html">Read the docs →</a>
+          <a class="btn btn--ghost" href="/advanced/form-helper.html">Form helper</a>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-block__tabs"><button class="code-block__tab code-block__tab--active" data-tab="js">validate.js</button></div>
+        <div class="code-block__content code-block__content--active" data-tab="js">
+          <pre class="code-block__pre">import { isEmail } from '@andresclua/validate'
+
+const result = isEmail({
+    element: input.value,
+    config: {
+        required: true,
+        type: 'corporate',
+        customMessage: { corporate: 'Use your work email.' },
+    },
+})
+
+if (!result.isValid) {
+    error.textContent = result.errorMessage
+}</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Which validator ──────────────────────────────────── -->
+    <section class="home-section container">
+      <h2 class="home-section__title">Which validator do I need?</h2>
+      <p class="home-section__lead">Start from what you want to check, or filter by input type. Each row links to the docs.</p>
+      <div class="chips" role="group" aria-label="Filter by input type">
+        <button class="chip chip--active" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-filter="text" aria-pressed="false">Text</button>
+        <button class="chip" type="button" data-filter="number" aria-pressed="false">Numbers</button>
+        <button class="chip" type="button" data-filter="choice" aria-pressed="false">Choices</button>
+        <button class="chip" type="button" data-filter="file" aria-pressed="false">Files</button>
+        <button class="chip" type="button" data-filter="custom" aria-pressed="false">Custom</button>
+      </div>
+      <div class="which">
+        <a class="which__row" data-group="text" href="/email/basic.html"><span>A required, well-formed email</span><b>isEmail</b><code>required: true</code></a>
+        <a class="which__row" data-group="text" href="/email/corporate.html"><span>Work emails only</span><b>isEmail</b><code>type: 'corporate'</code></a>
+        <a class="which__row" data-group="number" href="/number/minmax.html"><span>A number in a range</span><b>isNumber</b><code>min · max · integer</code></a>
+        <a class="which__row" data-group="text" href="/string/minmax-length.html"><span>Text with length limits</span><b>isString</b><code>minLength · maxLength</code></a>
+        <a class="which__row" data-group="text" href="/string/pattern.html"><span>Text that must match a format</span><b>isString</b><code>pattern: /regex/</code></a>
+        <a class="which__row" data-group="choice" href="/select/basic.html"><span>A real option from a dropdown</span><b>isSelect</b><code>required: true</code></a>
+        <a class="which__row" data-group="choice" href="/checkbox/min-selections.html"><span>At least N boxes ticked</span><b>isCheckbox</b><code>minRequired: 2</code></a>
+        <a class="which__row" data-group="choice" href="/radio/basic.html"><span>One option chosen in a group</span><b>isRadio</b><code>customMessage</code></a>
+        <a class="which__row" data-group="file" href="/file/type-restriction.html"><span>A file by type and size</span><b>isFile</b><code>allowedTypes · maxSize</code></a>
+        <a class="which__row" data-group="custom" href="/advanced/custom-validators.html"><span>A rule only you know</span><b>any function</b><code>customValidation</code></a>
+      </div>
+    </section>
+
+    <!-- ─── Real-world examples ──────────────────────────────── -->
+    <section class="home-section container">
+      <h2 class="home-section__title">Real-world forms</h2>
+      <p class="home-section__lead">Complete forms that combine several validators, with the code next to the playground.</p>
+      <div class="example-cards">
+        <a class="example-card" href="/examples/signup.html">
+          <span class="example-card__tag">8 fields</span>
+          <h3>Sign up</h3>
+          <p>Password confirmation, select, radio group and terms.</p>
+          <span class="example-card__go">Open example →</span>
+        </a>
+        <a class="example-card" href="/examples/contact.html">
+          <span class="example-card__tag">6 fields</span>
+          <h3>Contact</h3>
+          <p>Corporate email, message length and an optional attachment.</p>
+          <span class="example-card__go">Open example →</span>
+        </a>
+        <a class="example-card" href="/examples/checkout.html">
+          <span class="example-card__tag">10 fields</span>
+          <h3>Checkout</h3>
+          <p>Luhn card check, expiry date, ZIP and CVC rules.</p>
+          <span class="example-card__go">Open example →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ─── Closing call to action ───────────────────────────── -->
+    <section class="cta container">
+      <h2>Ready to validate?</h2>
+      <p>Add it to your project in one command.</p>
+      <div class="hero__actions hero__actions--center">
+        <a class="btn btn--primary" href="/installation.html">Get started →</a>
+        <a class="btn btn--ghost" href="https://www.npmjs.com/package/@andresclua/validate" target="_blank" rel="noopener">View on npm</a>
+      </div>
+    </section>
   </body>
 </html>

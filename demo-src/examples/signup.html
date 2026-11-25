@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up form | @andresclua/validate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script type="module" src="../js/examples/signup.js"></script>
+  </head>
+  <body>
+    <p class="breadcrumb">examples <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">sign up</span></p>
+
+    <h1 class="page-title">Sign up form</h1>
+    <p class="page-desc">A complete registration form: text, email, password with confirmation, select, radio group and a terms checkbox, all wired through the <code>Form</code> helper.</p>
+
+    <div class="playground">
+      <div class="playground__header">Playground</div>
+      <div class="playground__body">
+        <form id="signup-form" novalidate>
+          <h2 class="pg-section">Your account</h2>
+          <div class="pg-row">
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="su-first">First name</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="text" id="su-first" placeholder="Jane" autocomplete="given-name">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="su-last">Last name</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="text" id="su-last" placeholder="Doe" autocomplete="family-name">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+          </div>
+          <div class="c--form-group-a">
+            <label class="c--label-a" for="su-email">Email</label>
+            <div class="c--form-input-a">
+              <input class="c--form-input-a__item" type="email" id="su-email" placeholder="jane@example.com" autocomplete="email">
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+          <div class="pg-row">
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="su-password">Password</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="password" id="su-password" placeholder="••••••••" autocomplete="new-password">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+            <div class="c--form-group-a">
+              <label class="c--label-a" for="su-confirm">Confirm password</label>
+              <div class="c--form-input-a">
+                <input class="c--form-input-a__item" type="password" id="su-confirm" placeholder="••••••••" autocomplete="new-password">
+              </div>
+              <span class="c--form-error-a"></span>
+            </div>
+          </div>
+
+          <h2 class="pg-section">About you</h2>
+          <div class="c--form-group-a">
+            <label class="c--label-a" for="su-country">Country</label>
+            <div class="c--form-input-a">
+              <select class="c--form-input-a__item" id="su-country">
+                <option value="">Select a country…</option>
+                <option value="ar">Argentina</option>
+                <option value="es">Spain</option>
+                <option value="mx">Mexico</option>
+                <option value="us">United States</option>
+              </select>
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+          <div class="c--form-group-a">
+            <p class="pg-group-title">I am a…</p>
+            <div class="c--form-radio-a">
+              <input class="c--form-radio-a__item" type="radio" id="su-role-dev" name="role" value="developer">
+              <label class="c--form-radio-a__title" for="su-role-dev">Developer</label>
+            </div>
+            <div class="c--form-radio-a">
+              <input class="c--form-radio-a__item" type="radio" id="su-role-design" name="role" value="designer">
+              <label class="c--form-radio-a__title" for="su-role-design">Designer</label>
+            </div>
+            <div class="c--form-radio-a">
+              <input class="c--form-radio-a__item" type="radio" id="su-role-other" name="role" value="other">
+              <label class="c--form-radio-a__title" for="su-role-other">Something else</label>
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+          <div class="c--form-group-a">
+            <div class="c--form-checkbox-a">
+              <input class="c--form-checkbox-a__item" type="checkbox" id="su-terms">
+              <label class="c--form-checkbox-a__title" for="su-terms">I accept the terms and conditions</label>
+            </div>
+            <span class="c--form-error-a"></span>
+          </div>
+
+          <p class="pg-success" id="su-status">✓ Account created. Welcome aboard!</p>
+          <div class="pg-actions">
+            <button class="pg-btn" id="su-submit" type="submit">Create account</button>
+            <button class="pg-btn pg-btn--ghost" id="su-reset" type="button">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block__tabs">
+        <button class="code-block__tab code-block__tab--active" data-tab="js">JS</button>
+        <button class="code-block__tab" data-tab="html">HTML</button>
+      </div>
+      <div class="code-block__content code-block__content--active" data-tab="js">
+        <pre class="code-block__pre" id="src-js"></pre>
+      </div>
+      <div class="code-block__content" data-tab="html">
+        <pre class="code-block__pre" id="src-html"></pre>
+      </div>
+    </div>
+
+    <nav class="page-nav">
+      <a href="/advanced/form-helper.html" class="page-nav__prev">← Form Helper</a>
+      <a href="/examples/contact.html" class="page-nav__next">Contact form →</a>
+    </nav>
+  </body>
+</html>

@@ -2,7 +2,6 @@ export const nav = [
   {
     group: 'Getting started',
     items: [
-      { label: 'Introduction', href: '/index.html' },
       { label: 'Installation', href: '/installation.html' },
     ]
   },
@@ -46,6 +45,14 @@ export const nav = [
         { label: 'Type restriction', href: '/file/type-restriction.html' },
         { label: 'Max size', href: '/file/max-size.html' },
       ]},
+    ]
+  },
+  {
+    group: 'Examples',
+    items: [
+      { label: 'Sign up', href: '/examples/signup.html' },
+      { label: 'Contact', href: '/examples/contact.html' },
+      { label: 'Checkout', href: '/examples/checkout.html' },
     ]
   },
   {

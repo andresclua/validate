@@ -22,7 +22,9 @@
         "build:demo": "vite build --config vite.config.demo.js"
     },
     "devDependencies": {
+        "@andresclua/sliderkit": "^2.4.0",
         "fast-glob": "^3.3.3",
+        "gsap": "^3.15.1",
         "sass": "^1.80.6",
         "vite": "^5.4.10"
     }
