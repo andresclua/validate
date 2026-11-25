@@ -13,7 +13,7 @@ This library is framework-agnostic, meaning it works seamlessly with any JavaScr
 - Use it in plain JavaScript for lightweight projects.
 - Integrate it into frameworks like React, Vue, Svelte, or Angular.
 - Ideal for modern frontends or traditional setups.
-- Focused purely on validation; DOM manipulation or custom message handling is left to developers.
+- Focused on validation: the validators never touch the DOM or render messages. The optional `Form` helper is the one piece that does, and it is opt-in.
 - Includes built-in debugging tools to log detailed validation steps for easier troubleshooting.
 - Supports real-time validation (e.g., on blur, input, or change events).
 - Written in pure JavaScript with no dependencies, ensuring fast performance.
@@ -45,7 +45,7 @@ isEmail({
     element: "user@example.com",
     config: {
         type: "corporate",
-        customMessage: "Please use a corporate email address.",
+        customMessage: { corporate: "Please use a corporate email address." },
     },
 });
 ```
@@ -83,5 +83,5 @@ The interactive documentation site covers every validator with live playgrounds:
 
 ## Do you need to validate an entire form?
 
-Check out the [optional Form helper](https://validate.andresclua.com/advanced/form-helper.html) — a copy-paste class that wires multiple fields, blur events, and submit logic in one place. Also available in [docs/advanced.md](https://github.com/andresclua/validate/blob/main/docs/advanced.md).
+Check out the [optional Form helper](https://validate.andresclua.com/advanced/form-helper.html) — the `Form` class, included in the package, wires multiple fields, blur events, and submit logic in one place: `import { Form } from "@andresclua/validate"`. Also available in [docs/advanced.md](https://github.com/andresclua/validate/blob/main/docs/advanced.md).
 

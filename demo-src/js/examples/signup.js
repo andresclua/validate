@@ -1,4 +1,4 @@
-import Form from '../Form.js'
+import { Form } from '@andresclua/validate'
 import { resetForm, setupDemo } from './shared.js'
 import src from './signup.js?raw'
 

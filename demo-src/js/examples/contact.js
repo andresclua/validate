@@ -1,5 +1,4 @@
-import Form from '../Form.js'
-import { isFile } from '@andresclua/validate'
+import { Form } from '@andresclua/validate'
 import { resetForm, setupDemo } from './shared.js'
 import src from './contact.js?raw'
 
@@ -7,10 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form')
     const status = document.getElementById('ct-status')
     setupDemo(src, form)
-
-    // isFile reads element.type / element.size, so an empty optional field is skipped here.
-    const optionalImage = ({ element, config }) =>
-        element ? isFile({ element, config }) : { isValid: true, errorMessage: null }
 
     new Form({
         element: form,
@@ -25,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { element: document.getElementById('ct-message'), validationFunction: 'isString', on: 'blur',
               config: { required: true, minLength: 20, maxLength: 500,
                         customMessage: { required: 'Please write a message.', minLength: 'Give us at least 20 characters.', maxLength: 'Keep it under 500 characters.' } } },
-            { element: document.getElementById('ct-file'), validationFunction: optionalImage, on: 'change',
-              config: { allowedTypes: ['image/png', 'image/jpeg'], maxSize: 2 * 1024 * 1024,
+            { element: document.getElementById('ct-file'), validationFunction: 'isFile', on: 'change',
+              config: { required: false, allowedTypes: ['image/png', 'image/jpeg'], maxSize: 2 * 1024 * 1024,
                         customMessage: { type: 'Only PNG or JPG images.', size: 'Max file size is 2MB.' } } },
             { elements: form.querySelectorAll('#ct-consent'), validationFunction: 'isCheckbox', on: 'change',
               config: { minRequired: 1, customMessage: { minRequired: 'We need your consent to reply.' } } },

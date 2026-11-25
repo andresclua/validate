@@ -65,7 +65,7 @@ export const nav = [
         { label: 'onError', href: '/advanced/on-error.html' },
       ]},
       { label: 'Form Helper', children: [
-        { label: 'Optional helper', href: '/advanced/form-helper.html' },
+        { label: 'Import & usage', href: '/advanced/form-helper.html' },
       ]},
     ]
   }

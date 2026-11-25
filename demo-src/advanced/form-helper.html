@@ -14,198 +14,68 @@
   <body>
     <p class="breadcrumb">advanced <span class="breadcrumb__sep">›</span> <span class="breadcrumb__current">form helper</span></p>
 
-    <h1 class="page-title">Advanced — Optional Helper: Form Class</h1>
-    <p class="page-desc">A copy-paste helper class that wires multiple fields, blur events, and submit logic in one place. Not part of the package — use it as a starting point and adapt it to your needs.</p>
+    <h1 class="page-title">Advanced — Form helper</h1>
+    <p class="page-desc">The <code>Form</code> class wires multiple fields, blur events and submit logic in one place. It ships with the package, so one import is all you need.</p>
 
     <div class="page-callout">
-      The <code>Form</code> class is <strong>not included in @andresclua/validate</strong>. Copy <code>Form.js</code> into your project and import the validators from the library as usual.
+      <code>Form</code> is exported by <strong>@andresclua/validate</strong> and already includes every validator. Import it on its own: <code>import { Form } from '@andresclua/validate'</code>.
     </div>
 
-    <!-- ─── Form.js source + Config reference ──────────────── -->
     <div class="code-block">
       <div class="code-block__tabs">
-        <button class="code-block__tab code-block__tab--active" data-tab="class">Form.js</button>
+        <button class="code-block__tab code-block__tab--active" data-tab="usage">Usage</button>
         <button class="code-block__tab" data-tab="config">Config</button>
       </div>
 
-      <div class="code-block__content code-block__content--active" data-tab="class">
-        <pre class="code-block__pre">// copy this file into your project as Form.js
-import {
-    isString, isEmail, isNumber,
-    isSelect, isCheckbox, isRadio, isFile,
-} from '@andresclua/validate'
+      <div class="code-block__content code-block__content--active" data-tab="usage">
+        <pre class="code-block__pre">import { Form } from '@andresclua/validate'
 
-class Form {
-    constructor({
-        element, fields,
-        submitButtonSelector = null,
-        beforeSubmit = null,
-        onSubmit = null,
-        onError = null,
-        validators = {},
-    }) {
-        if (!element) throw new Error('A form element is required.')
-
-        this.fields = fields || []
-        this.beforeSubmit = beforeSubmit
-        this.onSubmit = onSubmit
-        this.onError = onError
-
-        this.DOM = {
-            form: element,
-            submitButton: submitButtonSelector
-                ? element.querySelector(submitButtonSelector)
-                : null,
+const form = new Form({
+    element: document.getElementById('signup-form'),
+    fields: [
+        {
+            element: document.querySelector('#email'),
+            validationFunction: 'isEmail',
+            config: { required: true },
+            on: 'blur'
+        },
+        {
+            elements: document.querySelectorAll('input[name="role"]'),
+            validationFunction: 'isRadio',
+            on: 'change'
         }
+    ],
+    submitButtonSelector: '#submit-btn',
+    onSubmit: () => console.log('Valid!'),
+    onError: (invalid) => console.log('Fix:', invalid)
+})
 
-        this.validators = {
-            isString, isEmail, isNumber,
-            isSelect, isCheckbox, isRadio, isFile,
-            ...validators,
-        }
-
-        this._listeners = []
-        this.init()
-        this.events()
-    }
-
-    init()   { this.initializeFields() }
-    events() { this.initializeSubmit() }
-
-    getValidator(fn) {
-        if (typeof fn === 'function') return fn
-        if (typeof fn === 'string') {
-            const v = this.validators[fn]
-            if (!v) throw new Error(`Validator "${fn}" is not registered.`)
-            return v
-        }
-        throw new Error('validationFunction must be a function or a string key.')
-    }
-
-    runField(field) {
-        const { element, elements, validationFunction, config } = field
-        const validator = this.getValidator(validationFunction)
-
-        if (elements) {
-            const result = validator({ elements, config })
-            this.updateFieldState(field, result)
-            return result
-        }
-
-        if (!(element instanceof Element))
-            throw new Error('Field must have `element` or `elements`.')
-
-        if (element.tagName === 'INPUT' && element.type === 'file') {
-            const result = validator({ element: element.files?.[0] || null, config })
-            this.updateFieldState(field, result)
-            return result
-        }
-
-        const result = validator({ element: element.value, config })
-        this.updateFieldState(field, result)
-        return result
-    }
-
-    initializeFields() {
-        this.fields.forEach((field) => {
-            if (field.on === null) return
-            const eventType = field.on || 'blur'
-            const target = field.element || field.elements?.[0]
-            if (!target) throw new Error('Each field must have `element` or `elements`.')
-            const handler = () => this.runField(field)
-            target.addEventListener(eventType, handler)
-            this._listeners.push({ target, event: eventType, handler })
-        })
-    }
-
-    updateFieldState(field, result) {
-        const baseEl = field.element || field.elements?.[0]
-        if (!(baseEl instanceof Element)) return
-
-        const formGroup = baseEl.closest('.c--form-group-a')
-        let errorSpan = formGroup?.querySelector('.c--form-error-a')
-
-        if (!errorSpan && formGroup) {
-            errorSpan = document.createElement('span')
-            errorSpan.classList.add('c--form-error-a')
-            formGroup.appendChild(errorSpan)
-        }
-
-        if (field.elements) {
-            if (errorSpan) errorSpan.textContent = result.isValid ? '' : result.errorMessage
-            return
-        }
-
-        const isFile = baseEl.tagName === 'INPUT' && baseEl.type === 'file'
-        const wrapper = isFile ? baseEl : baseEl.closest('.c--form-input-a')
-        const baseClass = isFile ? 'c--form-file-a' : 'c--form-input-a'
-
-        if (!wrapper) return
-
-        if (result.isValid) {
-            wrapper.classList.remove(`${baseClass}--error`)
-            wrapper.classList.add(`${baseClass}--valid`)
-            if (errorSpan) errorSpan.textContent = ''
-        } else {
-            wrapper.classList.add(`${baseClass}--error`)
-            wrapper.classList.remove(`${baseClass}--valid`)
-            if (errorSpan) errorSpan.textContent = result.errorMessage
-        }
-    }
-
-    validateAllFields() {
-        const invalidFields = []
-        this.fields.forEach((field) => {
-            const result = this.runField(field)
-            if (!result?.isValid)
-                invalidFields.push({ field, errorMessage: result?.errorMessage || 'Invalid' })
-        })
-        return invalidFields
-    }
-
-    initializeSubmit() {
-        if (this.DOM.submitButton) {
-            const handler = (e) => { e.preventDefault(); this.handleValidation() }
-            this.DOM.submitButton.addEventListener('click', handler)
-            this._listeners.push({ target: this.DOM.submitButton, event: 'click', handler })
-        }
-        const formHandler = (e) => { e.preventDefault(); this.handleValidation() }
-        this.DOM.form.addEventListener('submit', formHandler)
-        this._listeners.push({ target: this.DOM.form, event: 'submit', handler: formHandler })
-    }
-
-    handleValidation() {
-        if (this.beforeSubmit && this.beforeSubmit() === false) return
-        const invalidFields = this.validateAllFields()
-        if (invalidFields.length === 0) { if (this.onSubmit) this.onSubmit() }
-        else                            { if (this.onError)  this.onError(invalidFields) }
-    }
-
-    destroy() {
-        this._listeners.forEach(({ target, event, handler }) =>
-            target.removeEventListener(event, handler))
-        this._listeners = []
-    }
-}
-
-export default Form</pre>
+form.destroy() // removes every listener it added</pre>
       </div>
 
       <div class="code-block__content" data-tab="config">
         <pre class="code-block__pre">Form constructor options:
-element                Element    The &lt;form&gt; element to validate
-fields                 array      Array of field configurations (see below)
-submitButtonSelector   string?    CSS selector for submit button inside the form
-beforeSubmit           fn?        Called before validation — return false to cancel
-onSubmit               fn?        Called when all fields are valid
-onError                fn?        Called with array of invalid fields
+element                Element        The &lt;form&gt; element to validate
+fields                 array          Array of field configurations (see below)
+submitButtonSelector   string|Element Submit button: selector scoped to the form, or the element
+beforeSubmit           fn?            Called before validation — return false to cancel
+onSubmit               fn?            Called when all fields are valid
+onError                fn?            Called with array of invalid fields
+validators             object?        Extra validators, usable by name in validationFunction
+classNames             object?        Override the CSS classes the helper looks for (see below)
 
 Field configuration:
-element                Element    The input / textarea / select DOM element
-elements               NodeList   For checkbox / radio groups (use instead of element)
-validationFunction     string|fn  Built-in name ("isEmail", "isString"…) or custom fn
-config                 object?    Validator config passed directly to the validator
-on                     string?    Event type ("blur", "input", "change") — null = submit only</pre>
+element                Element        The input / textarea / select DOM element
+elements               NodeList       For checkbox / radio groups (use instead of element)
+validationFunction     string|fn      Built-in name ("isEmail", "isString"…) or custom fn
+config                 object?        Validator config passed directly to the validator
+on                     string?        Event type ("blur", "input", "change") — null = submit only
+
+classNames (defaults):
+group    "c--form-group-a"    Wraps label, control and error message
+input    "c--form-input-a"    Wrapper that receives --error / --valid modifiers
+file     "c--form-file-a"     File inputs receive the modifiers directly
+error    "c--form-error-a"    Element that shows the error message</pre>
       </div>
     </div>
 
@@ -221,7 +91,7 @@ on                     string?    Event type ("blur", "input", "change") — nul
         <button class="code-block__tab" data-tab="html-1">HTML</button>
       </div>
       <div class="code-block__content code-block__content--active" data-tab="js-1">
-        <pre class="code-block__pre">import Form from './Form.js'
+        <pre class="code-block__pre">import { Form } from '@andresclua/validate'
 
 new Form({
     element: document.getElementById('login-form'),
@@ -320,7 +190,7 @@ new Form({
         <button class="code-block__tab" data-tab="html-2">HTML</button>
       </div>
       <div class="code-block__content code-block__content--active" data-tab="js-2">
-        <pre class="code-block__pre">import Form from './Form.js'
+        <pre class="code-block__pre">import { Form } from '@andresclua/validate'
 
 new Form({
     element: document.getElementById('bio-form'),
@@ -419,7 +289,7 @@ new Form({
         <button class="code-block__tab" data-tab="html-3">HTML</button>
       </div>
       <div class="code-block__content code-block__content--active" data-tab="js-3">
-        <pre class="code-block__pre">import Form from './Form.js'
+        <pre class="code-block__pre">import { Form } from '@andresclua/validate'
 
 const textInput  = document.querySelector('#match-text')
 const acceptCb   = document.querySelector('#accept-cb')
@@ -523,7 +393,7 @@ new Form({
         <button class="code-block__tab" data-tab="html-4">HTML</button>
       </div>
       <div class="code-block__content code-block__content--active" data-tab="js-4">
-        <pre class="code-block__pre">import Form from './Form.js'
+        <pre class="code-block__pre">import { Form } from '@andresclua/validate'
 
 const passwordInput = document.querySelector('#password')
 

@@ -1,264 +1,227 @@
-import { isString, isEmail, isNumber, isSelect, isCheckbox, isRadio, isFile } from "@andresclua/validate";
+import { isString } from "./isString";
+import { isEmail } from "./isEmail";
+import { isNumber } from "./isNumber";
+import { isSelect } from "./isSelect";
+import { isCheckbox } from "./isCheckbox";
+import { isRadio } from "./isRadio";
+import { isFile } from "./isFile";
 
-class Form {
-  constructor({ element, fields, submitButtonSelector = null, beforeSubmit = null, onSubmit = null, onError = null, validators = {} }) {
-    if (!element) throw new Error("A form element is required.");
+// Class names the helper looks for. Override any of them with the `classNames` option.
+const DEFAULT_CLASS_NAMES = {
+    group: "c--form-group-a", // wraps label + control + error message
+    input: "c--form-input-a", // wrapper that receives the --error / --valid modifiers
+    file: "c--form-file-a", // file inputs receive the modifiers directly
+    error: "c--form-error-a", // element that shows the error message
+};
 
-    // ---------- CONFIG ----------
-    this.fields = fields || [];
-    this.beforeSubmit = beforeSubmit;
-    this.onSubmit = onSubmit;
-    this.onError = onError;
+/**
+ * Wires several fields to the validators: validates on blur/change/input, validates
+ * everything on submit and toggles `--error` / `--valid` modifiers plus the message.
+ *
+ * @param {Object} options
+ * @param {HTMLFormElement} options.element - The form element.
+ * @param {Array} options.fields - Field configs: `{ element | elements, validationFunction, config, on }`.
+ * @param {string|Element} [options.submitButtonSelector] - Submit button (selector scoped to the form, or element).
+ * @param {Function} [options.beforeSubmit] - Called before validating; return `false` to cancel.
+ * @param {Function} [options.onSubmit] - Called when every field is valid.
+ * @param {Function} [options.onError] - Called with the list of invalid fields.
+ * @param {Object} [options.validators] - Extra validators, usable by name in `validationFunction`.
+ * @param {Object} [options.classNames] - Override any of `group`, `input`, `file`, `error`.
+ */
+export class Form {
+    constructor({
+        element,
+        fields,
+        submitButtonSelector = null,
+        beforeSubmit = null,
+        onSubmit = null,
+        onError = null,
+        validators = {},
+        classNames = {},
+    }) {
+        if (!element) throw new Error("A form element is required.");
 
-    // ---------- DOM ----------
-    this.DOM = {
-      form: element,
-      // scoped to the form (important when multiple forms exist)
-      submitButton: this.resolveSubmitButton(element, submitButtonSelector),
-    };
+        this.fields = fields || [];
+        this.beforeSubmit = beforeSubmit;
+        this.onSubmit = onSubmit;
+        this.onError = onError;
+        this.classNames = { ...DEFAULT_CLASS_NAMES, ...classNames };
 
-    // ---------- VALIDATORS ----------
-    this.validators = {
-      isString,
-      isEmail,
-      isNumber,
-      isSelect,
-      isCheckbox,
-      isRadio,
-      isFile,
-      ...validators,
-    };
+        this.DOM = {
+            form: element,
+            // scoped to the form (important when multiple forms exist)
+            submitButton: this.resolveSubmitButton(element, submitButtonSelector),
+        };
 
-    // Track listeners to remove them later
-    this._listeners = [];
+        this.validators = {
+            isString,
+            isEmail,
+            isNumber,
+            isSelect,
+            isCheckbox,
+            isRadio,
+            isFile,
+            ...validators,
+        };
 
-    // ---------- INIT / EVENTS ----------
-    this.init();
-    this.events();
-  }
+        // Track listeners to remove them later
+        this._listeners = [];
 
-  // ---------------- INIT ----------------
-  init() {
-    this.initializeFields();
-  }
-
-  // ---------------- EVENTS ----------------
-  events() {
-    this.initializeSubmit();
-  }
-
-  // ---------------- VALIDATOR RESOLUTION ----------------
-  getValidator(validationFunction) {
-    if (typeof validationFunction === "function") return validationFunction;
-
-    if (typeof validationFunction === "string") {
-      const fn = this.validators[validationFunction];
-      if (!fn) throw new Error(`Validator "${validationFunction}" is not registered.`);
-      return fn;
+        this.init();
+        this.events();
     }
 
-    throw new Error("validationFunction must be a function or a string key.");
-  }
-
-  // --------- CORE: run a field (single/group/file) ---------
-  runField(field) {
-    const { element, elements, validationFunction, config } = field;
-    const validator = this.getValidator(validationFunction);
-
-    // GROUP: checkbox/radio (NodeList)
-    if (elements) {
-      const result = validator({ elements, config });
-      this.updateFieldState(field, result);
-      return result;
+    init() {
+        this.initializeFields();
     }
 
-    if (!(element instanceof Element)) {
-      throw new Error("Field must include `element` (DOM Element) or `elements` (NodeList).");
+    events() {
+        this.initializeSubmit();
     }
 
-    // FILE: pass File object (not .value string)
-    if (element.tagName === "INPUT" && element.type === "file") {
-      const file = element.files?.[0] || null;
-      const result = validator({ element: file, config });
-      this.updateFieldState(field, result);
-      return result;
+    getValidator(validationFunction) {
+        if (typeof validationFunction === "function") return validationFunction;
+
+        if (typeof validationFunction === "string") {
+            const fn = this.validators[validationFunction];
+            if (!fn) throw new Error(`Validator "${validationFunction}" is not registered.`);
+            return fn;
+        }
+
+        throw new Error("validationFunction must be a function or a string key.");
     }
 
-    // DEFAULT: input/select -> pass string value
-    const result = validator({ element: element.value, config });
-    this.updateFieldState(field, result);
-    return result;
-  }
+    // Runs one field: single input, group (checkbox/radio) or file.
+    runField(field) {
+        const { element, elements, validationFunction, config } = field;
+        const validator = this.getValidator(validationFunction);
 
-  // ---------------- FIELDS ----------------
-  initializeFields() {
-    this.fields.forEach((field) => {
-      const { element, elements, on } = field;
+        if (elements) {
+            const result = validator({ elements, config });
+            this.updateFieldState(field, result);
+            return result;
+        }
 
-      // If on === null -> do not attach listeners (validate only on submit)
-      if (on === null) return;
+        if (!(element instanceof Element)) {
+            throw new Error("Field must include `element` (DOM Element) or `elements` (NodeList).");
+        }
 
-      const eventType = on || "blur";
+        // Files are validated as a File object, not as a string value
+        if (element.tagName === "INPUT" && element.type === "file") {
+            const result = validator({ element: element.files?.[0] || null, config });
+            this.updateFieldState(field, result);
+            return result;
+        }
 
-      // For groups, attach listener to first element (cheap) OR you can attach to each checkbox/radio if desired.
-      const target = element || (elements && elements[0]);
-      if (!target) throw new Error("Each field must have `element` or `elements`.");
-
-      const handler = () => this.runField(field);
-
-      target.addEventListener(eventType, handler);
-      this._listeners.push({ target, event: eventType, handler });
-    });
-  }
-
-  // ---------------- UI UPDATE ----------------
-  updateFieldState(field, result) {
-    const { element, elements } = field;
-
-    const baseEl = element || (elements && elements[0]);
-    if (!(baseEl instanceof Element)) return;
-
-    // Error span lives in the closest form group
-    const formGroup = baseEl.closest(".c--form-group-a");
-    let errorSpan = formGroup?.querySelector(".c--form-error-a");
-
-    // Create error span if missing
-    if (!errorSpan && formGroup) {
-      errorSpan = document.createElement("span");
-      errorSpan.classList.add("c--form-error-a");
-      errorSpan.style.display = "none";
-      formGroup.appendChild(errorSpan);
+        const result = validator({ element: element.value, config });
+        this.updateFieldState(field, result);
+        return result;
     }
 
-    // GROUPS (checkbox/radio): your pattern is "only span"
-    if (elements) {
-      if (errorSpan) {
-        errorSpan.textContent = result.isValid ? "" : result.errorMessage;
-        errorSpan.style.display = result.isValid ? "none" : "block";
-      }
-      return;
-    }
+    initializeFields() {
+        this.fields.forEach((field) => {
+            const { element, elements, on } = field;
 
-    // SINGLE FIELDS: wrapper + modifiers, parallel per control type
-    let wrapper = null;
-    let baseClass = null;
+            // on: null -> validate only on submit
+            if (on === null) return;
 
-    if (baseEl.tagName === "SELECT") {
-      wrapper = baseEl.closest(".c--form-select-a");
-      baseClass = "c--form-select-a";
-    } else if (baseEl.tagName === "INPUT" && baseEl.type === "file") {
-      wrapper = baseEl.closest(".c--form-file-a");
-      baseClass = "c--form-file-a";
-    } else {
-      wrapper = baseEl.closest(".c--form-input-a");
-      baseClass = "c--form-input-a";
-    }
+            const eventType = on || "blur";
+            const target = element || (elements && elements[0]);
+            if (!target) throw new Error("Each field must have `element` or `elements`.");
 
-    if (!wrapper || !baseClass) return;
-
-    const errorClass = `${baseClass}--error`;
-    const validClass = `${baseClass}--valid`;
-
-    if (result.isValid) {
-      wrapper.classList.remove(errorClass);
-      wrapper.classList.add(validClass);
-
-      if (errorSpan) {
-        errorSpan.textContent = "";
-        errorSpan.style.display = "none";
-      }
-    } else {
-      wrapper.classList.add(errorClass);
-      wrapper.classList.remove(validClass);
-
-      if (errorSpan) {
-        errorSpan.textContent = result.errorMessage;
-        errorSpan.style.display = "block";
-      }
-    }
-  }
-
-  // ---------------- VALIDATE ALL ----------------
-  validateAllFields() {
-    const invalidFields = [];
-
-    this.fields.forEach((field) => {
-      const result = this.runField(field);
-
-      if (!result?.isValid) {
-        invalidFields.push({
-          field,
-          errorMessage: result?.errorMessage || "Invalid field",
+            const handler = () => this.runField(field);
+            target.addEventListener(eventType, handler);
+            this._listeners.push({ target, event: eventType, handler });
         });
-      }
-    });
-
-    return invalidFields;
-  }
-
-  // ---------------- SUBMIT ----------------
-  initializeSubmit() {
-    // Optional: click submit button
-    if (this.DOM.submitButton) {
-      const handler = (event) => {
-        event.preventDefault();
-        this.handleValidation();
-      };
-
-      this.DOM.submitButton.addEventListener("click", handler);
-      this._listeners.push({ target: this.DOM.submitButton, event: "click", handler });
     }
 
-    // Always listen to form submit (covers enter key)
-    const formHandler = (event) => {
-      event.preventDefault();
-      this.handleValidation();
-    };
+    updateFieldState(field, result) {
+        const { group, input, file, error } = this.classNames;
+        const { element, elements } = field;
 
-    this.DOM.form.addEventListener("submit", formHandler);
-    this._listeners.push({ target: this.DOM.form, event: "submit", handler: formHandler });
-  }
+        const baseEl = element || (elements && elements[0]);
+        if (!(baseEl instanceof Element)) return;
 
-  handleValidation() {
-    // beforeSubmit can return false to cancel submission
-    if (this.beforeSubmit) {
-      const shouldContinue = this.beforeSubmit();
-      if (shouldContinue === false) return;
+        const formGroup = baseEl.closest(`.${group}`);
+        let errorSpan = formGroup?.querySelector(`.${error}`);
+
+        if (!errorSpan && formGroup) {
+            errorSpan = document.createElement("span");
+            errorSpan.classList.add(error);
+            formGroup.appendChild(errorSpan);
+        }
+
+        // Checkbox / radio groups only show the message
+        if (elements) {
+            if (errorSpan) errorSpan.textContent = result.isValid ? "" : result.errorMessage;
+            return;
+        }
+
+        const isFileInput = baseEl.tagName === "INPUT" && baseEl.type === "file";
+        const wrapper = isFileInput ? baseEl : baseEl.closest(`.${input}`);
+        const baseClass = isFileInput ? file : input;
+        if (!wrapper) return;
+
+        wrapper.classList.toggle(`${baseClass}--valid`, result.isValid);
+        wrapper.classList.toggle(`${baseClass}--error`, !result.isValid);
+        if (errorSpan) errorSpan.textContent = result.isValid ? "" : result.errorMessage;
     }
 
-    const invalidFields = this.validateAllFields();
+    validateAllFields() {
+        const invalidFields = [];
 
-    if (invalidFields.length === 0) {
-      if (this.onSubmit) this.onSubmit();
-    } else {
-      if (this.onError) this.onError(invalidFields);
-    }
-  }
+        this.fields.forEach((field) => {
+            const result = this.runField(field);
+            if (!result?.isValid) {
+                invalidFields.push({ field, errorMessage: result?.errorMessage || "Invalid field" });
+            }
+        });
 
-  resolveSubmitButton(formEl, submitButtonSelector) {
-    if (!submitButtonSelector) return null;
-
-    // Ya es un Element
-    if (submitButtonSelector instanceof Element) {
-      return submitButtonSelector;
+        return invalidFields;
     }
 
-    // Es un selector string (scoped al form)
-    if (typeof submitButtonSelector === "string") {
-      return formEl.querySelector(submitButtonSelector);
+    initializeSubmit() {
+        if (this.DOM.submitButton) {
+            const handler = (event) => {
+                event.preventDefault();
+                this.handleValidation();
+            };
+            this.DOM.submitButton.addEventListener("click", handler);
+            this._listeners.push({ target: this.DOM.submitButton, event: "click", handler });
+        }
+
+        // Always listen to the form too (covers the Enter key)
+        const formHandler = (event) => {
+            event.preventDefault();
+            this.handleValidation();
+        };
+        this.DOM.form.addEventListener("submit", formHandler);
+        this._listeners.push({ target: this.DOM.form, event: "submit", handler: formHandler });
     }
 
-    throw new Error("submitButtonSelector must be a selector string or a DOM Element.");
-  }
+    handleValidation() {
+        if (this.beforeSubmit && this.beforeSubmit() === false) return;
 
-  // ---------------- DESTROY ----------------
-  destroy() {
-    this._listeners.forEach(({ target, event, handler }) => {
-      target.removeEventListener(event, handler);
-    });
+        const invalidFields = this.validateAllFields();
 
-    this._listeners = [];
-  }
+        if (invalidFields.length === 0) {
+            if (this.onSubmit) this.onSubmit();
+        } else if (this.onError) {
+            this.onError(invalidFields);
+        }
+    }
+
+    resolveSubmitButton(formEl, submitButtonSelector) {
+        if (!submitButtonSelector) return null;
+        if (submitButtonSelector instanceof Element) return submitButtonSelector;
+        if (typeof submitButtonSelector === "string") return formEl.querySelector(submitButtonSelector);
+        throw new Error("submitButtonSelector must be a selector string or a DOM Element.");
+    }
+
+    destroy() {
+        this._listeners.forEach(({ target, event, handler }) => {
+            target.removeEventListener(event, handler);
+        });
+        this._listeners = [];
+    }
 }
-
-export default Form;

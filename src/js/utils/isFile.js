@@ -29,14 +29,15 @@ export function isFile({ element, config = {}, callback = null, debug = false })
         errorMessage = customMessage.required || "Please select a file.";
     }
 
+    // An optional field left empty has nothing to check
     // Check file type
-    if (isValid && allowedTypes.length > 0 && !allowedTypes.includes(element.type)) {
+    if (isValid && element && allowedTypes.length > 0 && !allowedTypes.includes(element.type)) {
         isValid = false;
         errorMessage = customMessage.type || "Invalid file type. Please upload a valid file format.";
     }
 
     // Check file size
-    if (isValid && maxSize && element.size > maxSize) {
+    if (isValid && element && maxSize && element.size > maxSize) {
         isValid = false;
         errorMessage = customMessage.size || `File size should not exceed ${maxSize / 1024 / 1024}MB.`;
     }

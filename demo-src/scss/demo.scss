@@ -576,10 +576,10 @@ body {
 .c--form-error-a {
     color: #ff5b5b;
     font-size: 12px;
-    display: none;
+    line-height: 18px;
+    min-height: 18px; // reserved: a message appearing must not move the submit button
+    display: block;
     margin-top: 4px;
-
-    &:not(:empty) { display: block; }
 }
 
 // ─── 16. Checkbox & Radio component styles ───────────────────
